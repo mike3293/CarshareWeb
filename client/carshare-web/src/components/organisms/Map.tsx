@@ -50,7 +50,7 @@ const CarMap = () => {
               iconAnchor: [12.5, 33],
             }),
           }
-        )
+        ).bindPopup(`${c.provider.name} ${c.model}`)
       ),
     [data]
   );
