@@ -2,16 +2,22 @@
 @import "~leaflet.markercluster/dist/MarkerCluster.css";
 @import "~leaflet.markercluster/dist/MarkerCluster.Default.css";
 
+body {
+  margin: 0;
+}
+
+html,
+body,
+#__next {
+  height: 100%;
+}
+
 .leaflet-container {
-  height: 100vh;
+  height: 100%;
   width: 100%;
 }
 
 .leaflet-div-icon {
   background: transparent;
   border: none;
-}
-
-body {
-  margin: 0;
 }
