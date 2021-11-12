@@ -1,7 +1,8 @@
 import type { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
-import { QueryCache } from "react-query";
+import { QueryCache, QueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
+import services from "src/config/services";
 
 const MapComponent = dynamic(
   () => {
@@ -15,23 +16,16 @@ const Home: NextPage = () => {
 };
 
 // export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const queryCache = new QueryCache();
+//   const queryClient = new QueryClient();
 
 //   try {
-//     const listing = await getListingInfo(id);
+//     queryClient.prefetchQuery("getPublicCars", () =>
+//       services.publicCars.getCars()
+//     );
 
-//     queryCache.setQueryData(["getActiveListing", listing.aliasId], listing);
-
-//     return {
-//       props: {
-//         listingAliasId: id,
-//         RQState: dehydrate(queryCache),
-//         isLetting:
-//           listing.propertyDetails.propertySaleType === SaleType.Letting,
-//       },
-//     };
+//     return { props: { dehydratedState: dehydrate(queryClient) } };
 //   } catch (e) {
-//     const status = e?.response?.status || 500;
+//     const status = (e as Response)?.status || 500;
 
 //     if (status === 404) {
 //       return {
@@ -41,7 +35,7 @@ const Home: NextPage = () => {
 
 //     ctx.res.statusCode = status;
 
-//     throw new Error("Unable to fetch sneak peek details");
+//     throw new Error("Unable to fetch cars");
 //   }
 // };
 
