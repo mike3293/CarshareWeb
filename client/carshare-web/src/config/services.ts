@@ -1,7 +1,6 @@
 import PublicCarsService from "src/services/publicCars";
-
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_API_URL as string;
+import { BASE_API_URL } from "./constants";
 
 export default {
-  publicCars: new PublicCarsService(BASE_URL),
+  publicCars: new PublicCarsService(BASE_API_URL),
 };

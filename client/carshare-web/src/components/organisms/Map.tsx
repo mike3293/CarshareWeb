@@ -24,9 +24,9 @@ const CarMap = () => {
           {
             icon: L.icon({
               iconUrl: c.provider.pinUrl,
-              iconSize: [25, 35], // size of the icon
-              shadowSize: [0, 0], // size of the shadow
-              iconAnchor: [0, 29], // point of the icon which will correspond to marker's location
+              iconSize: [25, 35],
+              shadowSize: [0, 0],
+              iconAnchor: [0, 29],
             }),
           }
         )
