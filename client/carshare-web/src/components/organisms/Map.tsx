@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import VectorTileLayer from "react-leaflet-vector-tile-layer";
 import { useQuery } from "react-query";
@@ -16,18 +16,34 @@ const CarMap = () => {
     { refetchInterval: false, refetchOnWindowFocus: false }
   );
 
+  const markers = useMemo(
+    () =>
+      data.map((c) =>
+        L.marker(
+          { lat: c.lat, lng: c.lon },
+          {
+            icon: L.icon({
+              iconUrl: c.provider.pinUrl,
+              iconSize: [25, 35], // size of the icon
+              shadowSize: [0, 0], // size of the shadow
+              iconAnchor: [0, 29], // point of the icon which will correspond to marker's location
+            }),
+          }
+        )
+      ),
+    [data]
+  );
+
   console.log(data);
 
   return (
-    <MapContainer center={[53.893009, 27.567444]} zoom={13} maxZoom={20}>
+    <MapContainer center={[53.893009, 27.567444]} zoom={13} maxZoom={19}>
       {mapStyleUrl ? (
         <VectorTileLayer styleUrl={mapStyleUrl} />
       ) : (
         <TileLayer url={mapFallbackLayerUrl} />
       )}
-      <MarkerCluster
-        markers={data.map((c) => L.marker({ lat: c.lat, lng: c.lon }))}
-      />
+      <MarkerCluster markers={markers} />
     </MapContainer>
   );
 };

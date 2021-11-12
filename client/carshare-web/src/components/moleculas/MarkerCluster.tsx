@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect } from "react";
+import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 import L, { Marker } from "leaflet";
 import "leaflet.markercluster";
@@ -10,6 +10,7 @@ interface IMarkerClusterProps {
 const cluster = L.markerClusterGroup({
   showCoverageOnHover: false,
   maxClusterRadius: 50,
+  disableClusteringAtZoom: 15,
 });
 
 const MarkerCluster = ({ markers }: IMarkerClusterProps) => {
@@ -19,11 +20,6 @@ const MarkerCluster = ({ markers }: IMarkerClusterProps) => {
     cluster.clearLayers();
     cluster.addLayers(markers);
     map.addLayer(cluster);
-
-    // map.on("zoomend", function () {
-    //   cluster.clearLayers();
-    //   cluster.addLayers(markers);
-    // });
   }, [map, markers]);
 
   return null;
