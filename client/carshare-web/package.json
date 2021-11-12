@@ -8,6 +8,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.5.0",
+    "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.1.0",
     "@mui/material": "^5.1.0",
     "leaflet": "^1.7.1",
@@ -24,6 +26,7 @@
     "@types/leaflet.markercluster": "^1.4.6",
     "@types/node": "16.11.7",
     "@types/react": "17.0.34",
+    "@types/react-dom": "^17.0.11",
     "eslint": "7",
     "eslint-config-next": "12.0.3",
     "typescript": "4.4.4"

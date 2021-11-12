@@ -13,7 +13,7 @@ abstract class ServiceBase {
     init?: RequestInit
   ): Promise<TResult> {
     const response = await fetch(
-      this.baseUrl + "/" + path + new URLSearchParams(params),
+      `${this.baseUrl}/${path}${params ? `?${new URLSearchParams(params)}` : ''}`,
       {
         method: "GET",
         ...init,

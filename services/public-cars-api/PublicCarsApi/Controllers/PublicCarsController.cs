@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -23,14 +24,17 @@ namespace PublicCarsApi.Controllers
         [HttpGet]
         public async Task<dynamic> GetPublicCarsAsync()
         {
-            using var httpClient = new HttpClient();
+            //using var httpClient = new HttpClient();
 
-            using var response = await httpClient.GetAsync("https://us-central1-carsharinghub.cloudfunctions.net/cachedcars");
-            var stringResponse = await response.Content.ReadAsStringAsync();
+            //using var response = await httpClient.GetAsync("https://us-central1-carsharinghub.cloudfunctions.net/cachedcars");
+            //var stringResponse = await response.Content.ReadAsStringAsync();
 
-            // reservationList = JsonConvert.DeserializeObject<List<Reservation>>(apiResponse);
+            //// reservationList = JsonConvert.DeserializeObject<List<Reservation>>(apiResponse);
 
-            return Content(stringResponse, "application/json");
+            using StreamReader SourceReader = System.IO.File.OpenText("defaultResponse.json");
+            var response = await SourceReader.ReadToEndAsync();
+
+            return Content(response, "application/json");
         }
     }
 }
