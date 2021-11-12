@@ -5,7 +5,7 @@ import VectorTileLayer from "react-leaflet-vector-tile-layer";
 import { useQuery } from "react-query";
 import { mapStyleUrl, mapFallbackLayerUrl } from "src/config/constants";
 import services from "src/config/services";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
+import MarkerClusterGroup from "react-leaflet-markercluster";
 import L from "leaflet";
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -25,9 +25,11 @@ const Home = () => {
       ) : (
         <TileLayer url={mapFallbackLayerUrl} />
       )}
-      {data.map((c) => (
-        <Marker key={c.id} position={{ lat: c.lat, lng: c.lon }} />
-      ))}
+      <MarkerClusterGroup showCoverageOnHover={false} maxClusterRadius={50}>
+        {data.map((c) => (
+          <Marker key={c.id} position={{ lat: c.lat, lng: c.lon }} />
+        ))}
+      </MarkerClusterGroup>
     </MapContainer>
   );
 };
