@@ -2,9 +2,6 @@
 **/bin
 **/dist
 **/publish_output
-**/.env
-**/.env.*.local
-!/.env
 
 # Test outputs
 **/pact-logs
