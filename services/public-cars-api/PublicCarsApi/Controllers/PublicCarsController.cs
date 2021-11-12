@@ -32,9 +32,9 @@ namespace PublicCarsApi.Controllers
             //// reservationList = JsonConvert.DeserializeObject<List<Reservation>>(apiResponse);
 
             using StreamReader SourceReader = System.IO.File.OpenText("defaultResponse.json");
-            var response = await SourceReader.ReadToEndAsync();
+            var stringResponse = await SourceReader.ReadToEndAsync();
 
-            return Content(response, "application/json");
+            return Content(stringResponse, "application/json");
         }
     }
 }
