@@ -11,6 +11,7 @@ const cluster = L.markerClusterGroup({
   showCoverageOnHover: false,
   maxClusterRadius: 50,
   disableClusteringAtZoom: 15,
+  spiderfyOnMaxZoom: false,
 });
 
 const MarkerCluster = ({ markers }: IMarkerClusterProps) => {
