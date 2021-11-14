@@ -17,6 +17,7 @@ import { useMobile } from "src/hooks/useMedia";
 import getCarMarkers from "src/utils/getCarMarkers";
 import CarFilters from "../moleculas/CarFilters";
 import { useFiltersStore } from "src/context/filtersStore";
+import { useDebounce } from "src/hooks/useDebounce";
 
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -25,10 +26,19 @@ const CarMap = () => {
   const [currentPosition, setCurrentPosition] = useState<LatLngExpression>();
 
   const { selectedProviderIds, selectedFuelLevel } = useFiltersStore();
+  const debouncedSelectedProviderIds = useDebounce(selectedProviderIds, 500);
 
   const { data = [], isLoading } = useQuery(
-    ["getPublicCars", selectedProviderIds.join(","), selectedFuelLevel],
-    () => services.publicCars.getCars(selectedProviderIds, selectedFuelLevel),
+    [
+      "getPublicCars",
+      debouncedSelectedProviderIds.join(","),
+      selectedFuelLevel,
+    ],
+    () =>
+      services.publicCars.getCars(
+        debouncedSelectedProviderIds,
+        selectedFuelLevel
+      ),
     { refetchOnWindowFocus: false }
   );
 
