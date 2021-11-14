@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using PublicCarsApi.Models.Requests;
+using PublicCarsApi.Models.Responses;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,19 +24,35 @@ namespace PublicCarsApi.Controllers
         }
 
         [HttpGet]
-        public async Task<dynamic> GetPublicCarsAsync()
+        public async Task<IEnumerable<ProviderWithCars>> GetPublicCarsAsync([FromQuery] FilterOptions filters)
         {
             //using var httpClient = new HttpClient();
 
             //using var response = await httpClient.GetAsync("https://us-central1-carsharinghub.cloudfunctions.net/cachedcars");
-            //var stringResponse = await response.Content.ReadAsStringAsync();
+            //var contentStream = await response.Content.ReadAsStreamAsync();
 
-            //// reservationList = JsonConvert.DeserializeObject<List<Reservation>>(apiResponse);
+            using StreamReader contentStream = System.IO.File.OpenText("defaultResponse.json");
 
-            using StreamReader SourceReader = System.IO.File.OpenText("defaultResponse.json");
-            var stringResponse = await SourceReader.ReadToEndAsync();
+            using var jsonReader = new JsonTextReader(contentStream);
+            var serializer = new JsonSerializer();
 
-            return Content(stringResponse, "application/json");
+            IEnumerable<ExternalCar> cars = serializer.Deserialize<List<ExternalCar>>(jsonReader);
+
+            if (filters.ProviderIds is not null && filters.ProviderIds.Length != 0)
+            {
+                cars = cars.Where(c => filters.ProviderIds.Any(pid => pid == c.Provider.Id));
+            }
+
+            if (filters.FuelLevel is not null)
+            {
+                cars = cars.Where(c => c.Fuel >= filters.FuelLevel);
+            }
+
+            var groupedCars = cars.GroupBy(c => c.Provider, c => new Car(c));
+
+            var resonse = groupedCars.Select(g => new ProviderWithCars(g));
+
+            return resonse;
         }
     }
 }

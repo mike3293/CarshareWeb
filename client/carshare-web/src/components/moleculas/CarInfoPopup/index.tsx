@@ -1,8 +1,9 @@
 import { styled, Typography } from "@mui/material";
-import { PublicCar } from "src/types/PublicCar";
+import { Car } from "src/types/Car";
 
 interface ICarInfoPopupProps {
-  car: PublicCar;
+  car: Car;
+  providerLogoUrl: string;
 }
 
 const Root = styled("div")(({ theme }) => ({
@@ -26,9 +27,9 @@ const ProviderImage = styled("img")(({ theme }) => ({
   height: theme.spacing(4),
 }));
 
-const CarInfoPopup = ({ car }: ICarInfoPopupProps) => (
+const CarInfoPopup = ({ car, providerLogoUrl }: ICarInfoPopupProps) => (
   <Root>
-    <ProviderImage src={car.provider.logoUrl} />
+    <ProviderImage src={providerLogoUrl} />
     <CarImageContainer>
       {car.imageUrl && <CarImage src={car.imageUrl} />}
     </CarImageContainer>
