@@ -24,7 +24,7 @@ namespace PublicCarsApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ProviderWithCars>> GetPublicCarsAsync([FromQuery] FilterOptions filters)
+        public async Task<IEnumerable<ProviderWithCars>> GetProvidersWithCarsAsync([FromQuery] FilterOptions filters)
         {
 #if DEBUG
             using var streamReader = new StreamReader("defaultResponse.json");
@@ -55,6 +55,28 @@ namespace PublicCarsApi.Controllers
             var resonse = groupedCars.Select(g => new ProviderWithCars(g));
 
             return resonse;
+        }
+
+        [HttpGet("providersSummary")]
+        public async Task<IEnumerable<Provider>> GetProvidersSummaryAsync()
+        {
+#if DEBUG
+            using var streamReader = new StreamReader("defaultResponse.json");
+#else
+            using var httpClient = new HttpClient();
+
+            using var response = await httpClient.GetAsync("https://us-central1-carsharinghub.cloudfunctions.net/cachedcars");
+            var contentStream = await response.Content.ReadAsStreamAsync();
+            using var streamReader = new StreamReader(contentStream);
+#endif
+            using var jsonReader = new JsonTextReader(streamReader);
+            var serializer = new JsonSerializer();
+
+            var cars = serializer.Deserialize<List<ExternalCar>>(jsonReader);
+
+            var providers = cars.Select(c => c.Provider).Distinct().Select(p => new Provider(p));
+
+            return providers;
         }
     }
 }

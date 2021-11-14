@@ -19,9 +19,14 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const queryClient = new QueryClient();
 
   try {
-    // queryClient.prefetchQuery("getPublicCars", () =>
-    //   services.publicCars.getCars()
-    // );
+    if (process.env.NODE_ENV === "production") {
+      // queryClient.prefetchQuery("getPublicCars", () =>
+      //   services.publicCars.getCars()
+      // );
+      // queryClient.prefetchQuery("getProvidersSummary", () =>
+      //   services.publicCars.getProvidersSummary()
+      // );
+    }
 
     return { props: { dehydratedState: dehydrate(queryClient) } };
   } catch (e) {

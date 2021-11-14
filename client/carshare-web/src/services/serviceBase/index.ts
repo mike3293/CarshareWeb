@@ -13,7 +13,7 @@ abstract class ServiceBase {
     init?: RequestInit
   ): Promise<TResult> {
     const response = await fetch(
-      `${this.baseUrl}/${path}${params ? `?${new URLSearchParams(params)}` : ''}`,
+      `${this.baseUrl}/${path}${params ? `?${this.buildParams(params)}` : ""}`,
       {
         method: "GET",
         ...init,
@@ -21,6 +21,22 @@ abstract class ServiceBase {
     );
 
     return await response.json();
+  }
+
+  private buildParams(search: URLSearchParamsInit) {
+    const params = new URLSearchParams();
+
+    Object.entries(search).forEach(([key, value]) => {
+      if (!value) {
+        return;
+      }
+
+      Array.isArray(value)
+        ? value.forEach((item) => item && params.append(key, item))
+        : params.append(key, value);
+    });
+
+    return params;
   }
 }
 

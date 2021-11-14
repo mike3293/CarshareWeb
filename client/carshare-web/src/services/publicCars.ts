@@ -1,3 +1,4 @@
+import { Provider } from "src/types/Provider";
 import { ProviderWithCars } from "src/types/ProviderWithCars";
 import ServiceBase from "./serviceBase";
 
@@ -7,8 +8,15 @@ class PublicCarsService extends ServiceBase {
     this.initialize({ baseURL });
   }
 
-  public getCars(): Promise<ProviderWithCars[]> {
-    return this.get("publicCars");
+  public getCars(
+    providerIds?: string[],
+    fuelLevel?: number | null
+  ): Promise<ProviderWithCars[]> {
+    return this.get("publicCars", { fuelLevel, providerIds });
+  }
+
+  public getProvidersSummary(): Promise<Provider[]> {
+    return this.get("publicCars/providersSummary");
   }
 }
 

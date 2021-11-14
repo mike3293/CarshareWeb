@@ -15,6 +15,8 @@ import CurrentPosition from "src/components/moleculas/CurrentPosition";
 import FindCurrentPosition from "src/components/moleculas/FindCurrentPosition";
 import { useMobile } from "src/hooks/useMedia";
 import getCarMarkers from "src/utils/getCarMarkers";
+import CarFilters from "../moleculas/CarFilters";
+import { useFiltersStore } from "src/context/filtersStore";
 
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -22,10 +24,12 @@ const CarMap = () => {
   const isMobile = useMobile();
   const [currentPosition, setCurrentPosition] = useState<LatLngExpression>();
 
+  const { selectedProviderIds, selectedFuelLevel } = useFiltersStore();
+
   const { data = [], isLoading } = useQuery(
-    "getPublicCars",
-    () => services.publicCars.getCars(),
-    { refetchInterval: false, refetchOnWindowFocus: false }
+    ["getPublicCars", selectedProviderIds.join(","), selectedFuelLevel],
+    () => services.publicCars.getCars(selectedProviderIds, selectedFuelLevel),
+    { refetchOnWindowFocus: false }
   );
 
   const markers = useMemo(() => getCarMarkers(data), [data]);
@@ -57,6 +61,7 @@ const CarMap = () => {
         isMobile={isMobile}
       />
       {markers.length && <MarkerCluster markers={markers} />}
+      <CarFilters isMobile={isMobile} />
     </MapContainer>
   );
 };

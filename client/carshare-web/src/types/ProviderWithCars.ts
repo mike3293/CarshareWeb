@@ -1,9 +1,7 @@
 import { Car } from "./Car";
+import { Provider } from "./Provider";
 
-export interface ProviderWithCars {
-  id: string;
-  name: string;
+export interface ProviderWithCars extends Provider {
   pinUrl: string;
-  logoUrl: string;
   cars: Car[];
 }
