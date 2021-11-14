@@ -1,15 +1,25 @@
-import create from "zustand";
+import create, { GetState, SetState } from "zustand";
+import { persist, StoreApiWithPersist } from "zustand/middleware";
 import { IFiltersStore } from "./types";
 
-///
 const filtersStore = (preloadedState = {}) => {
-  return create<IFiltersStore>((set) => ({
-    selectedProviderIds: [],
-    setProviderIds: (providers) => set({ selectedProviderIds: providers }),
-    selectedFuelLevel: null,
-    setFuelLevel: (fuelLevel) => set({ selectedFuelLevel: fuelLevel }),
-    ...preloadedState,
-  }));
+  return create(
+    persist<
+      IFiltersStore,
+      SetState<IFiltersStore>,
+      GetState<IFiltersStore>,
+      StoreApiWithPersist<IFiltersStore>
+    >(
+      (set) => ({
+        selectedProviderIds: [],
+        setProviderIds: (providers) => set({ selectedProviderIds: providers }),
+        selectedFuelLevel: null,
+        setFuelLevel: (fuelLevel) => set({ selectedFuelLevel: fuelLevel }),
+        ...preloadedState,
+      }),
+      { name: "filters-storage" }
+    )
+  );
 };
 
 let zustandStore: ReturnType<typeof filtersStore>;
