@@ -26,14 +26,16 @@ namespace PublicCarsApi.Controllers
         [HttpGet]
         public async Task<IEnumerable<ProviderWithCars>> GetPublicCarsAsync([FromQuery] FilterOptions filters)
         {
-            //using var httpClient = new HttpClient();
+#if DEBUG
+            using var streamReader = new StreamReader("defaultResponse.json");
+#else
+            using var httpClient = new HttpClient();
 
-            //using var response = await httpClient.GetAsync("https://us-central1-carsharinghub.cloudfunctions.net/cachedcars");
-            //var contentStream = await response.Content.ReadAsStreamAsync();
-
-            using StreamReader contentStream = System.IO.File.OpenText("defaultResponse.json");
-
-            using var jsonReader = new JsonTextReader(contentStream);
+            using var response = await httpClient.GetAsync("https://us-central1-carsharinghub.cloudfunctions.net/cachedcars");
+            var contentStream = await response.Content.ReadAsStreamAsync();
+            using var streamReader = new StreamReader(contentStream);
+#endif
+            using var jsonReader = new JsonTextReader(streamReader);
             var serializer = new JsonSerializer();
 
             IEnumerable<ExternalCar> cars = serializer.Deserialize<List<ExternalCar>>(jsonReader);
