@@ -26,7 +26,7 @@ const CarMap = () => {
   const [currentPosition, setCurrentPosition] = useState<LatLngExpression>();
 
   const { selectedProviderIds, selectedFuelLevel } = useFiltersStore();
-  const debouncedSelectedProviderIds = useDebounce(selectedProviderIds, 500);
+  const debouncedSelectedProviderIds = useDebounce(selectedProviderIds, 1000);
 
   const { data = [], isLoading } = useQuery(
     [
