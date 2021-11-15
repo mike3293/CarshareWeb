@@ -18,6 +18,7 @@ import getCarMarkers from "src/utils/getCarMarkers";
 import CarFilters from "../moleculas/CarFilters";
 import { useFiltersStore } from "src/context/filtersStore";
 import { useDebounce } from "src/hooks/useDebounce";
+import DirectionsIcon from "@mui/icons-material/Directions";
 
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -53,7 +54,7 @@ const CarMap = () => {
       maxZoom={19}
       zoomControl={false}
     >
-      {vectorMapStyleUrl ? (
+      {!isMobile && vectorMapStyleUrl ? (
         <VectorTileLayer
           styleUrl={vectorMapStyleUrl}
           attribution={vectorMapAttribution}
