@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
 import VectorTileLayer from "react-leaflet-vector-tile-layer";
 import { useQuery } from "react-query";
@@ -9,16 +9,17 @@ import {
   fallbackMapAttribution,
 } from "src/config/constants";
 import services from "src/config/services";
-import MarkerCluster from "src/components/moleculas/MarkerCluster";
-import L, { LatLngExpression } from "leaflet";
+import MarkerClusterGroup from "react-leaflet-markercluster";
+import L, { LatLngExpression, Marker } from "leaflet";
 import CurrentPosition from "src/components/moleculas/CurrentPosition";
 import FindCurrentPosition from "src/components/moleculas/FindCurrentPosition";
 import { useMobile } from "src/hooks/useMedia";
-import getCarMarkers from "src/utils/getCarMarkers";
 import CarFilters from "../moleculas/CarFilters";
 import { useFiltersStore } from "src/context/filtersStore";
 import { useDebounce } from "src/hooks/useDebounce";
 import DirectionsIcon from "@mui/icons-material/Directions";
+import RoutingMachine from "../moleculas/RoutingMachine";
+import CarMarkers from "../moleculas/CarMarkers";
 
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -43,9 +44,17 @@ const CarMap = () => {
     { refetchOnWindowFocus: false }
   );
 
-  const markers = useMemo(() => getCarMarkers(data), [data]);
-
   console.log(data);
+
+  const routingMachine = useRef<L.Routing.Control>(null);
+
+  const [waypoints, setWaypoints] = useState<L.LatLng[]>([]);
+
+  useEffect(() => {
+    if (routingMachine.current) {
+      routingMachine.current.setWaypoints(waypoints);
+    }
+  }, [waypoints, routingMachine]);
 
   return (
     <MapContainer
@@ -71,8 +80,17 @@ const CarMap = () => {
         onPositionChange={setCurrentPosition}
         isMobile={isMobile}
       />
-      {markers.length && <MarkerCluster markers={markers} />}
+      <MarkerClusterGroup
+        showCoverageOnHover={false}
+        maxClusterRadius={50}
+        disableClusteringAtZoom={15}
+        spiderfyOnMaxZoom={false}
+      >
+        <CarMarkers providers={data} setWaypoints={setWaypoints} />
+      </MarkerClusterGroup>
+      {/* {markers} */}
       <CarFilters isMobile={isMobile} />
+      <RoutingMachine ref={routingMachine} waypoints={waypoints} />
     </MapContainer>
   );
 };
