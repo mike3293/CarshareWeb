@@ -4,8 +4,8 @@ import { Marker } from "react-leaflet";
 import { ICarMarkersProps } from "./types";
 import React from "react";
 
-const CarMarkers = React.memo(
-  ({ providers, setWaypoints }: ICarMarkersProps) => (
+function CarMarkers({ providers, setWaypoints }: ICarMarkersProps) {
+  return (
     <>
       {providers.flatMap((p) =>
         p.cars.map((c) => (
@@ -29,7 +29,7 @@ const CarMarkers = React.memo(
         ))
       )}
     </>
-  )
-);
+  );
+}
 
-export default CarMarkers;
+export default React.memo(CarMarkers);

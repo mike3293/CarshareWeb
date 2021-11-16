@@ -88,7 +88,6 @@ const CarMap = () => {
       >
         <CarMarkers providers={data} setWaypoints={setWaypoints} />
       </MarkerClusterGroup>
-      {/* {markers} */}
       <CarFilters isMobile={isMobile} />
       <RoutingMachine ref={routingMachine} waypoints={waypoints} />
     </MapContainer>
