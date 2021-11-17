@@ -31,3 +31,12 @@ body,
 .leaflet-control-container .leaflet-routing-container-hide {
   display: none;
 }
+
+// TODO: remove!!!
+.leaflet-routing-container {
+  .leaflet-routing-geocoders,
+  h2,
+  table {
+    display: none;
+  }
+}
