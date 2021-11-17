@@ -67,6 +67,7 @@ const CarMap = () => {
     <MapContainer
       center={[53.893009, 27.567444]}
       zoom={13}
+      minZoom={4}
       maxZoom={18}
       zoomControl={false}
       attributionControl={false}
