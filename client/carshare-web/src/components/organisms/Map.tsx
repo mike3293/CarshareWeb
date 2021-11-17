@@ -17,7 +17,6 @@ import { useMobile } from "src/hooks/useMedia";
 import CarFilters from "../moleculas/CarFilters";
 import { useFiltersStore } from "src/context/filtersStore";
 import { useDebounce } from "src/hooks/useDebounce";
-import DirectionsIcon from "@mui/icons-material/Directions";
 import RoutingMachine from "../moleculas/RoutingMachine";
 import CarMarkers from "../moleculas/CarMarkers";
 

@@ -58,6 +58,7 @@ namespace PublicCarsApi.Controllers
         }
 
         [HttpGet("providersSummary")]
+        [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Any, NoStore = false)]
         public async Task<IEnumerable<Provider>> GetProvidersSummaryAsync()
         {
 #if DEBUG
