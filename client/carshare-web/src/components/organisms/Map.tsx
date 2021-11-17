@@ -1,5 +1,10 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { MapContainer, TileLayer, ZoomControl } from "react-leaflet";
+import {
+  AttributionControl,
+  MapContainer,
+  TileLayer,
+  ZoomControl,
+} from "react-leaflet";
 import VectorTileLayer from "react-leaflet-vector-tile-layer";
 import { useQuery } from "react-query";
 import {
@@ -64,6 +69,7 @@ const CarMap = () => {
       zoom={13}
       maxZoom={18}
       zoomControl={false}
+      attributionControl={false}
     >
       {!isMobile && vectorMapStyleUrl ? (
         <VectorTileLayer
@@ -76,6 +82,7 @@ const CarMap = () => {
           attribution={fallbackMapAttribution}
         />
       )}
+      <AttributionControl position="bottomleft" />
       {!isMobile && <ZoomControl position="bottomright" />}
       {currentPosition && <CurrentPosition currentPosition={currentPosition} />}
       <FindCurrentPosition
