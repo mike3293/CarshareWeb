@@ -4,14 +4,8 @@ import { Popup, useMap, useMapEvents } from "react-leaflet";
 import DirectionsIcon from "@mui/icons-material/Directions";
 import { Car } from "src/types/Car";
 import { IRoutingProps } from "./types";
-import { useEffect } from "react";
-
-const Root = styled("div")(({ theme }) => ({
-  display: "grid",
-  textAlign: "center",
-  minWidth: theme.spacing(20),
-  fontFamily: theme.typography.fontFamily,
-}));
+import Snackbar from "@mui/material/Snackbar";
+import { useState } from "react";
 
 const Routing = ({ setWaypoints }: IRoutingProps) => {
   const map = useMapEvents({
@@ -20,7 +14,16 @@ const Routing = ({ setWaypoints }: IRoutingProps) => {
     },
   });
 
-  return null;
+  const [open, setOpen] = useState(true);
+
+  return (
+    <Snackbar
+      open={open}
+      onClose={() => setOpen(false)}
+      autoHideDuration={5000}
+      message="Вы можете добавить новую точку маршрута кликом правой кнопки мыши (долгим нажатием на мобильном устройстве)"
+    />
+  );
 };
 
 export default Routing;
