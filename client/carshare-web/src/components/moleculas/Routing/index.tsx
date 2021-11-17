@@ -1,4 +1,4 @@
-import { Icon, Button, styled, Typography } from "@mui/material";
+import { Box, Slide, styled, Typography, SlideProps } from "@mui/material";
 import L from "leaflet";
 import { Popup, useMap, useMapEvents } from "react-leaflet";
 import DirectionsIcon from "@mui/icons-material/Directions";
@@ -6,8 +6,16 @@ import { Car } from "src/types/Car";
 import { IRoutingProps } from "./types";
 import Snackbar from "@mui/material/Snackbar";
 import { useState } from "react";
+import { useMobile } from "src/hooks/useMedia";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+
+function SlideTransition(props: SlideProps) {
+  return <Slide {...props} direction="right" />;
+}
 
 const Routing = ({ setWaypoints }: IRoutingProps) => {
+  const isMobile = useMobile();
+
   const map = useMapEvents({
     contextmenu(e) {
       setWaypoints((oldValue) => [...oldValue, e.latlng]);
@@ -21,7 +29,19 @@ const Routing = ({ setWaypoints }: IRoutingProps) => {
       open={open}
       onClose={() => setOpen(false)}
       autoHideDuration={5000}
-      message="Вы можете добавить новую точку маршрута кликом правой кнопки мыши (долгим нажатием на мобильном устройстве)"
+      TransitionComponent={SlideTransition}
+      message={
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Typography>
+            Вы можете добавить новую точку маршрута{" "}
+            {isMobile ? "долгим нажатием" : "кликнув правой кнопки мыши"}
+          </Typography>
+          <InfoOutlinedIcon
+            sx={{ color: "info.main", ml: 1 }}
+            fontSize="large"
+          />
+        </Box>
+      }
     />
   );
 };
