@@ -4,7 +4,11 @@ import { Marker } from "react-leaflet";
 import { ICarMarkersProps } from "./types";
 import React from "react";
 
-function CarMarkers({ providers, setWaypoints }: ICarMarkersProps) {
+function CarMarkers({
+  providers,
+  setWaypoints,
+  hasWaypoints,
+}: ICarMarkersProps) {
   return (
     <>
       {providers.flatMap((p) =>
@@ -24,6 +28,7 @@ function CarMarkers({ providers, setWaypoints }: ICarMarkersProps) {
               car={c}
               providerLogoUrl={p.logoUrl}
               setWaypoints={setWaypoints}
+              hasWaypoints={hasWaypoints}
             />
           </Marker>
         ))

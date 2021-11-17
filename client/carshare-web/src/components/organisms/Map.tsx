@@ -10,7 +10,7 @@ import {
 } from "src/config/constants";
 import services from "src/config/services";
 import MarkerClusterGroup from "react-leaflet-markercluster";
-import L, { LatLngExpression, Marker } from "leaflet";
+import L, { LatLngExpression, LatLng } from "leaflet";
 import CurrentPosition from "src/components/moleculas/CurrentPosition";
 import FindCurrentPosition from "src/components/moleculas/FindCurrentPosition";
 import { useMobile } from "src/hooks/useMedia";
@@ -19,6 +19,7 @@ import { useFiltersStore } from "src/context/filtersStore";
 import { useDebounce } from "src/hooks/useDebounce";
 import RoutingMachine from "../moleculas/RoutingMachine";
 import CarMarkers from "../moleculas/CarMarkers";
+import Routing from "../moleculas/Routing";
 
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -45,21 +46,23 @@ const CarMap = () => {
 
   console.log(data);
 
-  const routingMachine = useRef<L.Routing.Control>(null);
+  const routingMachineRef = useRef<L.Routing.Control>(null);
 
   const [waypoints, setWaypoints] = useState<L.LatLng[]>([]);
 
   useEffect(() => {
-    if (routingMachine.current) {
-      routingMachine.current.setWaypoints(waypoints);
+    if (routingMachineRef.current) {
+      routingMachineRef.current.setWaypoints(waypoints);
     }
-  }, [waypoints, routingMachine]);
+  }, [waypoints, routingMachineRef]);
+
+  const hasWaypoints = useMemo(() => Boolean(waypoints.length), [waypoints]);
 
   return (
     <MapContainer
       center={[53.893009, 27.567444]}
       zoom={13}
-      maxZoom={19}
+      maxZoom={18}
       zoomControl={false}
     >
       {!isMobile && vectorMapStyleUrl ? (
@@ -79,16 +82,23 @@ const CarMap = () => {
         onPositionChange={setCurrentPosition}
         isMobile={isMobile}
       />
-      <MarkerClusterGroup
-        showCoverageOnHover={false}
-        maxClusterRadius={50}
-        disableClusteringAtZoom={15}
-        spiderfyOnMaxZoom={false}
-      >
-        <CarMarkers providers={data} setWaypoints={setWaypoints} />
-      </MarkerClusterGroup>
+      {routingMachineRef.current && (
+        <MarkerClusterGroup
+          showCoverageOnHover={false}
+          maxClusterRadius={50}
+          disableClusteringAtZoom={15}
+          spiderfyOnMaxZoom={false}
+        >
+          <CarMarkers
+            providers={data}
+            setWaypoints={setWaypoints}
+            hasWaypoints={hasWaypoints}
+          />
+        </MarkerClusterGroup>
+      )}
       <CarFilters isMobile={isMobile} />
-      <RoutingMachine ref={routingMachine} waypoints={waypoints} />
+      <RoutingMachine ref={routingMachineRef} />
+      {hasWaypoints && <Routing setWaypoints={setWaypoints} />}
     </MapContainer>
   );
 };

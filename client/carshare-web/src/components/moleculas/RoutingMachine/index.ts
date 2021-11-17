@@ -16,6 +16,7 @@ const createRoutineMachineLayer = ({ waypoints }: IRoutingMachineProps) => {
     addWaypoints: true,
     routeWhileDragging: true,
     showAlternatives: false,
+    fitSelectedRoutes: false,
     geocoder: () => null,
   }).on("routeselected", function (e) {
     var route = e.route;

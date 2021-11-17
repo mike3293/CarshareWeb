@@ -1,13 +1,15 @@
 import { Icon, Button, styled, Typography } from "@mui/material";
 import L from "leaflet";
-import { Popup } from "react-leaflet";
+import { Popup, useMap } from "react-leaflet";
 import DirectionsIcon from "@mui/icons-material/Directions";
 import { Car } from "src/types/Car";
+import { useRef } from "react";
 
 interface ICarInfoPopupProps {
   car: Car;
   providerLogoUrl: string;
   setWaypoints: React.Dispatch<React.SetStateAction<L.LatLng[]>>;
+  hasWaypoints: boolean;
 }
 
 const Root = styled("div")(({ theme }) => ({
@@ -35,9 +37,13 @@ const CarInfoPopup = ({
   car,
   providerLogoUrl,
   setWaypoints,
+  hasWaypoints,
 }: ICarInfoPopupProps) => {
+  const map = useMap();
+  const popupRef = useRef<L.Popup>(null);
+
   return (
-    <Popup>
+    <Popup ref={popupRef}>
       <Root>
         <ProviderImage src={providerLogoUrl} />
         <CarImageContainer>
@@ -48,15 +54,18 @@ const CarInfoPopup = ({
         </Typography>
         <Typography variant="h6">{car.model}</Typography>
         <Typography component="div">Топливо: {car.fuel}%</Typography>
-        <Button
-          color="secondary"
-          onClick={() =>
-            setWaypoints([L.latLng({ lat: car.lat, lng: car.lon })])
-          }
-        >
-          маршрут
-          <DirectionsIcon sx={{ ml: 0.5 }} />
-        </Button>
+        {!hasWaypoints && (
+          <Button
+            color="secondary"
+            onClick={() => {
+              popupRef.current && map.closePopup(popupRef.current);
+              setWaypoints([L.latLng({ lat: car.lat, lng: car.lon })]);
+            }}
+          >
+            маршрут
+            <DirectionsIcon sx={{ ml: 0.5 }} />
+          </Button>
+        )}
       </Root>
     </Popup>
   );
