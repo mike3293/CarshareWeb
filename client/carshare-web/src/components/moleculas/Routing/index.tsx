@@ -34,7 +34,7 @@ const Routing = ({ setWaypoints }: IRoutingProps) => {
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography>
             Вы можете добавить новую точку маршрута{" "}
-            {isMobile ? "долгим нажатием" : "кликнув правой кнопки мыши"}
+            {isMobile ? "долгим нажатием" : "кликнув правой кнопкой мыши"}
           </Typography>
           <InfoOutlinedIcon
             sx={{ color: "info.main", ml: 1 }}

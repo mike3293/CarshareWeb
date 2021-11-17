@@ -1,9 +1,8 @@
-import { Icon, Button, styled, Typography } from "@mui/material";
+import { Button, styled, Typography } from "@mui/material";
 import L from "leaflet";
-import { Popup, useMap } from "react-leaflet";
+import { Popup } from "react-leaflet";
 import DirectionsIcon from "@mui/icons-material/Directions";
 import { Car } from "src/types/Car";
-import { useRef } from "react";
 
 interface ICarInfoPopupProps {
   car: Car;
@@ -39,11 +38,8 @@ const CarInfoPopup = ({
   setWaypoints,
   hasWaypoints,
 }: ICarInfoPopupProps) => {
-  const map = useMap();
-  const popupRef = useRef<L.Popup>(null);
-
   return (
-    <Popup ref={popupRef}>
+    <Popup>
       <Root>
         <ProviderImage src={providerLogoUrl} />
         <CarImageContainer>
@@ -58,7 +54,6 @@ const CarInfoPopup = ({
           <Button
             color="secondary"
             onClick={() => {
-              popupRef.current && map.closePopup(popupRef.current);
               setWaypoints([L.latLng({ lat: car.lat, lng: car.lon })]);
             }}
           >

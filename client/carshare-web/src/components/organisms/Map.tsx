@@ -89,7 +89,7 @@ const CarMap = () => {
         onPositionChange={setCurrentPosition}
         isMobile={isMobile}
       />
-      {routingMachineRef.current && (
+      {!hasWaypoints && routingMachineRef.current && (
         <MarkerClusterGroup
           showCoverageOnHover={false}
           maxClusterRadius={50}
