@@ -1,15 +1,22 @@
-import { Box, styled, Typography, Dialog } from "@mui/material";
+import {
+  Box,
+  styled,
+  Typography,
+  Dialog,
+  SwipeableDrawer,
+} from "@mui/material";
 import L from "leaflet";
 import { Popup, useMapEvents } from "react-leaflet";
-import { Car } from "src/types/Car";
+import DrawerWithEdge from "src/components/atoms/DrawerWithEdge";
 import { IRoutingProps } from "./types";
 import { useEffect, useState } from "react";
 import InfoSnackbar from "./InfoSnackbar";
 import WaypointsList from "./WaypointsList";
 import { useRoutingStore } from "src/context/routingStore";
-import shallow from "zustand/shallow";
+import { useMobile } from "src/hooks/useMedia";
 
 const Routing = ({ routingMachine }: IRoutingProps) => {
+  const isMobile = useMobile();
   const [summary, setSummary] = useState<L.Routing.IRouteSummary>();
   const addWaypoint = useRoutingStore((s) => s.addWaypoint);
 
@@ -55,27 +62,31 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
   return (
     <>
       <InfoSnackbar />
-      <Dialog
-        open={true}
-        sx={{ pointerEvents: "none" }}
-        PaperProps={{
-          sx: {
-            pointerEvents: "auto",
-            top: 0,
-            left: 0,
-            position: "absolute",
-            m: 1,
-            p: 1,
-            borderRadius: 2,
-            // tmp
-            width: 300,
-            height: 500,
-          },
-        }}
-        hideBackdrop
-      >
-        {renderDialogContent()}
-      </Dialog>
+      {isMobile ? (
+        <DrawerWithEdge>{renderDialogContent()}</DrawerWithEdge>
+      ) : (
+        <Dialog
+          open={true}
+          sx={{ pointerEvents: "none" }}
+          PaperProps={{
+            sx: {
+              pointerEvents: "auto",
+              top: 0,
+              left: 0,
+              position: "absolute",
+              m: 1,
+              p: 1,
+              borderRadius: 2,
+              // tmp
+              width: 300,
+              height: 500,
+            },
+          }}
+          hideBackdrop
+        >
+          {renderDialogContent()}
+        </Dialog>
+      )}
     </>
   );
 };
