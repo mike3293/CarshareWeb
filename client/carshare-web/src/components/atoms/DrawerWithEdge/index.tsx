@@ -9,28 +9,31 @@ import Typography from "@mui/material/Typography";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { ReactNode, useState } from "react";
 
-const drawerBleeding = 56;
+const drawerBleeding = 40;
 
 interface Props {
   children: ReactNode;
 }
 
-const Root = styled("div")(({ theme }) => ({
-  height: "100%",
-  backgroundColor:
-    theme.palette.mode === "light"
-      ? grey[100]
-      : theme.palette.background.default,
+const StyledBox = styled(Box)(({ theme }) => ({
+  backgroundColor: "#fff",
 }));
 
-const StyledBox = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === "light" ? "#fff" : grey[800],
+const ScrollFixer = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  right: 0,
+  height: drawerBleeding,
+  touchAction: "none",
+  pointerEvents: "none",
+  zIndex: 1198,
 }));
 
 const Puller = styled(Box)(({ theme }) => ({
   width: 30,
   height: 6,
-  backgroundColor: theme.palette.mode === "light" ? grey[300] : grey[900],
+  backgroundColor: grey[300],
   borderRadius: 3,
   position: "absolute",
   top: 8,
@@ -45,7 +48,7 @@ const DrawerWithEdge = (props: Props) => {
   };
 
   return (
-    <Root>
+    <>
       <CssBaseline />
       <Global
         styles={{
@@ -55,19 +58,34 @@ const DrawerWithEdge = (props: Props) => {
           },
         }}
       />
-      <Box sx={{ textAlign: "center", pt: 1 }}>
-        <Button onClick={toggleDrawer(true)}>Open</Button>
-      </Box>
+      <ScrollFixer
+        onTouchMove={(e) => e.stopPropagation()}
+        onTouchMoveCapture={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchStartCapture={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
+        onTouchEndCapture={(e) => e.stopPropagation()}
+      />
       <SwipeableDrawer
         anchor="bottom"
         open={open}
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
         swipeAreaWidth={drawerBleeding}
+        // PaperProps={{
+        //   sx: {
+        //     pointerEvents: "none",
+        //   },
+        // }}
         disableSwipeToOpen={false}
+        hideBackdrop
+        disableScrollLock
         ModalProps={{
           keepMounted: true,
         }}
+        // onTouchMove={(e) => e.stopPropagation()}
+        // onTouchStart={(e) => e.stopPropagation()}
+        // onTouchEnd={(e) => e.stopPropagation()}
       >
         <StyledBox
           sx={{
@@ -78,7 +96,14 @@ const DrawerWithEdge = (props: Props) => {
             visibility: "visible",
             right: 0,
             left: 0,
+            // touchAction: "none",
           }}
+          // onTouchMove={(e) => e.stopPropagation()}
+          // onTouchMoveCapture={(e) => e.stopPropagation()}
+          // onTouchStart={(e) => e.stopPropagation()}
+          // onTouchStartCapture={(e) => e.stopPropagation()}
+          // onTouchEnd={(e) => e.stopPropagation()}
+          // onTouchEndCapture={(e) => e.stopPropagation()}
         >
           <Puller />
           <Typography sx={{ p: 2, color: "text.secondary" }}>
@@ -96,7 +121,7 @@ const DrawerWithEdge = (props: Props) => {
           <Skeleton variant="rectangular" height="100%" />
         </StyledBox>
       </SwipeableDrawer>
-    </Root>
+    </>
   );
 };
 

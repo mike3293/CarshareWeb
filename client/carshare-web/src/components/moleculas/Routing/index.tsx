@@ -8,8 +8,9 @@ import {
 import L from "leaflet";
 import { Popup, useMapEvents } from "react-leaflet";
 import DrawerWithEdge from "src/components/atoms/DrawerWithEdge";
+import PortalComponent from "src/components/atoms/PortalComponent";
 import { IRoutingProps } from "./types";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import InfoSnackbar from "./InfoSnackbar";
 import WaypointsList from "./WaypointsList";
 import { useRoutingStore } from "src/context/routingStore";
@@ -61,9 +62,11 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
 
   return (
     <>
-      <InfoSnackbar />
+      {/* <InfoSnackbar /> */}
       {isMobile ? (
-        <DrawerWithEdge>{renderDialogContent()}</DrawerWithEdge>
+        <PortalComponent>
+          <DrawerWithEdge>{renderDialogContent()}</DrawerWithEdge>
+        </PortalComponent>
       ) : (
         <Dialog
           open={true}
