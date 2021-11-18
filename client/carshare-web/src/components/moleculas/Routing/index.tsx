@@ -62,7 +62,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
 
   return (
     <>
-      {/* <InfoSnackbar /> */}
+      <InfoSnackbar />
       {isMobile ? (
         <PortalComponent>
           <DrawerWithEdge
@@ -86,6 +86,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
               left: 0,
               position: "absolute",
               m: 1,
+              py: 2,
               borderRadius: 2,
               // tmp
               width: 300,

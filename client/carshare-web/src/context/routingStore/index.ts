@@ -1,13 +1,18 @@
 import create from "zustand";
-import { IRoutingStore } from "./types";
+import { uniqueId } from "lodash";
+import { CustomWaypoint, IRoutingStore } from "./types";
 
 const routingStore = (preloadedState = {}) => {
   return create<IRoutingStore>((set, get) => ({
     waypoints: [],
     setWaypoints: (waypoints) => set({ waypoints }),
     addWaypoint: (waypoint) =>
-      set({ waypoints: [...get().waypoints, waypoint] }),
-    // hasWaypoints: get().waypoints.length !== 0,
+      set({
+        waypoints: [
+          ...get().waypoints,
+          { ...waypoint, id: uniqueId() } as CustomWaypoint,
+        ],
+      }),
     ...preloadedState,
   }));
 };

@@ -20,6 +20,9 @@ const InfoSnackbar = () => {
       onClose={(_, reason) => reason !== "clickaway" && setOpen(false)}
       autoHideDuration={5000}
       TransitionComponent={SlideTransition}
+      anchorOrigin={
+        isMobile ? { vertical: "top", horizontal: "left" } : undefined
+      }
       message={
         <Box sx={{ display: "flex", alignItems: "center" }}>
           <Typography>

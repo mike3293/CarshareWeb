@@ -1,7 +1,11 @@
 import L from "leaflet";
 
-export type IRoutingStore = {
-  waypoints: L.LatLng[];
-  setWaypoints: (providerIds: L.LatLng[]) => void;
-  addWaypoint: (wp: L.LatLng) => void;
-};
+export interface CustomWaypoint extends L.LatLng {
+  id: string;
+}
+
+export interface IRoutingStore {
+  waypoints: CustomWaypoint[];
+  setWaypoints: (waypoints: CustomWaypoint[]) => void;
+  addWaypoint: (waypoint: L.LatLng) => void;
+}

@@ -32,7 +32,7 @@ const ProviderImage = styled("img")(({ theme }) => ({
 }));
 
 const CarInfoPopup = ({ car, providerLogoUrl }: ICarInfoPopupProps) => {
-  const setWaypoints = useRoutingStore((s) => s.setWaypoints);
+  const addWaypoint = useRoutingStore((s) => s.addWaypoint);
 
   return (
     <Popup>
@@ -49,7 +49,7 @@ const CarInfoPopup = ({ car, providerLogoUrl }: ICarInfoPopupProps) => {
         <Button
           color="secondary"
           onClick={() => {
-            setWaypoints([L.latLng({ lat: car.lat, lng: car.lon })]);
+            addWaypoint(L.latLng({ lat: car.lat, lng: car.lon }));
           }}
         >
           маршрут
