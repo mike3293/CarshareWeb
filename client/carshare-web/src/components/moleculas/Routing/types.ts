@@ -1,3 +1,5 @@
+import L from "leaflet";
+
 export interface IRoutingProps {
-  setWaypoints: React.Dispatch<React.SetStateAction<L.LatLng[]>>;
+  routingMachine: L.Routing.Control;
 }

@@ -7,6 +7,7 @@ import {
 } from "react-leaflet";
 import VectorTileLayer from "react-leaflet-vector-tile-layer";
 import { useQuery } from "react-query";
+import shallow from "zustand/shallow";
 import {
   vectorMapStyleUrl,
   fallbackMapLayerUrl,
@@ -21,6 +22,7 @@ import FindCurrentPosition from "src/components/moleculas/FindCurrentPosition";
 import { useMobile } from "src/hooks/useMedia";
 import CarFilters from "../moleculas/CarFilters";
 import { useFiltersStore } from "src/context/filtersStore";
+import { getHasWaypoints, useRoutingStore } from "src/context/routingStore";
 import { useDebounce } from "src/hooks/useDebounce";
 import RoutingMachine from "../moleculas/RoutingMachine";
 import CarMarkers from "../moleculas/CarMarkers";
@@ -53,7 +55,10 @@ const CarMap = () => {
 
   const routingMachineRef = useRef<L.Routing.Control>(null);
 
-  const [waypoints, setWaypoints] = useState<L.LatLng[]>([]);
+  const [waypoints, hasWaypoints] = useRoutingStore(
+    (s) => [s.waypoints, getHasWaypoints(s)],
+    shallow
+  );
 
   useEffect(() => {
     if (routingMachineRef.current) {
@@ -61,7 +66,11 @@ const CarMap = () => {
     }
   }, [waypoints, routingMachineRef]);
 
-  const hasWaypoints = useMemo(() => Boolean(waypoints.length), [waypoints]);
+  useEffect(() => {
+    if (routingMachineRef.current) {
+      routingMachineRef.current.setWaypoints(waypoints);
+    }
+  }, [routingMachineRef]);
 
   return (
     <MapContainer
@@ -97,16 +106,14 @@ const CarMap = () => {
           disableClusteringAtZoom={15}
           spiderfyOnMaxZoom={false}
         >
-          <CarMarkers
-            providers={data}
-            setWaypoints={setWaypoints}
-            hasWaypoints={hasWaypoints}
-          />
+          <CarMarkers providers={data} />
         </MarkerClusterGroup>
       )}
       <CarFilters isMobile={isMobile} />
       <RoutingMachine ref={routingMachineRef} />
-      {hasWaypoints && <Routing setWaypoints={setWaypoints} />}
+      {hasWaypoints && routingMachineRef.current && (
+        <Routing routingMachine={routingMachineRef.current} />
+      )}
     </MapContainer>
   );
 };

@@ -1,5 +1,3 @@
-import { Provider } from "src/types/Provider";
-
 export interface IFiltersStore {
   selectedProviderIds: string[];
   setProviderIds: (providerIds: string[]) => void;

@@ -1,14 +1,10 @@
+import React from "react";
 import L from "leaflet";
 import CarInfoPopup from "src/components/moleculas/CarInfoPopup";
 import { Marker } from "react-leaflet";
 import { ICarMarkersProps } from "./types";
-import React from "react";
 
-function CarMarkers({
-  providers,
-  setWaypoints,
-  hasWaypoints,
-}: ICarMarkersProps) {
+function CarMarkers({ providers }: ICarMarkersProps) {
   return (
     <>
       {providers.flatMap((p) =>
@@ -24,12 +20,7 @@ function CarMarkers({
               popupAnchor: [0, -33],
             })}
           >
-            <CarInfoPopup
-              car={c}
-              providerLogoUrl={p.logoUrl}
-              setWaypoints={setWaypoints}
-              hasWaypoints={hasWaypoints}
-            />
+            <CarInfoPopup car={c} providerLogoUrl={p.logoUrl} />
           </Marker>
         ))
       )}

@@ -11,7 +11,7 @@ const createRoutineMachineLayer = ({ waypoints }: IRoutingMachineProps) => {
       extendToWaypoints: true,
       missingRouteTolerance: 5,
     },
-    show: true,
+    show: false,
     autoRoute: true,
     addWaypoints: true,
     routeWhileDragging: true,
