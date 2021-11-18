@@ -66,12 +66,6 @@ const CarMap = () => {
     }
   }, [waypoints, routingMachineRef]);
 
-  useEffect(() => {
-    if (routingMachineRef.current) {
-      routingMachineRef.current.setWaypoints(waypoints);
-    }
-  }, [routingMachineRef]);
-
   return (
     <MapContainer
       center={[53.893009, 27.567444]}

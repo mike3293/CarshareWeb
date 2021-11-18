@@ -309,14 +309,6 @@
   resolved "https://registry.yarnpkg.com/@maplibre/maplibre-gl-leaflet/-/maplibre-gl-leaflet-0.0.15.tgz#138a06e4a9072e90883e660efe85a1ff08595a4d"
   integrity sha512-UzPn5YM1BiUvP3Pj/oN1xLsLpdRiABaylDlgKRLLKqdNbN3jLLUgcPTI/8gSD9+UvWymYpDe71eoY+UY1l1UbA==
 
-"@maptiler/geocoder@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@maptiler/geocoder/-/geocoder-1.1.0.tgz#ce65f627bae6a9a6e40edb768155bb5ad029ecd5"
-  integrity sha512-aLNcy14zigfz5GQmjZ9gRrtk7sMVvaIMF2ukTyAEsff5VZ8i/XJSKNWGeon+Dwuy/gSRwt+o+hE+lyqpnWRSnw==
-  dependencies:
-    autocompleter "4.0.2"
-    core-js "3.1.4"
-
 "@mui/core@5.0.0-alpha.54":
   version "5.0.0-alpha.54"
   resolved "https://registry.yarnpkg.com/@mui/core/-/core-5.0.0-alpha.54.tgz#2c04163552ac536e2026778cc7f7435ce004ba1b"
@@ -537,13 +529,6 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.1.0.tgz#7f698254aadf921e48dda8c0a6b304026b8a9323"
   integrity sha512-JLo+Y592QzIE+q7Dl2pMUtt4q8SKYI5jDrZxrozEQxnGVOyYE+GWK9eLkwTaeN9DDctlaRAQ3TBmzZ1qdLE30A==
-
-"@types/@maptiler/geocoder":
-  version "1.1.0"
-  resolved "https://codeload.github.com/maptiler/geocoder/tar.gz/dd826cbaedadf28b9a42daba7162d6f5a7c5f27f"
-  dependencies:
-    autocompleter "4.0.2"
-    core-js "3.1.4"
 
 "@types/geojson@*":
   version "7946.0.8"
@@ -829,11 +814,6 @@ astral-regex@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/astral-regex/-/astral-regex-2.0.0.tgz#483143c567aeed4785759c0865786dc77d7d2e31"
   integrity sha512-Z7tMw1ytTXt5jqMcOP+OQteU1VuNK9Y02uuJtKQ1Sv69jXQKKg5cibLwGJow8yzZP+eAc18EmLGPal0bp36rvQ==
-
-autocompleter@4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/autocompleter/-/autocompleter-4.0.2.tgz#74fd9eaa733258e5ac2a72362c4bab0951ab6a01"
-  integrity sha512-joYpKB3gsYSVIzBdiuUU/LOpvNEN68rSTPlroH+RQ38Ff8OmSUE0ue+C6aSc+powTRrSUnZfvYGvOsa++3HRtA==
 
 available-typed-arrays@^1.0.5:
   version "1.0.5"
@@ -1176,11 +1156,6 @@ core-js-pure@^3.19.0:
   version "3.19.1"
   resolved "https://registry.yarnpkg.com/core-js-pure/-/core-js-pure-3.19.1.tgz#edffc1fc7634000a55ba05e95b3f0fe9587a5aa4"
   integrity sha512-Q0Knr8Es84vtv62ei6/6jXH/7izKmOrtrxH9WJTHLCMAVeU+8TF8z8Nr08CsH4Ot0oJKzBzJJL9SJBYIv7WlfQ==
-
-core-js@3.1.4:
-  version "3.1.4"
-  resolved "https://registry.yarnpkg.com/core-js/-/core-js-3.1.4.tgz#3a2837fc48e582e1ae25907afcd6cf03b0cc7a07"
-  integrity sha512-YNZN8lt82XIMLnLirj9MhKDFZHalwzzrL9YLt6eb0T5D0EDl4IQ90IGkua8mHbnxNrkj1d8hbdizMc0Qmg1WnQ==
 
 cosmiconfig@^6.0.0:
   version "6.0.0"

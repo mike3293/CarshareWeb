@@ -4,7 +4,6 @@ import { Popup } from "react-leaflet";
 import DirectionsIcon from "@mui/icons-material/Directions";
 import { Car } from "src/types/Car";
 import { useRoutingStore } from "src/context/routingStore";
-import shallow from "zustand/shallow";
 
 interface ICarInfoPopupProps {
   car: Car;

@@ -5,16 +5,14 @@ import { Car } from "src/types/Car";
 import { useEffect, useState } from "react";
 import { useRoutingStore } from "src/context/routingStore";
 
-import geocoder from "@maptiler/geocoder";
-
 const WaypointsList = () => {
   const [summary, setSummary] = useState<L.Routing.IRouteSummary>();
   const waypoints = useRoutingStore((s) => s.waypoints);
 
   return (
     <Box>
-      {waypoints.map((w) => (
-        <Box>
+      {waypoints.map((w, i) => (
+        <Box key={i}>
           <Typography>
             {w.lat}, {w.lng}
           </Typography>
