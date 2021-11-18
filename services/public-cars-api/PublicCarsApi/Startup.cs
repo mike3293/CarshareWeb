@@ -44,8 +44,9 @@ namespace PublicCarsApi
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PublicCarsApi v1"));
             }
 
+            // "https://carshare-web.vercel.app"
             app.UseCors(
-                options => options.WithOrigins("http://localhost:2000", "https://carshare-web.vercel.app").AllowAnyMethod().AllowAnyHeader()
+                options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
             );
 
             app.UseHttpsRedirection();
