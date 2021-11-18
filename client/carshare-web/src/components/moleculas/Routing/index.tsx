@@ -49,7 +49,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
   }, [routingMachine]);
 
   const renderDialogContent = () => (
-    <Box>
+    <Box sx={{ px: 2 }}>
       <WaypointsList />
       {summary && (
         <Typography>
@@ -65,7 +65,15 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
       {/* <InfoSnackbar /> */}
       {isMobile ? (
         <PortalComponent>
-          <DrawerWithEdge>{renderDialogContent()}</DrawerWithEdge>
+          <DrawerWithEdge
+            summary={
+              summary
+                ? `Время в пути: ${Math.round(summary.totalTime / 60)} минут`
+                : "Постройте ваш маршрут"
+            }
+          >
+            {renderDialogContent()}
+          </DrawerWithEdge>
         </PortalComponent>
       ) : (
         <Dialog
@@ -78,7 +86,6 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
               left: 0,
               position: "absolute",
               m: 1,
-              p: 1,
               borderRadius: 2,
               // tmp
               width: 300,
