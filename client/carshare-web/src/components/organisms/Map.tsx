@@ -57,8 +57,6 @@ const CarMap = () => {
     { refetchOnWindowFocus: false }
   );
 
-  console.log(data);
-
   const routingMachineRef = useRef<L.Routing.Control>(null);
 
   const [waypoints, hasWaypoints, setRawWaypoints] = useRoutingStore(

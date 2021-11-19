@@ -19,8 +19,6 @@ const routingStore = (preloadedState = {}) => {
         }
       });
 
-      console.log(waypointToChangeIndex);
-
       if (waypointToChangeIndex !== -1) {
         const newWaypoint = rawWaypoints[waypointToChangeIndex].latLng;
         const address = await services.geocoding.getAddress(

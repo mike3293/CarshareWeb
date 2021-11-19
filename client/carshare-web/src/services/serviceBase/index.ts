@@ -7,25 +7,6 @@ abstract class ServiceBase {
     this.baseUrl = config.baseURL;
   }
 
-  // var url =
-  //   "https://suggestions.dadata.ru/suggestions/api/4_1/rs/geolocate/address";
-  // var token = "f6d8ce2e6b793ca55914daa972f6f86132e09d95";
-  // var query = { lat: 53.88019160129188, lon: 27.540886106944072, count: 1 };
-
-  // fetch(url, {
-  //   method: "POST",
-  //   mode: "cors",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //     Accept: "application/json",
-  //     Authorization: "Token " + token,
-  //   },
-  //   body: JSON.stringify(query),
-  // })
-  //   .then((response) => response.text())
-  //   .then((result) => console.log(result))
-  //   .catch((error) => console.log("error", error));
-
   protected async get<TResult>(
     path: string,
     params?: URLSearchParamsInit,
