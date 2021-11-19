@@ -12,6 +12,7 @@ import {
 } from "react-beautiful-dnd";
 import moveArrayItem from "src/utils/moveArrayItem";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
+import { grey } from "@mui/material/colors";
 
 const WaypointsList = () => {
   const [summary, setSummary] = useState<L.Routing.IRouteSummary>();
@@ -69,7 +70,10 @@ const WaypointsList = () => {
                       {...provided.dragHandleProps}
                       onTouchStart={(e) => e.stopPropagation()}
                     >
-                      <DragHandleIcon fontSize="large" />
+                      <DragHandleIcon
+                        fontSize="large"
+                        sx={{ color: grey[400] }}
+                      />
                     </Box>
                   </Box>
                 )}
