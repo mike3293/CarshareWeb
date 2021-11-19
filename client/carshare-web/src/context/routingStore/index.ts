@@ -1,24 +1,76 @@
 import create from "zustand";
 import { uniqueId } from "lodash";
 import { CustomWaypoint, IRoutingStore } from "./types";
+import services from "src/config/services";
+import { mapGeoAddressToAddress } from "src/types/Address";
 
 const routingStore = (preloadedState = {}) => {
   return create<IRoutingStore>((set, get) => ({
     waypoints: [],
     setWaypoints: (waypoints) => set({ waypoints }),
-    setRawWaypoints: (rawWaypoints) =>
-      set({
-        waypoints: rawWaypoints.map(
-          (w) => ({ ...w.latLng, id: uniqueId() } as CustomWaypoint)
-        ),
-      }),
-    addWaypoint: (waypoint) =>
+    setRawWaypoints: async (rawWaypoints) => {
+      const waypoints = get().waypoints.slice();
+
+      let waypointToChangeIndex = -1;
+
+      rawWaypoints.forEach((rw, i) => {
+        if (rw.latLng && waypoints[i] && !rw.latLng.equals(waypoints[i])) {
+          waypointToChangeIndex = i;
+        }
+      });
+
+      console.log(waypointToChangeIndex);
+
+      if (waypointToChangeIndex !== -1) {
+        const newWaypoint = rawWaypoints[waypointToChangeIndex].latLng;
+        const address = await services.geocoding.getAddress(
+          newWaypoint.lat,
+          newWaypoint.lng
+        );
+
+        waypoints[waypointToChangeIndex] = {
+          ...waypoints[waypointToChangeIndex],
+          ...newWaypoint,
+          address,
+        } as CustomWaypoint;
+
+        set({ waypoints });
+      }
+
+      // const waypointToChange = rawWaypoints.findIndex((rw) =>
+      //   waypoints.some((w) => w.id === rw.name)
+      // );
+
+      // if (waypointToChange !== -1) {
+      //   const newWaypoint = rawWaypoints[waypointToChange].latLng;
+
+      //   const address = await services.geocoding.getAddress(
+      //     newWaypoint.lat,
+      //     newWaypoint.lng
+      //   );
+
+      //   waypoints[waypointToChange] = {
+      //     ...waypoints[waypointToChange],
+      //     ...newWaypoint,
+      //     address,
+      //   } as CustomWaypoint;
+
+      //   set({ waypoints });
+      // }
+    },
+    addWaypoint: async (waypoint) => {
+      const address = await services.geocoding.getAddress(
+        waypoint.lat,
+        waypoint.lng
+      );
+
       set({
         waypoints: [
           ...get().waypoints,
-          { ...waypoint, id: uniqueId() } as CustomWaypoint,
+          { ...waypoint, id: uniqueId(), address } as CustomWaypoint,
         ],
-      }),
+      });
+    },
     ...preloadedState,
   }));
 };

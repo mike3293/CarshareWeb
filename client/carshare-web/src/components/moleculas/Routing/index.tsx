@@ -92,7 +92,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
               py: 2,
               borderRadius: 2,
               // tmp
-              width: 300,
+              width: 400,
               height: 500,
             },
           }}

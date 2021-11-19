@@ -21,18 +21,15 @@ const createRoutineMachineLayer = ({
     fitSelectedRoutes: false,
     geocoder: () => null,
     plan: L.Routing.plan(waypoints ?? [], {
-      createMarker: function (_, wp) {
-        return L.marker(wp.latLng, { draggable: true }).on("dragend", (e) => {
-          refreshWaypoints && refreshWaypoints();
-        });
+      createMarker: function (i, wp) {
+        return L.marker(wp.latLng, { draggable: i !== 0 }).on(
+          "dragend",
+          (e) => {
+            refreshWaypoints && refreshWaypoints();
+          }
+        );
       },
     }),
-  }).on("routeselected", function (e) {
-    var route = e.route;
-    // alert(
-    //   "Showing route between waypoints:\n" +
-    //     JSON.stringify(route.inputWaypoints, null, 2)
-    // );
   });
 
   return instance;

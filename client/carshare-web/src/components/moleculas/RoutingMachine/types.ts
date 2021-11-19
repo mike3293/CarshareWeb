@@ -1,6 +1,7 @@
-import L, { ControlOptions } from "leaflet";
+import { ControlOptions } from "leaflet";
+import { CustomWaypoint } from "src/context/routingStore/types";
 
 export interface IRoutingMachineProps extends ControlOptions {
-  waypoints?: L.LatLng[];
+  waypoints?: CustomWaypoint[];
   refreshWaypoints?: () => void;
 }

@@ -2,7 +2,7 @@ import { Box, styled, Typography, Dialog } from "@mui/material";
 import L from "leaflet";
 import shallow from "zustand/shallow";
 import { Car } from "src/types/Car";
-import React, { useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { useRoutingStore } from "src/context/routingStore";
 import {
   DragDropContext,
@@ -13,6 +13,7 @@ import {
 import moveArrayItem from "src/utils/moveArrayItem";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import { grey } from "@mui/material/colors";
+import { getAddressString } from "src/utils/getAddressString";
 
 const WaypointsList = () => {
   const [summary, setSummary] = useState<L.Routing.IRouteSummary>();
@@ -41,8 +42,8 @@ const WaypointsList = () => {
 
     const reorderedWaypoints = moveArrayItem(
       waypoints,
-      result.source.index,
-      result.destination.index
+      result.source.index + 1,
+      result.destination.index + 1
     );
 
     console.log(reorderedWaypoints);
@@ -50,31 +51,41 @@ const WaypointsList = () => {
     setWaypoints(reorderedWaypoints);
   };
 
+  const draggableWaypoints = useMemo(() => waypoints.slice(1), [waypoints]);
+
+  const first = waypoints[0];
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      <Typography>{getAddressString(first)}</Typography>
       <Droppable droppableId="droppable">
         {(provided, snapshot) => (
           <div {...provided.droppableProps} ref={provided.innerRef}>
-            {waypoints.map((w, index) => (
+            {draggableWaypoints.map((w, index) => (
               <Draggable key={w.id} draggableId={w.id} index={index}>
                 {(provided, snapshot) => (
                   <Box
                     ref={provided.innerRef}
                     {...provided.draggableProps}
-                    sx={{ display: "flex", justifyContent: "space-between" }}
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
                   >
-                    <Typography sx={{ color: "black", zIndex: 2000 }}>
-                      {w.lat}, {w.lng}
-                    </Typography>
-                    <Box
-                      {...provided.dragHandleProps}
-                      onTouchStart={(e) => e.stopPropagation()}
-                    >
-                      <DragHandleIcon
-                        fontSize="large"
-                        sx={{ color: grey[400] }}
-                      />
-                    </Box>
+                    <Typography>{getAddressString(w)}</Typography>
+                    {draggableWaypoints.length !== 1 && (
+                      <Box
+                        {...provided.dragHandleProps}
+                        onTouchStart={(e) => e.stopPropagation()}
+                        sx={{ display: "flex", alignItems: "center" }}
+                      >
+                        <DragHandleIcon
+                          fontSize="large"
+                          sx={{ color: grey[400] }}
+                        />
+                      </Box>
+                    )}
                   </Box>
                 )}
               </Draggable>

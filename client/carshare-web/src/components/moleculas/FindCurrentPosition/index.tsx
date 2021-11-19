@@ -24,7 +24,7 @@ const FindCurrentPosition = ({
         };
 
         onPositionChange(coords);
-        map.flyTo(coords, 15);
+        map.setView(coords, 15);
       });
     } else {
       alert("Geolocation is not supported by this browser.");

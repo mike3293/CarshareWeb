@@ -8,3 +8,5 @@ export const fallbackMapAttribution =
   "\u003ca href='https://www.openstreetmap.org/copyright' target='_blank'\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e";
 
 export const BASE_API_URL = process.env.NEXT_PUBLIC_BASE_API_URL || "/";
+
+export const GEOCODER_API_URL = process.env.NEXT_PUBLIC_GEOCODER_API_URL || "/";
