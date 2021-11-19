@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   AttributionControl,
   MapContainer,
@@ -55,10 +61,18 @@ const CarMap = () => {
 
   const routingMachineRef = useRef<L.Routing.Control>(null);
 
-  const [waypoints, hasWaypoints] = useRoutingStore(
-    (s) => [s.waypoints, getHasWaypoints(s)],
+  const [waypoints, hasWaypoints, setRawWaypoints] = useRoutingStore(
+    (s) => [s.waypoints, getHasWaypoints(s), s.setRawWaypoints],
     shallow
   );
+
+  const refreshWaypoints = useCallback(() => {
+    if (routingMachineRef.current) {
+      const machineWaypoints = routingMachineRef.current.getWaypoints();
+
+      setRawWaypoints(machineWaypoints);
+    }
+  }, [setRawWaypoints, routingMachineRef]);
 
   useEffect(() => {
     if (routingMachineRef.current) {
@@ -104,7 +118,10 @@ const CarMap = () => {
         </MarkerClusterGroup>
       )}
       <CarFilters isMobile={isMobile} />
-      <RoutingMachine ref={routingMachineRef} />
+      <RoutingMachine
+        ref={routingMachineRef}
+        refreshWaypoints={refreshWaypoints}
+      />
       {hasWaypoints && routingMachineRef.current && (
         <Routing routingMachine={routingMachineRef.current} />
       )}

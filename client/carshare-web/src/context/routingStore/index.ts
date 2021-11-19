@@ -6,6 +6,12 @@ const routingStore = (preloadedState = {}) => {
   return create<IRoutingStore>((set, get) => ({
     waypoints: [],
     setWaypoints: (waypoints) => set({ waypoints }),
+    setRawWaypoints: (rawWaypoints) =>
+      set({
+        waypoints: rawWaypoints.map(
+          (w) => ({ ...w.latLng, id: uniqueId() } as CustomWaypoint)
+        ),
+      }),
     addWaypoint: (waypoint) =>
       set({
         waypoints: [

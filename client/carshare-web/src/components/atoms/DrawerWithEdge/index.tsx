@@ -76,7 +76,7 @@ const DrawerWithEdge = ({ children, summary }: DrawerWithEdgeProps) => {
             {summary}
           </Typography>
         </StyledBox>
-        {children}
+        <Box>{children}</Box>
       </SwipeableDrawer>
     </>
   );

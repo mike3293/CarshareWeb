@@ -7,5 +7,6 @@ export interface CustomWaypoint extends L.LatLng {
 export interface IRoutingStore {
   waypoints: CustomWaypoint[];
   setWaypoints: (waypoints: CustomWaypoint[]) => void;
+  setRawWaypoints: (waypoints: L.Routing.Waypoint[]) => void;
   addWaypoint: (waypoint: L.LatLng) => void;
 }

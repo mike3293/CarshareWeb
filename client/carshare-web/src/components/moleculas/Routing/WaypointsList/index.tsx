@@ -2,7 +2,7 @@ import { Box, styled, Typography, Dialog } from "@mui/material";
 import L from "leaflet";
 import shallow from "zustand/shallow";
 import { Car } from "src/types/Car";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRoutingStore } from "src/context/routingStore";
 import {
   DragDropContext,
@@ -11,6 +11,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import moveArrayItem from "src/utils/moveArrayItem";
+import DragHandleIcon from "@mui/icons-material/DragHandle";
 
 const WaypointsList = () => {
   const [summary, setSummary] = useState<L.Routing.IRouteSummary>();
@@ -56,13 +57,21 @@ const WaypointsList = () => {
             {waypoints.map((w, index) => (
               <Draggable key={w.id} draggableId={w.id} index={index}>
                 {(provided, snapshot) => (
-                  <div
+                  <Box
                     ref={provided.innerRef}
                     {...provided.draggableProps}
-                    {...provided.dragHandleProps}
+                    sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    {w.lat}, {w.lng}
-                  </div>
+                    <Typography sx={{ color: "black", zIndex: 2000 }}>
+                      {w.lat}, {w.lng}
+                    </Typography>
+                    <Box
+                      {...provided.dragHandleProps}
+                      onTouchStart={(e) => e.stopPropagation()}
+                    >
+                      <DragHandleIcon fontSize="large" />
+                    </Box>
+                  </Box>
                 )}
               </Draggable>
             ))}

@@ -25,6 +25,9 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
     contextmenu(e) {
       addWaypoint(e.latlng);
     },
+    // dragend(e) {
+    //   console.log(e);
+    // },
   });
 
   useEffect(() => {
