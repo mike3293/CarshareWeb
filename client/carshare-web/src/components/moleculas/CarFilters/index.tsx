@@ -46,7 +46,7 @@ const CarFilters = ({ isMobile }: ICarFiltersProps) => {
         color="primary"
         sx={{
           right: isMobile ? 8 : 11,
-          bottom: isMobile ? 60 : 140,
+          bottom: isMobile ? 95 : 140,
         }}
       >
         <FilterAltIcon />
