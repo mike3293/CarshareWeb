@@ -117,7 +117,7 @@ const CarMap = () => {
           <CarMarkers providers={data} />
         </MarkerClusterGroup>
       )}
-      <CarFilters isMobile={isMobile} />
+      {!hasWaypoints && <CarFilters isMobile={isMobile} />}
       <RoutingMachine
         ref={routingMachineRef}
         refreshWaypoints={refreshWaypoints}

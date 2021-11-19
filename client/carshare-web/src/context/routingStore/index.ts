@@ -36,27 +36,9 @@ const routingStore = (preloadedState = {}) => {
 
         set({ waypoints });
       }
-
-      // const waypointToChange = rawWaypoints.findIndex((rw) =>
-      //   waypoints.some((w) => w.id === rw.name)
-      // );
-
-      // if (waypointToChange !== -1) {
-      //   const newWaypoint = rawWaypoints[waypointToChange].latLng;
-
-      //   const address = await services.geocoding.getAddress(
-      //     newWaypoint.lat,
-      //     newWaypoint.lng
-      //   );
-
-      //   waypoints[waypointToChange] = {
-      //     ...waypoints[waypointToChange],
-      //     ...newWaypoint,
-      //     address,
-      //   } as CustomWaypoint;
-
-      //   set({ waypoints });
-      // }
+    },
+    resetWaypoints: () => {
+      set({ waypoints: [] });
     },
     addWaypoint: async (waypoint) => {
       const address = await services.geocoding.getAddress(
@@ -70,6 +52,31 @@ const routingStore = (preloadedState = {}) => {
           { ...waypoint, id: uniqueId(), address } as CustomWaypoint,
         ],
       });
+    },
+    removeWaypoint: (waypoint) => {
+      const waypoints = get().waypoints.filter((w) => w.id !== waypoint.id);
+
+      set({ waypoints });
+    },
+    updateResidenceTime: (waypoint, residenceTime) => {
+      const waypoints = get().waypoints.slice();
+
+      waypoints[waypoints.findIndex((w) => w.id === waypoint.id)] = {
+        ...waypoint,
+        residenceTime,
+      } as CustomWaypoint;
+
+      set({ waypoints });
+    },
+    resetResidenceTime: (waypoint) => {
+      const waypoints = get().waypoints.slice();
+
+      waypoints[waypoints.findIndex((w) => w.id === waypoint.id)] = {
+        ...waypoint,
+        residenceTime: null,
+      } as CustomWaypoint;
+
+      set({ waypoints });
     },
     ...preloadedState,
   }));

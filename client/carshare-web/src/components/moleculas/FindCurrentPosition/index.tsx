@@ -39,7 +39,7 @@ const FindCurrentPosition = ({
       color="primary"
       sx={{
         right: isMobile ? 8 : 11,
-        bottom: isMobile ? 20 : 100,
+        bottom: isMobile ? 55 : 100,
       }}
     >
       <MyLocationIcon />

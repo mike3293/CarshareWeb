@@ -15,19 +15,20 @@ import InfoSnackbar from "./InfoSnackbar";
 import WaypointsList from "./WaypointsList";
 import { useRoutingStore } from "src/context/routingStore";
 import { useMobile } from "src/hooks/useMedia";
+import shallow from "zustand/shallow";
 
 const Routing = ({ routingMachine }: IRoutingProps) => {
   const isMobile = useMobile();
-  const [summary, setSummary] = useState<L.Routing.IRouteSummary>();
-  const addWaypoint = useRoutingStore((s) => s.addWaypoint);
+  const [summary, setSummary] = useState<L.Routing.IRouteSummary | null>(null);
+  const [addWaypoint, waypoints] = useRoutingStore(
+    (s) => [s.addWaypoint, s.waypoints],
+    shallow
+  );
 
-  const map = useMapEvents({
+  useMapEvents({
     contextmenu(e) {
       addWaypoint(e.latlng);
     },
-    // dragend(e) {
-    //   console.log(e);
-    // },
   });
 
   useEffect(() => {
@@ -36,14 +37,6 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
       if (routes[0].summary) {
         setSummary(routes[0].summary);
       }
-      // alert distance and time in km and minutes
-      // alert(
-      //   "Total distance is " +
-      //     summary.totalDistance / 1000 +
-      //     " km and total time is " +
-      //     Math.round(summary.totalTime / 60) +
-      //     " minutes"
-      // );
     });
 
     return () => {
@@ -51,15 +44,24 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
     };
   }, [routingMachine]);
 
+  useEffect(() => {
+    if (waypoints.length === 1 && summary) {
+      setSummary(null);
+    }
+  }, [waypoints]);
+
   const renderDialogContent = () => (
     <Box sx={{ px: 2 }}>
+      <Typography sx={{ pb: 1, minHeight: (theme) => theme.spacing(3) }}>
+        {summary && (
+          <>
+            Расстояние: {(summary.totalDistance / 1000).toFixed(1)} км, время в
+            пути: {Math.round(summary.totalTime / 60)} минут
+          </>
+        )}
+      </Typography>
+
       <WaypointsList />
-      {summary && (
-        <Typography>
-          Total distance is {summary.totalDistance / 1000} km and total time is{" "}
-          {Math.round(summary.totalTime / 60)} minutes
-        </Typography>
-      )}
     </Box>
   );
 
