@@ -12,7 +12,7 @@ export interface IRoutingStore {
   setWaypoints: (waypoints: CustomWaypoint[]) => void;
   setRawWaypoints: (waypoints: L.Routing.Waypoint[]) => Promise<void>;
   addWaypoint: (waypoint: L.LatLng) => Promise<void>;
-  updateResidenceTime: (
+  setResidenceTime: (
     waypoint: CustomWaypoint,
     residenceTime: number
   ) => void;

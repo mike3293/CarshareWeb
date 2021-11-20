@@ -8,9 +8,10 @@ import { DraggableProvidedDragHandleProps } from "react-beautiful-dnd";
 import moveArrayItem from "src/utils/moveArrayItem";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import CloseIcon from "@mui/icons-material/HighlightOff";
-import { grey, red } from "@mui/material/colors";
+import { grey, red, green } from "@mui/material/colors";
 import { getAddressString } from "src/utils/getAddressString";
 import { CustomWaypoint } from "src/context/routingStore/types";
+import TimerIcon from "@mui/icons-material/Timer";
 
 interface IWaypointItemProps {
   waypoint: CustomWaypoint;
@@ -23,7 +24,10 @@ const WaypointItem = ({
   disableActions,
   children,
 }: IWaypointItemProps) => {
-  const removeWaypoint = useRoutingStore((s) => s.removeWaypoint);
+  const [removeWaypoint, setResidenceTime] = useRoutingStore(
+    (s) => [s.removeWaypoint, s.setResidenceTime],
+    shallow
+  );
 
   return (
     <Box
@@ -55,19 +59,34 @@ const WaypointItem = ({
           {getAddressString(waypoint)}
         </Typography>
         {!disableActions && (
-          <IconButton
-            sx={{
-              ml: 1,
-              p: 0.25,
-              color: red[200],
-              "&:hover": {
-                color: red[400],
-              },
-            }}
-            onClick={() => removeWaypoint(waypoint)}
-          >
-            <CloseIcon />
-          </IconButton>
+          <Box sx={{ display: "flex" }}>
+            <IconButton
+              sx={{
+                ml: 1,
+                p: 0.25,
+                color: green[200],
+                "&:hover": {
+                  color: green[400],
+                },
+              }}
+              onClick={() => setResidenceTime(waypoint, 60)}
+            >
+              <TimerIcon />
+            </IconButton>
+            <IconButton
+              sx={{
+                ml: 1,
+                p: 0.25,
+                color: red[200],
+                "&:hover": {
+                  color: red[400],
+                },
+              }}
+              onClick={() => removeWaypoint(waypoint)}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>
         )}
       </Box>
       <Box>{children}</Box>

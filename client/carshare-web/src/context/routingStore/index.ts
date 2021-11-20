@@ -56,7 +56,7 @@ const routingStore = (preloadedState = {}) => {
 
       set({ waypoints });
     },
-    updateResidenceTime: (waypoint, residenceTime) => {
+    setResidenceTime: (waypoint, residenceTime) => {
       const waypoints = get().waypoints.slice();
 
       waypoints[waypoints.findIndex((w) => w.id === waypoint.id)] = {

@@ -19,6 +19,7 @@ import WaypointItem from "./WaypointItem";
 import { useMobile } from "src/hooks/useMedia";
 import CancelIcon from "@mui/icons-material/Cancel";
 
+// TODO: remove and check
 resetServerContext();
 
 const WaypointsList = () => {

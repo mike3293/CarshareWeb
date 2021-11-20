@@ -6,6 +6,7 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 import L from "leaflet";
+import { reduce } from "lodash";
 import { Popup, useMapEvents } from "react-leaflet";
 import DrawerWithEdge from "src/components/atoms/DrawerWithEdge";
 import PortalComponent from "src/components/atoms/PortalComponent";
@@ -48,7 +49,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
     if (waypoints.length === 1 && summary) {
       setSummary(null);
     }
-  }, [waypoints]);
+  }, [waypoints, summary]);
 
   const renderDialogContent = () => (
     <Box sx={{ px: 2 }}>
@@ -56,7 +57,17 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
         {summary && (
           <>
             Расстояние: {(summary.totalDistance / 1000).toFixed(1)} км, время в
-            пути: {Math.round(summary.totalTime / 60)} минут
+            пути:{" "}
+            {Math.round(
+              (summary.totalTime +
+                reduce(
+                  waypoints,
+                  (acc, w) => acc + (w?.residenceTime ?? 0),
+                  0
+                )) /
+                60
+            )}{" "}
+            минут
           </>
         )}
       </Typography>
