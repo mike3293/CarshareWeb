@@ -56,23 +56,23 @@ const routingStore = (preloadedState = {}) => {
 
       set({ waypoints });
     },
-    setResidenceTime: (waypoint, residenceTime) => {
+    setResidenceTimeMins: (waypointId, residenceTime) => {
       const waypoints = get().waypoints.slice();
-
-      waypoints[waypoints.findIndex((w) => w.id === waypoint.id)] = {
-        ...waypoint,
-        residenceTime,
-      } as CustomWaypoint;
+      console.log(residenceTime);
+      // TODO: check
+      waypoints[
+        waypoints.findIndex((w) => w.id === waypointId)
+      ].residenceTimeMins = residenceTime;
 
       set({ waypoints });
     },
-    resetResidenceTime: (waypoint) => {
+    resetResidenceTimeMins: (waypointId) => {
       const waypoints = get().waypoints.slice();
 
-      waypoints[waypoints.findIndex((w) => w.id === waypoint.id)] = {
-        ...waypoint,
-        residenceTime: null,
-      } as CustomWaypoint;
+      // TODO: check
+      waypoints[
+        waypoints.findIndex((w) => w.id === waypointId)
+      ].residenceTimeMins = undefined;
 
       set({ waypoints });
     },
@@ -99,3 +99,8 @@ export const useRoutingStore = routingStore();
 
 export const getHasWaypoints = (state: IRoutingStore) =>
   state.waypoints.length != 0;
+
+export const getWaypointsResidenceTime = (
+  state: IRoutingStore,
+  waypointId: CustomWaypoint["id"]
+) => state.waypoints.find((w) => w.id === waypointId)?.residenceTimeMins;

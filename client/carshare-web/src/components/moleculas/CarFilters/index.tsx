@@ -24,12 +24,7 @@ const CarFilters = ({ isMobile }: ICarFiltersProps) => {
     }
   );
 
-  const {
-    selectedProviderIds,
-    setProviderIds,
-    selectedFuelLevel,
-    setFuelLevel,
-  } = useFiltersStore();
+  const { selectedProviderIds, setProviderIds } = useFiltersStore();
 
   useEffect(() => {
     if (!selectedProviderIds.length && data.length) {

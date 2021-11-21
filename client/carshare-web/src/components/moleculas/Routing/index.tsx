@@ -11,12 +11,13 @@ import { Popup, useMapEvents } from "react-leaflet";
 import DrawerWithEdge from "src/components/atoms/DrawerWithEdge";
 import PortalComponent from "src/components/atoms/PortalComponent";
 import { IRoutingProps } from "./types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import InfoSnackbar from "./InfoSnackbar";
 import WaypointsList from "./WaypointsList";
 import { useRoutingStore } from "src/context/routingStore";
 import { useMobile } from "src/hooks/useMedia";
 import shallow from "zustand/shallow";
+import getDurationString from "src/utils/getDurationString";
 
 const Routing = ({ routingMachine }: IRoutingProps) => {
   const isMobile = useMobile();
@@ -36,6 +37,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
     routingMachine.on("routesfound", (e: L.Routing.RoutingResultEvent) => {
       const routes = e.routes;
       if (routes[0].summary) {
+        console.log(routes[0].summary);
         setSummary(routes[0].summary);
       }
     });
@@ -51,23 +53,24 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
     }
   }, [waypoints, summary]);
 
+  const durationString = useMemo(
+    () =>
+      summary &&
+      getDurationString(
+        summary.totalTime +
+          reduce(waypoints, (acc, w) => acc + (w?.residenceTimeMins ?? 0), 0) *
+            60
+      ),
+    [waypoints, summary]
+  );
+
   const renderDialogContent = () => (
     <Box sx={{ px: 2 }}>
       <Typography sx={{ pb: 1, minHeight: (theme) => theme.spacing(3) }}>
         {summary && (
           <>
             Расстояние: {(summary.totalDistance / 1000).toFixed(1)} км, время в
-            пути:{" "}
-            {Math.round(
-              (summary.totalTime +
-                reduce(
-                  waypoints,
-                  (acc, w) => acc + (w?.residenceTime ?? 0),
-                  0
-                )) /
-                60
-            )}{" "}
-            минут
+            пути: {durationString}
           </>
         )}
       </Typography>
@@ -84,7 +87,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
           <DrawerWithEdge
             summary={
               summary
-                ? `Время в пути: ${Math.round(summary.totalTime / 60)} минут`
+                ? `Время в пути: ${durationString}`
                 : "Постройте ваш маршрут"
             }
           >

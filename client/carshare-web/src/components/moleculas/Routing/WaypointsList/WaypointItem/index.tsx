@@ -11,7 +11,7 @@ import CloseIcon from "@mui/icons-material/HighlightOff";
 import { grey, red, green } from "@mui/material/colors";
 import { getAddressString } from "src/utils/getAddressString";
 import { CustomWaypoint } from "src/context/routingStore/types";
-import TimerIcon from "@mui/icons-material/Timer";
+import TimeSelect from "src/components/moleculas/TimeSelect";
 
 interface IWaypointItemProps {
   waypoint: CustomWaypoint;
@@ -24,10 +24,7 @@ const WaypointItem = ({
   disableActions,
   children,
 }: IWaypointItemProps) => {
-  const [removeWaypoint, setResidenceTime] = useRoutingStore(
-    (s) => [s.removeWaypoint, s.setResidenceTime],
-    shallow
-  );
+  const removeWaypoint = useRoutingStore((s) => s.removeWaypoint);
 
   return (
     <Box
@@ -59,23 +56,11 @@ const WaypointItem = ({
           {getAddressString(waypoint)}
         </Typography>
         {!disableActions && (
-          <Box sx={{ display: "flex" }}>
+          <Box sx={{ display: "flex", ml: 1 }}>
+            <TimeSelect waypoint={waypoint} />
             <IconButton
               sx={{
-                ml: 1,
-                p: 0.25,
-                color: green[200],
-                "&:hover": {
-                  color: green[400],
-                },
-              }}
-              onClick={() => setResidenceTime(waypoint, 60)}
-            >
-              <TimerIcon />
-            </IconButton>
-            <IconButton
-              sx={{
-                ml: 1,
+                ml: 0.5,
                 p: 0.25,
                 color: red[200],
                 "&:hover": {

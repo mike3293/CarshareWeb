@@ -4,7 +4,7 @@ import { Address } from "src/types/Address";
 export interface CustomWaypoint extends L.LatLng {
   id: string;
   address?: Address;
-  residenceTime?: number | null;
+  residenceTimeMins?: number | null;
 }
 
 export interface IRoutingStore {
@@ -12,11 +12,11 @@ export interface IRoutingStore {
   setWaypoints: (waypoints: CustomWaypoint[]) => void;
   setRawWaypoints: (waypoints: L.Routing.Waypoint[]) => Promise<void>;
   addWaypoint: (waypoint: L.LatLng) => Promise<void>;
-  setResidenceTime: (
-    waypoint: CustomWaypoint,
+  setResidenceTimeMins: (
+    waypointId: CustomWaypoint["id"],
     residenceTime: number
   ) => void;
-  resetResidenceTime: (waypoint: CustomWaypoint) => void;
+  resetResidenceTimeMins: (waypointId: CustomWaypoint["id"]) => void;
   removeWaypoint: (waypoint: CustomWaypoint) => void;
   resetWaypoints: () => void;
 }
