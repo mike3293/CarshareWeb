@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,11 +15,13 @@ namespace Identity.Controllers
     public class AccountController : ControllerBase
     {
         private UserManager<ApplicationUser> _userManager;
+        private RoleManager<ApplicationRole> _roleManager;
 
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
 
 
@@ -33,6 +36,22 @@ namespace Identity.Controllers
             };
 
             var result = await _userManager.CreateAsync(appUser, user.Password);
+
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(result.Errors);
+            }
+        }
+
+        [HttpPost("create-role")]
+        // Add auth for super admin
+        public async Task<IActionResult> CreateRole([Required] string name)
+        {
+            IdentityResult result = await _roleManager.CreateAsync(new ApplicationRole() { Name = name });
 
             if (result.Succeeded)
             {

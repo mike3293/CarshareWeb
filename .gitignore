@@ -45,3 +45,5 @@ pact-logs/
 # local appsettings
 appsettings-local.jsonc
 appsettings.LocalSecrets.json
+
+**/old
