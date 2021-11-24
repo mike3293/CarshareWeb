@@ -75,7 +75,7 @@ namespace Identity
             .AddInMemoryIdentityResources(identityServerSettings.IdentityResources)
             .AddDeveloperSigningCredential();
 
-            services.AddControllers();
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,13 +93,16 @@ namespace Identity
 
             app.UseHttpsRedirection();
 
+            app.UseStaticFiles();
             app.UseRouting();
 
             app.UseIdentityServer();
 
+            // uncomment, if you want to add MVC
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
