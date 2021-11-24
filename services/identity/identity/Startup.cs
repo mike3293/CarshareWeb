@@ -62,11 +62,24 @@ namespace Identity
 
             var identityServerSettings = Configuration.GetSection(nameof(IdentityServerConfig)).Get<IdentityServerConfig>();
 
+            services.ConfigureApplicationCookie(config =>
+            {
+                config.Cookie.Name = "IdentityServer.Cookie";
+                config.LoginPath = "/index.html";
+                config.LogoutPath = "/logout.html";
+                config.LogoutPath = "/error.html";
+            });
+
             services.AddIdentityServer(options =>
             {
                 options.Events.RaiseErrorEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseErrorEvents = true;
+                //options.LoginPath = "/index.html";
+                //options.LogoutPath = "/Auth/Logout";
+                //options.UserInteraction.LoginUrl = "https://localhost:2010";
+                //options.UserInteraction.ErrorUrl = "https://localhost:2010/error.html";
+                //options.UserInteraction.LogoutUrl = "https://localhost:2010/logout.html";
             })
             .AddAspNetIdentity<ApplicationUser>()
             //.AddInMemoryApiScopes(identityServerSettings.ApiScopes)
@@ -92,6 +105,8 @@ namespace Identity
             );
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
 
             app.UseRouting();
 

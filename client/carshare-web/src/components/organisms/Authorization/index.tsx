@@ -12,8 +12,8 @@ const Authorization = () => {
     const config = {
       authority: "https://localhost:2010",
       client_id: "carshare-web",
-      redirect_uri: "https://localhost:2000/signin-oidc",
-      popup_post_logout_redirect_uri: "https://localhost:2000/logout-oidc",
+      redirect_uri: "http://localhost:2000/signin-oidc",
+      popup_post_logout_redirect_uri: "http://localhost:2000/logout-oidc",
       response_type: "code",
       scope: "openid profile",
     };
