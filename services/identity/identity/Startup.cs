@@ -3,16 +3,12 @@ using Identity.Models;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Identity
 {
@@ -67,7 +63,7 @@ namespace Identity
                 config.Cookie.Name = "IdentityServer.Cookie";
                 config.LoginPath = "/index.html";
                 config.LogoutPath = "/logout.html";
-                config.LogoutPath = "/error.html";
+                config.AccessDeniedPath = "/error.html";
             });
 
             services.AddIdentityServer(options =>
@@ -75,11 +71,6 @@ namespace Identity
                 options.Events.RaiseErrorEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseErrorEvents = true;
-                //options.LoginPath = "/index.html";
-                //options.LogoutPath = "/Auth/Logout";
-                //options.UserInteraction.LoginUrl = "https://localhost:2010";
-                //options.UserInteraction.ErrorUrl = "https://localhost:2010/error.html";
-                //options.UserInteraction.LogoutUrl = "https://localhost:2010/logout.html";
             })
             .AddAspNetIdentity<ApplicationUser>()
             //.AddInMemoryApiScopes(identityServerSettings.ApiScopes)
@@ -89,6 +80,9 @@ namespace Identity
             .AddDeveloperSigningCredential();
 
             services.AddControllers();
+
+            services.Configure<IdentityDataInitializerConfig>(Configuration.GetSection(nameof(IdentityDataInitializerConfig)));
+            services.AddHostedService<IdentityDataInitializerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
