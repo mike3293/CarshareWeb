@@ -63,8 +63,8 @@ namespace Identity.Configuration
 
                     if (user?.IsMainAdmin ?? false)
                     {
-                        await userManager.AddClaimAsync(appUser, new Claim("IsMainAdmin", "true"));
-                        _logger.LogInformation("IsMainAdmin claim added to {user}.", appUser.Email);
+                        await userManager.AddClaimAsync(appUser, new Claim("is_main_admin", "true"));
+                        _logger.LogInformation("is_main_admin claim added to {user}.", appUser.Email);
                     }
                 }
             }
