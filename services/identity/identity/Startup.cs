@@ -68,7 +68,6 @@ namespace Identity
 
             services.AddIdentityServer(options =>
             {
-                options.Events.RaiseErrorEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseErrorEvents = true;
             })

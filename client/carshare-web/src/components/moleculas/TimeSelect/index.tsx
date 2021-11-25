@@ -14,7 +14,7 @@ import { useFiltersStore } from "src/context/filtersStore";
 import React, { useEffect, useState } from "react";
 import { ITimeSelectProps } from "./types";
 import { blue, grey } from "@mui/material/colors";
-import TimerIcon from "@mui/icons-material/Timer";
+import TimerOutlinedIcon from "@mui/icons-material/TimerOutlined";
 import {
   getWaypointsResidenceTime,
   useRoutingStore,
@@ -52,7 +52,7 @@ const TimeSelect = ({
         }}
         onClick={(e) => setAnchorEl(e.currentTarget)}
       >
-        <TimerIcon />
+        <TimerOutlinedIcon />
       </IconButton>
       <Popover
         open={!!anchorEl}
