@@ -24,6 +24,7 @@
                 var iframe = document.createElement('iframe');
                 iframe.width = 0;
                 iframe.height = 0;
+                iframe.style = "visibility: hidden";
                 iframe.class = 'signout';
                 iframe.src = data.signOutIFrameUrl;
                 document.getElementById('logout_iframe').appendChild(iframe);

@@ -1,7 +1,7 @@
 import { Provider } from "src/types/Provider";
 import { ProviderWithCars } from "src/types/ProviderWithCars";
 import ServiceBase from "./serviceBase";
-
+import { useUserStore } from "src/context/userStore";
 class PublicCarsService extends ServiceBase {
   constructor(baseURL: string) {
     super();

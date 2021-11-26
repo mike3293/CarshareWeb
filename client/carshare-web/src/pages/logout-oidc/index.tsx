@@ -7,14 +7,14 @@ import { Box, CircularProgress } from "@mui/material";
 import { useEffect } from "react";
 import Oidc from "oidc-client";
 
-const SignInOidc: NextPage = () => {
+const LogOutOidc: NextPage = () => {
   useEffect(() => {
     const manager = new Oidc.UserManager({
       response_mode: "query",
     });
 
     manager
-      .signinPopupCallback()
+      .signoutPopupCallback()
       .then(function (user) {
         console.log(user);
       })
@@ -30,4 +30,4 @@ const SignInOidc: NextPage = () => {
   );
 };
 
-export default SignInOidc;
+export default LogOutOidc;
