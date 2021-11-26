@@ -33,6 +33,9 @@ import { useDebounce } from "src/hooks/useDebounce";
 import RoutingMachine from "../moleculas/RoutingMachine";
 import CarMarkers from "../moleculas/CarMarkers";
 import Routing from "../moleculas/Routing";
+import { useUserStore } from "src/context/userStore";
+import { Role } from "src/types/Role";
+import { Policy, useAuthorization } from "src/hooks/useAuthorization";
 
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -77,6 +80,13 @@ const CarMap = () => {
       routingMachineRef.current.setWaypoints(waypoints);
     }
   }, [waypoints, routingMachineRef]);
+
+  const role = useUserStore((s) => s.role);
+
+  const haveAccessToConfiguration = useAuthorization(
+    Policy.CanManageConfiguration,
+    { role }
+  );
 
   return (
     <MapContainer
@@ -123,6 +133,7 @@ const CarMap = () => {
       {hasWaypoints && routingMachineRef.current && (
         <Routing routingMachine={routingMachineRef.current} />
       )}
+      {haveAccessToConfiguration && <div></div>}
     </MapContainer>
   );
 };

@@ -1,5 +1,4 @@
-import create, { GetState, SetState } from "zustand";
-import { persist, StoreApiWithPersist } from "zustand/middleware";
+import create from "zustand";
 import { IUserStore } from "./types";
 
 const userStore = (preloadedState = {}) => {
