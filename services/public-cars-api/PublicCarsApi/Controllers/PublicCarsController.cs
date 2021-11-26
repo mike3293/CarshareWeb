@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using PublicCarsApi.ApiClients.PublicCarsApi;
+using PublicCarsApi.Helpers;
 using PublicCarsApi.Models.Requests;
 using PublicCarsApi.Models.Responses;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -18,28 +21,20 @@ namespace PublicCarsApi.Controllers
     {
         private readonly ILogger<PublicCarsController> _logger;
 
-        public PublicCarsController(ILogger<PublicCarsController> logger)
+        private readonly ExternalPublicCarsApiClient _externalPublicCarsApiClient;
+
+
+        public PublicCarsController(ILogger<PublicCarsController> logger, ExternalPublicCarsApiClient externalPublicCarsApiClient)
         {
             _logger = logger;
+            _externalPublicCarsApiClient = externalPublicCarsApiClient;
         }
+
 
         [HttpGet]
         public async Task<IEnumerable<ProviderWithCars>> GetProvidersWithCarsAsync([FromQuery] FilterOptions filters)
         {
-#if DEBUG
-            using var streamReader = new StreamReader("defaultResponse.json");
-#else
-            using var streamReader = new StreamReader("defaultResponse.json");
-            //using var httpClient = new HttpClient();
-
-            //using var response = await httpClient.GetAsync("https://us-central1-carsharinghub.cloudfunctions.net/cachedcars");
-            //var contentStream = await response.Content.ReadAsStreamAsync();
-            //using var streamReader = new StreamReader(contentStream);
-#endif
-            using var jsonReader = new JsonTextReader(streamReader);
-            var serializer = new JsonSerializer();
-
-            IEnumerable<ExternalCar> cars = serializer.Deserialize<List<ExternalCar>>(jsonReader);
+            IEnumerable<ExternalCar> cars = await _externalPublicCarsApiClient.GetExternalCarsAsync();
 
             if (filters.ProviderIds is not null && filters.ProviderIds.Length != 0)
             {
@@ -62,24 +57,24 @@ namespace PublicCarsApi.Controllers
         [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Any, NoStore = false)]
         public async Task<IEnumerable<Provider>> GetProvidersSummaryAsync()
         {
-#if DEBUG
-            using var streamReader = new StreamReader("defaultResponse.json");
-#else
-            using var streamReader = new StreamReader("defaultResponse.json");
-            //using var httpClient = new HttpClient();
-
-            //using var response = await httpClient.GetAsync("https://us-central1-carsharinghub.cloudfunctions.net/cachedcars");
-            //var contentStream = await response.Content.ReadAsStreamAsync();
-            //using var streamReader = new StreamReader(contentStream);
-#endif
-            using var jsonReader = new JsonTextReader(streamReader);
-            var serializer = new JsonSerializer();
-
-            var cars = serializer.Deserialize<List<ExternalCar>>(jsonReader);
+            var cars = await _externalPublicCarsApiClient.GetExternalCarsAsync();
 
             var providers = cars.Select(c => c.Provider).Distinct().Select(p => new Provider(p));
 
             return providers;
+        }
+
+        [HttpGet("branding")]
+        [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Any, NoStore = false)]
+        public async Task<IEnumerable<Provider>> GetProvidersCarTypes()
+        {
+            var cars = await _externalPublicCarsApiClient.GetExternalCarsAsync();
+
+            var groupedCars = cars.Distinct(new CarForBrandingComparer()).GroupBy(c => c.Provider, c => new CarBranding(c));
+
+            var resonse = groupedCars.Select(g => new ProviderWithCarBrandings(g));
+
+            return resonse;
         }
     }
 }

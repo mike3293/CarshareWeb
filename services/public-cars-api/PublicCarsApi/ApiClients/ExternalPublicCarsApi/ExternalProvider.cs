@@ -1,4 +1,4 @@
-﻿namespace PublicCarsApi.Models.Requests
+﻿namespace PublicCarsApi.ApiClients.PublicCarsApi
 {
     public record ExternalProvider
     {

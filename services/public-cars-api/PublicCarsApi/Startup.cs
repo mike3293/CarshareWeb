@@ -7,6 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using PublicCarsApi.ApiClients.PublicCarsApi;
+using PublicCarsApi.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,10 @@ namespace PublicCarsApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PublicCarsApi", Version = "v1" });
             });
+
+            services.Configure<ApisConfig>(Configuration.GetSection(nameof(ApisConfig)));
+
+            services.AddScoped<ExternalPublicCarsApiClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

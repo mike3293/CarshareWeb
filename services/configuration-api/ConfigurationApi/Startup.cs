@@ -1,3 +1,6 @@
+using ConfigurationApi.ApiClient.PublicCarsApi;
+using ConfigurationApi.Configuration;
+using ConfigurationApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,14 +29,25 @@ namespace ConfigurationApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var apisConfig = Configuration.GetSection(nameof(ApisConfig)).Get<ApisConfig>();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
-                    options.Authority = "https://localhost:2010";
+                    options.Authority = apisConfig.IdentityServerUri;
                     options.Audience = "configuration-api";
                 });
 
             services.AddControllers();
+
+            services.Configure<ApisConfig>(Configuration.GetSection(nameof(ApisConfig)));
+            services.Configure<MongoDbConfig>(Configuration.GetSection(nameof(MongoDbConfig)));
+
+            services.AddSingleton<TarrifsService>();
+
+            services.AddScoped<PublicCarsApiClient>();
+
+            services.AddHostedService<TarrifsDataInitializerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

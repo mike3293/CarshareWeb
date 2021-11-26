@@ -1,4 +1,5 @@
-﻿using PublicCarsApi.Models.Requests;
+﻿using PublicCarsApi.ApiClients.PublicCarsApi;
+using PublicCarsApi.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,10 @@ namespace PublicCarsApi.Models.Responses
 
         public string LogoUrl { get; set; }
 
+
+        public Provider()
+        {
+        }
 
         public Provider(ExternalProvider externalProvider)
         {

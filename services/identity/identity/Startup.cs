@@ -30,7 +30,8 @@ namespace Identity
         {
             services.AddCors();
 
-            services.AddSingleton<ICorsPolicyService>((container) => {
+            services.AddSingleton<ICorsPolicyService>((container) =>
+            {
                 var logger = container.GetRequiredService<ILogger<DefaultCorsPolicyService>>();
                 return new DefaultCorsPolicyService(logger)
                 {
@@ -85,6 +86,7 @@ namespace Identity
             services.AddControllers();
 
             services.Configure<IdentityDataInitializerConfig>(Configuration.GetSection(nameof(IdentityDataInitializerConfig)));
+
             services.AddHostedService<IdentityDataInitializerService>();
         }
 

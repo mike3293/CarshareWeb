@@ -12,6 +12,7 @@ class PublicCarsService extends ServiceBase {
     providerIds?: string[],
     fuelLevel?: number | null
   ): Promise<ProviderWithCars[]> {
+    console.log(useUserStore.getState().accessToken);
     return this.get("publicCars", { fuelLevel, providerIds });
   }
 

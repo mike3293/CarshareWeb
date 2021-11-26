@@ -1,4 +1,5 @@
-﻿using PublicCarsApi.Models.Requests;
+﻿using PublicCarsApi.ApiClients.PublicCarsApi;
+using PublicCarsApi.Models.Requests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PublicCarsApi.Models.Responses
 {
-    public class Car
+    public class Car : CarBranding
     {
         public string Id { get; set; }
 
@@ -18,14 +19,10 @@ namespace PublicCarsApi.Models.Responses
 
         public string Reg { get; set; }
 
-        public string Brand { get; set; }
-
-        public string Model { get; set; }
-
         public string ImageUrl { get; set; }
 
 
-        public Car(ExternalCar externalCar)
+        public Car(ExternalCar externalCar) : base(externalCar)
         {
             Id = externalCar.Id;
             Lat = externalCar.LatPrecise ?? externalCar.Lat;

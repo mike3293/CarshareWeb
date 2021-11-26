@@ -1,4 +1,5 @@
-﻿using PublicCarsApi.Models.Requests;
+﻿using PublicCarsApi.ApiClients.PublicCarsApi;
+using PublicCarsApi.Models.Requests;
 using System.Collections.Generic;
 using System.Linq;
 
