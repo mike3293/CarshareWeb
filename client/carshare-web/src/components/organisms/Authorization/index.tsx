@@ -2,6 +2,7 @@ import { IconButtonProps, styled } from "@mui/material";
 import { Button, Dialog } from "@mui/material";
 import { useState } from "react";
 import Oidc from "oidc-client";
+import LoginIcon from "@mui/icons-material/Login";
 
 const Authorization = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -55,7 +56,7 @@ const Authorization = () => {
       variant="contained"
       onClick={cle}
     >
-      Войти
+      <LoginIcon />
     </Button>
   );
 };

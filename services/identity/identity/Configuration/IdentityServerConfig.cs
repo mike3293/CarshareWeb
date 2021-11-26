@@ -10,6 +10,7 @@ namespace Identity.Configuration
     {
 
         public IReadOnlyCollection<ApiScope> ApiScopes { get; init; }
+
         public IReadOnlyCollection<ApiResource> ApiResources { get; init; }
 
         public IReadOnlyCollection<Client> Clients { get; init; }

@@ -1,5 +1,6 @@
 using Identity.Configuration;
 using Identity.Models;
+using Identity.Services;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -61,21 +62,24 @@ namespace Identity
             services.ConfigureApplicationCookie(config =>
             {
                 config.Cookie.Name = "IdentityServer.Cookie";
-                config.LoginPath = "/index.html";
-                config.LogoutPath = "/logout.html";
-                config.AccessDeniedPath = "/error.html";
+                //config.LoginPath = "/index.html";
+                //config.LogoutPath = "/logout.html";
             });
 
             services.AddIdentityServer(options =>
             {
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseErrorEvents = true;
+                options.UserInteraction.LoginUrl = "/index.html";
+                options.UserInteraction.LogoutUrl = "/logout.html";
+                options.UserInteraction.ErrorUrl = "/error.html";
             })
             .AddAspNetIdentity<ApplicationUser>()
             //.AddInMemoryApiScopes(identityServerSettings.ApiScopes)
             .AddInMemoryApiResources(identityServerSettings.ApiResources)
             .AddInMemoryClients(identityServerSettings.Clients)
             .AddInMemoryIdentityResources(identityServerSettings.IdentityResources)
+            .AddProfileService<ProfileService>()
             .AddDeveloperSigningCredential();
 
             services.AddControllers();

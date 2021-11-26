@@ -1,4 +1,5 @@
-﻿using Identity.Models;
+﻿using Identity.Configuration;
+using Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -9,7 +10,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Identity.Configuration
+namespace Identity.Services
 {
     public class IdentityDataInitializerService : IHostedService
     {
