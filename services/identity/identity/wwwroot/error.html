@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
+<html lang="ru">
+<head>
     <meta charset="utf-8">
-    <title>Error :(</title>
-  </head>
-  <body>
-    <h2>Error</h2>
+    <title>Ошибка</title>
+</head>
+<body>
+    <h2>Ошибка</h2>
     <div id="error" />
 
     <script>
-      async function getError() {
-        var query = window.location.search;
-        var errorIdQuery = query && query.toLowerCase().indexOf('?errorid=') == 0 && query;
+        async function getError() {
+            var query = window.location.search;
+            var errorIdQuery = query && query.toLowerCase().indexOf('?errorid=') == 0 && query;
 
-        const response = await fetch('https://localhost:2010/api/authenticate/error' + errorIdQuery, {
-          credentials: 'include'
-        });
+            const response = await fetch('/api/authenticate/error' + errorIdQuery, {
+                credentials: 'include'
+            });
 
-        const data = await response.text();
+            const data = await response.text();
 
-        document.getElementById('error').innerText = data;
-      }
+            document.getElementById('error').innerText = data;
+        }
 
-      getError();
+        getError();
     </script>
-  </body>
+</body>
 </html>

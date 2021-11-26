@@ -1,4 +1,5 @@
 ﻿using Identity.Models;
+using Identity.Models.Requests;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -34,31 +35,60 @@ namespace IdentityServer.Controllers
             _environment = environment;
         }
 
-        public class LoginRequest
-        {
-            public string Email { get; set; }
-            public string Password { get; set; }
-            public string ReturnUrl { get; set; }
-        }
-
         [HttpPost]
-        public async Task<IActionResult> Login([FromBody]LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var context = await _interaction.GetAuthorizationContextAsync(request.ReturnUrl);
             var user = await _userManager.FindByEmailAsync(request.Email);
 
-            if (user != null && context != null)
+            if (user is not null && context is not null)
             {
                 await _userSignInManager.SignInAsync(user, true);
 
-                return new JsonResult(new { RedirectUrl = request.ReturnUrl, IsOk = true });
+                return Ok(new { RedirectUrl = request.ReturnUrl, IsOk = true });
             }
 
             return Unauthorized();
         }
 
-        [HttpGet]
-		[Route("Logout")]
+        [HttpPost("sign-up")]
+        public async Task<IActionResult> Register([FromBody] LoginRequest request)
+        {
+            var context = await _interaction.GetAuthorizationContextAsync(request.ReturnUrl);
+
+            if (context is null)
+            {
+                return Unauthorized();
+            }
+
+            var appUser = new ApplicationUser
+            {
+                UserName = request.Email,
+                Email = request.Email
+            };
+
+            var result = await _userManager.CreateAsync(appUser, request.Password);
+            // TODO: Move role to config
+            await _userManager.AddToRoleAsync(appUser, "User");
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            var user = await _userManager.FindByEmailAsync(request.Email);
+
+            if (user is not null)
+            {
+                await _userSignInManager.SignInAsync(user, true);
+
+                return Ok(new { RedirectUrl = request.ReturnUrl, IsOk = true });
+            }
+
+            return Unauthorized();
+        }
+
+        [HttpGet("logout")]
         public async Task<IActionResult> Logout(string logoutId)
         {
             var context = await _interaction.GetLogoutContextAsync(logoutId);
@@ -66,17 +96,14 @@ namespace IdentityServer.Controllers
 
             if (context?.ShowSignoutPrompt == false)
             {
-                // it's safe to automatically sign-out
                 showSignoutPrompt = false;
             }
 
             if (User?.Identity.IsAuthenticated == true)
             {
-                // delete local authentication cookie
                 await _userSignInManager.SignOutAsync();
             }
 
-            // no external signout supported for now (see \Quickstart\Account\AccountController.cs TriggerExternalSignout)
             return Ok(new
             {
                 showSignoutPrompt,
@@ -87,18 +114,15 @@ namespace IdentityServer.Controllers
             });
         }
 
-        [HttpGet]
-        [Route("Error")]
+        [HttpGet("error")]
         public async Task<IActionResult> Error(string errorId)
         {
-            // retrieve error details from identityserver
             var message = await _interaction.GetErrorContextAsync(errorId);
 
             if (message != null)
             {
                 if (!_environment.IsDevelopment())
                 {
-                    // only show in development
                     message.ErrorDescription = null;
                 }
             }

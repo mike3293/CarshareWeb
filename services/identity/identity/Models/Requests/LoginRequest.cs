@@ -4,18 +4,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Identity.Models
+namespace Identity.Models.Requests
 {
-    public class NewUser
+    public class LoginRequest
     {
-        [Required]
-        public string Name { get; set; }
-
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Email")]
         public string Email { get; set; }
 
         [Required]
         public string Password { get; set; }
+
+        [Required]
+        public string ReturnUrl { get; set; }
     }
 }
