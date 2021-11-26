@@ -1,9 +1,5 @@
-import type { GetServerSideProps, NextPage } from "next";
-import dynamic from "next/dynamic";
-import { QueryClient } from "react-query";
-import { dehydrate } from "react-query/hydration";
-import Authorization from "src/components/organisms/Authorization";
-import { Box, CircularProgress } from "@mui/material";
+import type { NextPage } from "next";
+import FullPageProgressBar from "src/components/atoms/FullPageProgressBar";
 import { useEffect } from "react";
 import Oidc from "oidc-client";
 
@@ -23,11 +19,7 @@ const SignInOidc: NextPage = () => {
       });
   }, []);
 
-  return (
-    <Box sx={{ display: "flex" }}>
-      <CircularProgress />
-    </Box>
-  );
+  return <FullPageProgressBar />;
 };
 
 export default SignInOidc;
