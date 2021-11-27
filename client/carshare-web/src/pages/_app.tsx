@@ -5,10 +5,14 @@ import Head from "next/head";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "src/config/theme/theme";
+import { useInitAuthorization } from "src/hooks/useInitAuthorization";
+import FullPageProgressBar from "src/components/atoms/FullPageProgressBar";
 
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const initFinished = useInitAuthorization();
+
   return (
     <>
       <Head>
@@ -20,7 +24,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-          <Component {...pageProps} />
+          {initFinished ? (
+            <Component {...pageProps} />
+          ) : (
+            <FullPageProgressBar />
+          )}
         </QueryClientProvider>
       </ThemeProvider>
     </>

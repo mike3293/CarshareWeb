@@ -17,13 +17,11 @@ const config = {
   scope: "openid profile",
 };
 
-const Authorization = () => {
+const AccountControl = () => {
   const [email, setOidcUser, resetUser] = useUserStore(
     (s) => [s.email, s.setOidcUser, s.resetUser],
     shallow
   );
-
-  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const manager = new Oidc.UserManager(config);
@@ -36,8 +34,6 @@ const Authorization = () => {
           setOidcUser(user);
         }
       }
-
-      setVisible(true);
     };
 
     initUser();
@@ -72,10 +68,6 @@ const Authorization = () => {
     }
   };
 
-  if (!visible) {
-    return null;
-  }
-
   return (
     <Box sx={{ position: "absolute", zIndex: 3000, right: 10, top: 10 }}>
       {email && (
@@ -92,4 +84,4 @@ const Authorization = () => {
   );
 };
 
-export default Authorization;
+export default AccountControl;

@@ -2,7 +2,7 @@ import type { GetServerSideProps, NextPage } from "next";
 import dynamic from "next/dynamic";
 import { QueryClient } from "react-query";
 import { dehydrate } from "react-query/hydration";
-import Authorization from "src/components/organisms/Authorization";
+import AccountControl from "src/components/organisms/AccountControl";
 
 const MapComponent = dynamic(
   () => {
@@ -14,7 +14,7 @@ const MapComponent = dynamic(
 const Home: NextPage = () => {
   return (
     <>
-      <Authorization />
+      <AccountControl />
       <MapComponent />
     </>
   );

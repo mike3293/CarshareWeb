@@ -35,7 +35,8 @@ import CarMarkers from "../moleculas/CarMarkers";
 import Routing from "../moleculas/Routing";
 import { useUserStore } from "src/context/userStore";
 import { Role } from "src/types/Role";
-import { Policy, useAuthorization } from "src/hooks/useAuthorization";
+import { Policy, usePolicy } from "src/hooks/usePolicy";
+import AdminPanelLink from "../moleculas/AdminPanelLink";
 
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -83,10 +84,9 @@ const CarMap = () => {
 
   const role = useUserStore((s) => s.role);
 
-  const haveAccessToConfiguration = useAuthorization(
-    Policy.CanManageConfiguration,
-    { role }
-  );
+  const haveAccessToConfiguration = usePolicy(Policy.CanManageConfiguration, {
+    role,
+  });
 
   return (
     <MapContainer
@@ -133,7 +133,7 @@ const CarMap = () => {
       {hasWaypoints && routingMachineRef.current && (
         <Routing routingMachine={routingMachineRef.current} />
       )}
-      {haveAccessToConfiguration && <div></div>}
+      {haveAccessToConfiguration && <AdminPanelLink isMobile={isMobile} />}
     </MapContainer>
   );
 };

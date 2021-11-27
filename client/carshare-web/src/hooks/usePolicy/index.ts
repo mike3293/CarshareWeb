@@ -9,7 +9,7 @@ type PoliciesPayloads = {
   [Policy.CanManageConfiguration]: { role?: Role };
 };
 
-export function useAuthorization<T extends Policy>(
+export function usePolicy<T extends Policy>(
   policy: T,
   payload: PoliciesPayloads[T]
 ): boolean {
