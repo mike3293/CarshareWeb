@@ -14,12 +14,7 @@ import {
 import VectorTileLayer from "react-leaflet-vector-tile-layer";
 import { useQuery } from "react-query";
 import shallow from "zustand/shallow";
-import {
-  vectorMapStyleUrl,
-  fallbackMapLayerUrl,
-  vectorMapAttribution,
-  fallbackMapAttribution,
-} from "src/config/constants";
+import constants from "src/config/constants";
 import services from "src/config/services";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import L, { LatLngExpression, LatLng } from "leaflet";
@@ -37,7 +32,6 @@ import { useUserStore } from "src/context/userStore";
 import { Role } from "src/types/Role";
 import { Policy, usePolicy } from "src/hooks/usePolicy";
 import AdminPanelLink from "../moleculas/AdminPanelLink";
-
 L.Icon.Default.imagePath = "images/leaflet/";
 
 const CarMap = () => {
@@ -97,15 +91,15 @@ const CarMap = () => {
       zoomControl={false}
       attributionControl={false}
     >
-      {!isMobile && vectorMapStyleUrl ? (
-        <VectorTileLayer
-          styleUrl={vectorMapStyleUrl}
-          attribution={vectorMapAttribution}
+      {isMobile ? (
+        <TileLayer
+          url={constants.fallbackMapLayerUrl}
+          attribution={constants.fallbackMapAttribution}
         />
       ) : (
-        <TileLayer
-          url={fallbackMapLayerUrl}
-          attribution={fallbackMapAttribution}
+        <VectorTileLayer
+          styleUrl={constants.vectorMapStyleUrl}
+          attribution={constants.vectorMapAttribution}
         />
       )}
       <AttributionControl position="bottomleft" />

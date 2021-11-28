@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConfigurationApi.Models
 {
-    public class Tarrif
+    public class ProviderWithTarrifs
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

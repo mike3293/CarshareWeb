@@ -11,7 +11,7 @@ namespace ConfigurationApi.Services
 {
     public class TarrifsService
     {
-        private readonly IMongoCollection<Tarrif> _tarrifs;
+        private readonly IMongoCollection<ProviderWithTarrifs> _tarrifs;
 
 
         public TarrifsService(IOptions<MongoDbConfig> config)
@@ -19,26 +19,26 @@ namespace ConfigurationApi.Services
             var client = new MongoClient(config.Value.ConnectionString);
             var database = client.GetDatabase(config.Value.DbName);
 
-            _tarrifs = database.GetCollection<Tarrif>(config.Value.TarrifsCollection);
+            _tarrifs = database.GetCollection<ProviderWithTarrifs>(config.Value.TarrifsCollection);
         }
 
 
-        public async Task<IEnumerable<Tarrif>> GetAll()
+        public async Task<IEnumerable<ProviderWithTarrifs>> GetAll()
         {
             return await _tarrifs.Find(_ => true).ToListAsync();
         }
 
-        public async Task<Tarrif> GetById(string id)
+        public async Task<ProviderWithTarrifs> GetById(string id)
         {
             return await _tarrifs.Find(t => t.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task Create(Tarrif tarrif)
+        public async Task Create(ProviderWithTarrifs tarrif)
         {
             await _tarrifs.InsertOneAsync(tarrif);
         }
 
-        public async Task Update(Tarrif tarrif)
+        public async Task Update(ProviderWithTarrifs tarrif)
         {
             await _tarrifs.ReplaceOneAsync(t => t.Id == tarrif.Id, tarrif);
         }

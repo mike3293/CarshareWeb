@@ -51,9 +51,9 @@ namespace ConfigurationApi.Services
                 if (!existingTarrifs.Any(t => t.Provider.Id == branding.Id))
                 {
                     // TODO add mapper
-                    var tarrif = new Tarrif()
+                    var tarrif = new ProviderWithTarrifs()
                     {
-                        Provider = new Provider() { Id = branding.Id, Name = branding.Name },
+                        Provider = new Provider() { Id = branding.Id, Name = branding.Name, LogoUrl = branding.LogoUrl },
                         CarPrices = branding.Cars.Select(c => new CarPrice() { Model = c.Model, Brand = c.Brand })
                     };
 

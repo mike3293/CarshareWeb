@@ -33,7 +33,7 @@ namespace ConfigurationApi.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<Tarrif>> GetTarrifs()
+        public async Task<IEnumerable<ProviderWithTarrifs>> GetTarrifs()
         {
             return await _tarrifsService.GetAll();
         }

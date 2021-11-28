@@ -2,6 +2,7 @@ import { BodyInitOrObject, URLSearchParamsInit } from "./types";
 
 abstract class ServiceBase {
   baseUrl!: string;
+  protected willSendRequest?(request: RequestInit): void | Promise<void>;
 
   protected initialize(config: { baseURL: string }) {
     this.baseUrl = config.baseURL;
@@ -35,6 +36,10 @@ abstract class ServiceBase {
     body?: BodyInitOrObject,
     options: RequestInit = {}
   ) {
+    if (this.willSendRequest) {
+      await this.willSendRequest(options);
+    }
+
     if (body) {
       options.body = JSON.stringify(body);
 
