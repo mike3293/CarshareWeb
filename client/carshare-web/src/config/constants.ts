@@ -12,6 +12,7 @@ const constants = {
   GEOCODER_API_URL: process.env.NEXT_PUBLIC_GEOCODER_API_URL!,
   IS_URL: process.env.NEXT_PUBLIC_IS_URL!,
   CLIENT_ID: process.env.NEXT_PUBLIC_CLIENT_ID!,
+  BASE_URL: process.env.NEXT_PUBLIC_BASE_URL!,
 };
 
 console.log("Config check");

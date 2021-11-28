@@ -1,7 +1,5 @@
-import { Box, Typography } from "@mui/material";
-import { Button, Dialog } from "@mui/material";
-import { useEffect, useState } from "react";
-import Oidc from "oidc-client";
+import { Box } from "@mui/material";
+import { Button } from "@mui/material";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { authManager } from "src/utils/authManager";

@@ -12,20 +12,18 @@ export const useInitAuthorization = () => {
   );
 
   useEffect(() => {
-    if (!email) {
-      const initUser = async () => {
-        const user = await authManager.getUser();
+    const initUser = async () => {
+      const user = await authManager.getUser();
 
-        if (user) {
-          setOidcUser(user);
-        }
-        console.log("manager", authManager);
+      if (!email && user) {
+        setOidcUser(user);
+      }
+      console.log("manager", authManager);
 
-        setInitFinished(true);
-      };
+      setInitFinished(true);
+    };
 
-      initUser();
-    }
+    initUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -5,6 +5,7 @@ import Head from "next/head";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "src/config/theme/theme";
+import dynamic from "next/dynamic";
 import { useInitAuthorization } from "src/hooks/useInitAuthorization";
 import FullPageProgressBar from "src/components/atoms/FullPageProgressBar";
 
@@ -35,4 +36,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   );
 }
 
-export default MyApp;
+export default dynamic(() => Promise.resolve(MyApp), {
+  ssr: false,
+});

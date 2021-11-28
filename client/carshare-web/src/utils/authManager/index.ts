@@ -3,10 +3,10 @@ import constants from "src/config/constants";
 
 const managerConfig = {
   authority: constants.IS_URL,
-  client_id: constants.IS_URL,
-  redirect_uri: `${window.location.origin}/auth/signin-oidc`,
-  silent_redirect_uri: `${window.location.origin}/auth/signin-oidc-silent`,
-  popup_post_logout_redirect_uri: `${window.location.origin}/auth/logout-oidc`,
+  client_id: constants.CLIENT_ID,
+  redirect_uri: `${constants.BASE_URL}/auth/signin-oidc`,
+  silent_redirect_uri: `${constants.BASE_URL}/auth/signin-oidc-silent`,
+  popup_post_logout_redirect_uri: `${constants.BASE_URL}/auth/logout-oidc`,
   response_type: "code",
   scope: "openid profile",
   revokeAccessTokenOnSignout: true,
