@@ -1,8 +1,9 @@
-import { BodyInitOrObject, URLSearchParamsInit } from "./types";
+import { BodyInitOrObject, StatusCode, URLSearchParamsInit } from "./types";
 
 abstract class ServiceBase {
   baseUrl!: string;
   protected willSendRequest?(request: RequestInit): void | Promise<void>;
+  protected refreshSession?(): void | Promise<void>;
 
   protected initialize(config: { baseURL: string }) {
     this.baseUrl = config.baseURL;
@@ -34,7 +35,8 @@ abstract class ServiceBase {
     method: string,
     params?: URLSearchParamsInit,
     body?: BodyInitOrObject,
-    options: RequestInit = {}
+    options: RequestInit = {},
+    shouldRefreshSession = true
   ) {
     if (this.willSendRequest) {
       await this.willSendRequest(options);
@@ -50,13 +52,25 @@ abstract class ServiceBase {
       }
     }
 
-    return await fetch(
+    const response = await fetch(
       `${this.baseUrl}${path}${params ? `?${this.buildParams(params)}` : ""}`,
       {
         method,
         ...options,
       }
     );
+
+    if (
+      response.status === StatusCode.Unauthorized &&
+      shouldRefreshSession &&
+      this.refreshSession
+    ) {
+      await this.refreshSession();
+
+      return await this.fetch(path, method, params, body, options, false);
+    }
+
+    return response;
   }
 
   private buildParams(search: URLSearchParamsInit) {

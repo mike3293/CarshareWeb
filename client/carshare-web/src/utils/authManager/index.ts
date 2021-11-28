@@ -16,9 +16,8 @@ let authManagerLocal: UserManager;
 const getAuthManager = () => {
   // Always make a new if server, otherwise manager is shared between requests
   if (typeof window === "undefined") {
-    throw new Error("SSR auth not implemented");
-    // TODO: check window.location
-    // return new UserManager(managerConfig);
+    // throw new Error("SSR auth not implemented");
+    return null;
   }
 
   // Create if unavailable on the client and set it on the window object

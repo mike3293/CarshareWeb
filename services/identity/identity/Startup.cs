@@ -60,13 +60,6 @@ namespace Identity
 
             var identityServerSettings = Configuration.GetSection(nameof(IdentityServerConfig)).Get<IdentityServerConfig>();
 
-            services.ConfigureApplicationCookie(config =>
-            {
-                config.Cookie.Name = "IdentityServer.Cookie";
-                //config.LoginPath = "/index.html";
-                //config.LogoutPath = "/logout.html";
-            });
-
             services.AddIdentityServer(options =>
             {
                 options.Events.RaiseFailureEvents = true;
@@ -76,7 +69,6 @@ namespace Identity
                 options.UserInteraction.ErrorUrl = "/error.html";
             })
             .AddAspNetIdentity<ApplicationUser>()
-            //.AddInMemoryApiScopes(identityServerSettings.ApiScopes)
             .AddInMemoryApiResources(identityServerSettings.ApiResources)
             .AddInMemoryClients(identityServerSettings.Clients)
             .AddInMemoryIdentityResources(identityServerSettings.IdentityResources)

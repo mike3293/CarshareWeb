@@ -1,3 +1,4 @@
+import { authManager } from "src/utils/authManager";
 import ServiceBase from "../serviceBase";
 import { UserStoreApi } from "./types";
 class AuthService extends ServiceBase {
@@ -22,15 +23,10 @@ class AuthService extends ServiceBase {
     }
   }
 
-  async refreshToken(request: RequestInit) {
-    let accessToken = this.store.getState().accessToken;
+  async refreshSession() {
+    const user = await authManager.signinSilent();
 
-    if (accessToken) {
-      request.headers = {
-        ...request.headers,
-        Authorization: `Bearer ${accessToken}`,
-      };
-    }
+    this.store.getState().setOidcUser(user);
   }
 }
 
