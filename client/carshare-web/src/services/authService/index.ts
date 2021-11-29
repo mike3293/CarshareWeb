@@ -1,8 +1,10 @@
 import { authManager } from "src/utils/authManager";
 import ServiceBase from "../serviceBase";
 import { UserStoreApi } from "./types";
+
 class AuthService extends ServiceBase {
   store!: UserStoreApi;
+
   constructor(store: UserStoreApi) {
     super();
     this.store = store;

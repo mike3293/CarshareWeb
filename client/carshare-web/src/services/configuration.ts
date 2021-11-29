@@ -1,4 +1,4 @@
-import { Provider } from "src/types/Provider";
+import { ProviderWithTarrifs } from "src/types/ProviderWithTarrifs";
 import { ProviderWithCars } from "src/types/ProviderWithCars";
 import AuthService from "./authService";
 import { useUserStore } from "src/context/userStore";
@@ -10,7 +10,7 @@ class ConfigurationService extends AuthService {
     this.initialize({ baseURL });
   }
 
-  public getTarrifs(): Promise<any[]> {
+  public getTarrifs(): Promise<ProviderWithTarrifs[]> {
     return this.get("tarrifs");
   }
 }

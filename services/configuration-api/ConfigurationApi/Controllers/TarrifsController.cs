@@ -37,5 +37,18 @@ namespace ConfigurationApi.Controllers
         {
             return await _tarrifsService.GetAll();
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateTarrifs(string id, ProviderWithTarrifs provider)
+        {
+            if(id != provider.Id)
+            {
+                return BadRequest();
+            }
+
+            await _tarrifsService.Update(provider);
+
+            return Ok();
+        }
     }
 }

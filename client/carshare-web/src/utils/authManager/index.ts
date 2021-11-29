@@ -28,4 +28,4 @@ const getAuthManager = () => {
   return authManagerLocal;
 };
 
-export const authManager = getAuthManager();
+export const authManager = getAuthManager()!;

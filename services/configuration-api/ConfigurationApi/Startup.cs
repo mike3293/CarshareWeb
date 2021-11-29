@@ -47,7 +47,7 @@ namespace ConfigurationApi
 
             services.AddScoped<PublicCarsApiClient>();
 
-            services.AddHostedService<TarrifsDataInitializerService>();
+            //services.AddHostedService<TarrifsDataInitializerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
