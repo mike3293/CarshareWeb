@@ -38,6 +38,21 @@ namespace ConfigurationApi.Controllers
             return await _tarrifsService.GetAll();
         }
 
+        [HttpGet("{id}/cars/{model}")]
+        public async Task<ActionResult<CarPrice>> GetCarPrice(string id, string model)
+        {
+            var provider = await _tarrifsService.GetById(id);
+
+            var carPrice = provider.CarPrices.FirstOrDefault(c => c.Model == model);
+
+            if(carPrice is null)
+            {
+                return NotFound();
+            }
+
+            return carPrice;
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTarrifs(string id, IList<CarPrice> carPrices)
         {

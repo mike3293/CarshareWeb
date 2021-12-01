@@ -1,6 +1,6 @@
 using System;
 
-namespace RoutCalculatorApi
+namespace RouteCalculatorApi
 {
     public class WeatherForecast
     {

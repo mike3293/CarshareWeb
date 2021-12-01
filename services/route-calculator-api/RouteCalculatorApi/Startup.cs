@@ -7,12 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RouteCalculatorApi.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace RoutCalculatorApi
+namespace RouteCalculatorApi
 {
     public class Startup
     {
@@ -30,8 +31,10 @@ namespace RoutCalculatorApi
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RoutCalculatorApi", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RouteCalculatorApi", Version = "v1" });
             });
+
+            services.Configure<ApisConfig>(Configuration.GetSection(nameof(ApisConfig)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +44,7 @@ namespace RoutCalculatorApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RoutCalculatorApi v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RouteCalculatorApi v1"));
             }
 
             app.UseHttpsRedirection();
