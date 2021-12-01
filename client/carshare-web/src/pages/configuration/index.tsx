@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
+import Link from "next/link";
 import { useEffect } from "react";
 import { useUserStore } from "src/context/userStore";
 import { Policy, usePolicy } from "src/hooks/usePolicy";
 import ProviderTarrifsForm from "src/components/organisms/ProviderTarrifsForm";
 import { useRouter } from "next/dist/client/router";
 import {
-  Box,
   Accordion,
   AccordionSummary,
   AccordionDetails,
@@ -15,6 +15,13 @@ import {
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useQuery } from "react-query";
 import services from "src/config/services";
+import { grey } from "@mui/material/colors";
+
+const Container = styled("div")(({ theme }) => ({
+  display: "grid",
+  gap: theme.spacing(2),
+  padding: theme.spacing(2, 4),
+}));
 
 const ProviderImage = styled("img")(({ theme }) => ({
   height: theme.spacing(4),
@@ -42,7 +49,7 @@ const Configuration: NextPage = () => {
   }, [haveAccessToConfiguration, router]);
 
   const { data = [] } = useQuery(
-    "getConfiguration",
+    "getTariffs",
     () => services.configuration.getTarrifs(),
     {
       refetchOnWindowFocus: true,
@@ -51,10 +58,18 @@ const Configuration: NextPage = () => {
   );
 
   return (
-    <Box>
+    <Container>
+      <Link href="/">
+        <a>
+          <Typography>{"<"} Вернутся на карту</Typography>
+        </a>
+      </Link>
       {data.map((p) => (
-        <Accordion key={p.id}>
-          <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <Accordion key={p.id} sx={{ boxShadow: 2 }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            sx={{ backgroundColor: grey[50] }}
+          >
             <ProviderTitle>
               <ProviderImage src={p.provider.logoUrl} alt="logo" />
               <Typography>{p.provider.name}</Typography>
@@ -62,11 +77,10 @@ const Configuration: NextPage = () => {
           </AccordionSummary>
           <AccordionDetails>
             <ProviderTarrifsForm provider={p} />
-            <Typography>{JSON.stringify(p, null, 2)}</Typography>
           </AccordionDetails>
         </Accordion>
       ))}
-    </Box>
+    </Container>
   );
 };
 

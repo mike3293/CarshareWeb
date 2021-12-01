@@ -48,22 +48,38 @@ namespace ConfigurationApi.Services
 
             foreach (var branding in brandings)
             {
-                if (!existingTarrifs.Any(t => t.Provider.Id == branding.Id))
+                var providerTarrif = existingTarrifs.FirstOrDefault(t => t.Provider.Id == branding.Id);
+
+                if (providerTarrif is not null)
+                {
+                    providerTarrif.CarPrices = providerTarrif.CarPrices.Where(cp => branding.Cars.Any(c => c.Model == cp.Model)).ToList();
+                    
+                    foreach (var car in branding.Cars)
+                    {
+                        if(!providerTarrif.CarPrices.Any(cp => cp.Model == car.Model))
+                        {
+                            providerTarrif.CarPrices.Add(new CarPrice() { Model = car.Model, Brand = car.Brand });
+                        }
+                    }
+
+                    await _tarrifsService.Update(providerTarrif);
+
+                    _logger.LogInformation("Tarrifs for {providerId} updated.", providerTarrif.Provider.Id);
+                }
+                else
                 {
                     // TODO add mapper
                     var tarrif = new ProviderWithTarrifs()
                     {
                         Provider = new Provider() { Id = branding.Id, Name = branding.Name, LogoUrl = branding.LogoUrl },
-                        CarPrices = branding.Cars.Select(c => new CarPrice() { Model = c.Model, Brand = c.Brand })
+                        CarPrices = branding.Cars.Select(c => new CarPrice() { Model = c.Model, Brand = c.Brand }).ToList()
                     };
 
                     await _tarrifsService.Create(tarrif);
 
-                    _logger.LogInformation("Tarrif for {providerId} created.", tarrif.Provider.Id);
+                    _logger.LogInformation("Tarrifs for {providerId} created.", tarrif.Provider.Id);
                 }
             }
-
-            // TODO: add new cars initialization
 
             _logger.LogInformation("{name} finished the initialization.", nameof(TarrifsDataInitializerService));
         }

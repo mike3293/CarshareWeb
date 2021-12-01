@@ -30,6 +30,17 @@ abstract class ServiceBase {
     return await response.json();
   }
 
+  protected async put<TResult>(
+    path: string,
+    body?: BodyInitOrObject,
+    params?: URLSearchParamsInit,
+    init?: RequestInit
+  ): Promise<TResult> {
+    const response = await this.fetch(path, "PUT", params, body, init);
+
+    return await response.json();
+  }
+
   private async fetch(
     path: string,
     method: string,
@@ -37,7 +48,7 @@ abstract class ServiceBase {
     body?: BodyInitOrObject,
     options: RequestInit = {},
     shouldRefreshSession = true
-  ) {
+  ): Promise<Response> {
     if (this.willSendRequest) {
       await this.willSendRequest(options);
     }

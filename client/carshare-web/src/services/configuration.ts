@@ -1,4 +1,4 @@
-import { ProviderWithTarrifs } from "src/types/ProviderWithTarrifs";
+import { CarPrice, ProviderWithTarrifs } from "src/types/ProviderWithTarrifs";
 import { ProviderWithCars } from "src/types/ProviderWithCars";
 import AuthService from "./authService";
 import { useUserStore } from "src/context/userStore";
@@ -12,6 +12,10 @@ class ConfigurationService extends AuthService {
 
   public getTarrifs(): Promise<ProviderWithTarrifs[]> {
     return this.get("tarrifs");
+  }
+
+  public updateTarrifs(id: string, carPrices: CarPrice[]): Promise<void> {
+    return this.put(`tarrifs/${id}`, carPrices);
   }
 }
 

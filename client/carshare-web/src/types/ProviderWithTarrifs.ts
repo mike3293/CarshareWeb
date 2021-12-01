@@ -1,6 +1,6 @@
 import { Provider } from "./Provider";
 
-interface CarPrice {
+export interface CarPrice {
   brand?: string;
   model: string;
   perMinCost?: number;

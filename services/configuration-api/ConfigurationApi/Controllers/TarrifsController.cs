@@ -39,12 +39,11 @@ namespace ConfigurationApi.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTarrifs(string id, ProviderWithTarrifs provider)
+        public async Task<IActionResult> UpdateTarrifs(string id, IList<CarPrice> carPrices)
         {
-            if(id != provider.Id)
-            {
-                return BadRequest();
-            }
+            var provider = await _tarrifsService.GetById(id);
+
+            provider.CarPrices = carPrices;
 
             await _tarrifsService.Update(provider);
 

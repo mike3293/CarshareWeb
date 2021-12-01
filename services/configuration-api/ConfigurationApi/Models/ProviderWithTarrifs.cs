@@ -15,6 +15,6 @@ namespace ConfigurationApi.Models
 
         public Provider Provider { get; set; }
 
-        public IEnumerable<CarPrice> CarPrices { get; set; }
+        public IList<CarPrice> CarPrices { get; set; }
     }
 }

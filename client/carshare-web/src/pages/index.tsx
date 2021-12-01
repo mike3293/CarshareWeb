@@ -1,17 +1,21 @@
 import type { NextPage } from "next";
-import Map from "src/components/organisms/Map";
 import AccountControl from "src/components/organisms/AccountControl";
 import dynamic from "next/dynamic";
+
+const MapComponent = dynamic(
+  () => {
+    return import("src/components/organisms/Map");
+  },
+  { ssr: false }
+);
 
 const Home: NextPage = () => {
   return (
     <>
       <AccountControl />
-      <Map />
+      <MapComponent />
     </>
   );
 };
 
-export default dynamic(() => Promise.resolve(Home), {
-  ssr: false,
-});
+export default Home;

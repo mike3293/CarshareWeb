@@ -1,10 +1,13 @@
-import { IconButtonProps, styled } from "@mui/material";
+import { IconButtonProps, styled, Typography } from "@mui/material";
 import { Button, Box } from "@mui/material";
-import { Formik } from "formik";
+import { Formik, Form } from "formik";
 import { ProviderWithTarrifs } from "src/types/ProviderWithTarrifs";
 import * as Yup from "yup";
 import { ProviderTarrifsFormValues } from "./types";
 import FormTextField from "./FormTextField";
+import { useMemo } from "react";
+import { orderBy } from "lodash";
+import services from "src/config/services";
 
 const providerTarrifsSchema: Yup.SchemaOf<ProviderTarrifsFormValues> =
   Yup.object().shape({
@@ -13,51 +16,104 @@ const providerTarrifsSchema: Yup.SchemaOf<ProviderTarrifsFormValues> =
         Yup.object().shape({
           model: Yup.string().required(),
           brand: Yup.string(),
-          perMinCost: Yup.number().required("Обязательное поле"),
-          perMinParkingCost: Yup.number().required("Обязательное поле"),
+          perMinCost: Yup.number()
+            .nullable()
+            .min(0, "Значение должно быть больше нуля")
+            .required("Обязательное поле"),
+          perMinParkingCost: Yup.number()
+            .nullable()
+            .min(0, "Значение должно быть больше нуля")
+            .required("Обязательное поле"),
         })
       )
       .required(),
   });
 
-const Form = styled("form")(({ theme }) => ({
+const StyledForm = styled(Form)(({ theme }) => ({
   display: "grid",
-  gridAutoFlow: "column",
+  gridAutoFlow: "row",
   gap: theme.spacing(1),
   padding: theme.spacing(1),
 }));
 
+const FormItem = styled("div")(({ theme }) => ({
+  display: "grid",
+  gridAutoFlow: "row",
+  gap: theme.spacing(1),
+}));
+
+const FormFields = styled("div")(({ theme }) => ({
+  display: "grid",
+  gridTemplateColumns: "repeat(2, 1fr)",
+  gap: theme.spacing(2),
+}));
+
 const ProviderTarrifsForm = ({
-  provider,
+  provider: { carPrices, id },
 }: {
   provider: ProviderWithTarrifs;
 }) => {
+  const orderedPrices = useMemo(
+    () => orderBy(carPrices, (c) => c.brand),
+    [carPrices]
+  );
+
   return (
     <Formik<ProviderTarrifsFormValues>
       validationSchema={providerTarrifsSchema}
       initialValues={{
-        carsTarrifs: provider.carPrices.map((c) => ({
+        carsTarrifs: orderedPrices.map((c) => ({
           model: c.model,
           perMinCost: c.perMinCost,
           perMinParkingCost: c.perMinParkingCost,
         })),
       }}
-      onSubmit={(values) => {
-        alert(JSON.stringify(values, null, 2));
+      onSubmit={async (values) => {
+        console.log(values);
+        const carPrices = values.carsTarrifs.map(
+          ({ perMinCost, perMinParkingCost, brand, model }) => ({
+            perMinCost,
+            perMinParkingCost,
+            brand,
+            model,
+          })
+        );
+
+        await services.configuration.updateTarrifs(id, carPrices);
       }}
     >
-      {({ values }) => (
-        <Form>
+      {({ values, isSubmitting }) => (
+        <StyledForm>
           {values.carsTarrifs.map((ct, i) => (
-            <Box key={ct.model}>
-              <FormTextField name={`perMinCost.${i}`} type="number" />
-              <FormTextField name={`perMinParkingCost.${i}`} type="number" />
-            </Box>
+            <FormItem key={ct.model}>
+              <Typography>{ct.model}</Typography>
+              <FormFields>
+                <FormTextField
+                  label="В минуту"
+                  name={`carsTarrifs.${i}.perMinCost`}
+                  variant="filled"
+                  type="tel"
+                  inputProps={{ pattern: "[0-9]*" }}
+                />
+                <FormTextField
+                  label="Стоянка в минуту"
+                  name={`carsTarrifs.${i}.perMinParkingCost`}
+                  variant="filled"
+                  type="tel"
+                  inputProps={{ pattern: "[0-9]*" }}
+                />
+              </FormFields>
+            </FormItem>
           ))}
-          <Button variant="contained" type="submit">
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{ width: "30%", minWidth: 156 }}
+            disabled={isSubmitting}
+          >
             Сохранить
           </Button>
-        </Form>
+        </StyledForm>
       )}
     </Formik>
   );
