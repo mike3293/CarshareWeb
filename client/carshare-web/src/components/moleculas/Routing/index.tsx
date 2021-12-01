@@ -6,7 +6,7 @@ import {
   SwipeableDrawer,
 } from "@mui/material";
 import L from "leaflet";
-import { reduce } from "lodash";
+import { isNumber, reduce } from "lodash";
 import { Popup, useMapEvents } from "react-leaflet";
 import DrawerWithEdge from "src/components/atoms/DrawerWithEdge";
 import PortalComponent from "src/components/atoms/PortalComponent";
@@ -18,12 +18,14 @@ import { useRoutingStore } from "src/context/routingStore";
 import { useMobile } from "src/hooks/useMedia";
 import shallow from "zustand/shallow";
 import getDurationString from "src/utils/getDurationString";
+import CarSummary from "./CarSummary";
+import RouteSummary from "./RouteSummary";
 
 const Routing = ({ routingMachine }: IRoutingProps) => {
   const isMobile = useMobile();
   const [summary, setSummary] = useState<L.Routing.IRouteSummary | null>(null);
-  const [addWaypoint, waypoints] = useRoutingStore(
-    (s) => [s.addWaypoint, s.waypoints],
+  const [selectedCar, addWaypoint, waypoints] = useRoutingStore(
+    (s) => [s.selectedCar, s.addWaypoint, s.waypoints],
     shallow
   );
 
@@ -53,28 +55,10 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
     }
   }, [waypoints, summary]);
 
-  const durationString = useMemo(
-    () =>
-      summary &&
-      getDurationString(
-        summary.totalTime +
-          reduce(waypoints, (acc, w) => acc + (w?.residenceTimeMins ?? 0), 0) *
-            60
-      ),
-    [waypoints, summary]
-  );
-
   const renderDialogContent = () => (
-    <Box sx={{ px: 2 }}>
-      <Typography sx={{ pb: 1, minHeight: (theme) => theme.spacing(3) }}>
-        {summary && (
-          <>
-            Расстояние: {(summary.totalDistance / 1000).toFixed(1)} км, время в
-            пути: {durationString}
-          </>
-        )}
-      </Typography>
-
+    <Box sx={{ px: 2, display: "grid", gridAutoFlow: "row", gap: 1 }}>
+      {selectedCar && <CarSummary car={selectedCar} />}
+      <RouteSummary car={selectedCar} summary={summary} waypoints={waypoints} />
       <WaypointsList />
     </Box>
   );
@@ -85,11 +69,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
       {isMobile ? (
         <PortalComponent>
           <DrawerWithEdge
-            summary={
-              summary
-                ? `Время в пути: ${durationString}`
-                : "Постройте ваш маршрут"
-            }
+            summary={summary ? `Маршрут из ` : "Постройте ваш маршрут"}
           >
             {renderDialogContent()}
           </DrawerWithEdge>

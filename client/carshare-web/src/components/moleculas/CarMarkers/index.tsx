@@ -20,7 +20,11 @@ function CarMarkers({ providers }: ICarMarkersProps) {
               popupAnchor: [0, -33],
             })}
           >
-            <CarInfoPopup car={c} providerLogoUrl={p.logoUrl} />
+            <CarInfoPopup
+              car={c}
+              providerId={p.id}
+              providerLogoUrl={p.logoUrl}
+            />
           </Marker>
         ))
       )}

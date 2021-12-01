@@ -3,10 +3,12 @@ import { uniqueId } from "lodash";
 import { CustomWaypoint, IRoutingStore } from "./types";
 import services from "src/config/services";
 import { mapGeoAddressToAddress } from "src/types/Address";
+import L from "leaflet";
 
 const routingStore = (preloadedState = {}) => {
   return create<IRoutingStore>((set, get) => ({
     waypoints: [],
+    selectedCar: undefined,
     setWaypoints: (waypoints) => set({ waypoints }),
     setRawWaypoints: async (rawWaypoints) => {
       const waypoints = get().waypoints.slice();
@@ -48,6 +50,21 @@ const routingStore = (preloadedState = {}) => {
         waypoints: [
           ...get().waypoints,
           { ...waypoint, id: uniqueId(), address } as CustomWaypoint,
+        ],
+      });
+    },
+    addCarWaypoint: async (car, providerId) => {
+      const address = await services.geocoding.getAddress(car.lat, car.lon);
+
+      set({
+        selectedCar: { ...car, providerId },
+        waypoints: [
+          ...get().waypoints,
+          {
+            ...L.latLng({ lat: car.lat, lng: car.lon }),
+            id: uniqueId(),
+            address,
+          } as CustomWaypoint,
         ],
       });
     },

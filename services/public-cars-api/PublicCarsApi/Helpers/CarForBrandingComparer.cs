@@ -13,12 +13,12 @@ namespace PublicCarsApi.Helpers
     {
         public bool Equals(ExternalCar x, ExternalCar y)
         {
-            return x is not null && y is not null && x.Model == y.Model;
+            return x is not null && y is not null && x.Model == y.Model && x.Provider.Id == y.Provider.Id;
         }
 
         public int GetHashCode(ExternalCar obj)
         {
-            return obj.Model.GetHashCode();
+            return HashCode.Combine(obj.Model, obj.Provider.Id);
         }
     }
 }

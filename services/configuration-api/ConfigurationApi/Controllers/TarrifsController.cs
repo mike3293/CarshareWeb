@@ -17,7 +17,7 @@ namespace ConfigurationApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class TarrifsController : ControllerBase
     {
         private readonly ILogger<TarrifsController> _logger;
@@ -41,7 +41,7 @@ namespace ConfigurationApi.Controllers
         [HttpGet("providers/{providerId}/cars/{model}")]
         public async Task<ActionResult<CarPrice>> GetCarPrice(string providerId, string model)
         {
-            var provider = await _tarrifsService.GetById(providerId);
+            var provider = await _tarrifsService.GetByProviderId(providerId);
 
             if (provider is null)
             {

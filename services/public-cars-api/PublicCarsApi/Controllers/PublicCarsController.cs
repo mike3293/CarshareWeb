@@ -70,9 +70,11 @@ namespace PublicCarsApi.Controllers
         {
             var cars = await _externalPublicCarsApiClient.GetExternalCarsAsync();
 
-            var groupedCars = cars.Distinct(new CarForBrandingComparer()).GroupBy(c => c.Provider, c => new CarBranding(c));
+            var dist = cars.Distinct(new CarForBrandingComparer()).ToList();
 
-            var resonse = groupedCars.Select(g => new ProviderWithCarBrandings(g));
+            var groupedCars = dist.GroupBy(c => c.Provider, c => new CarBranding(c)).ToList();
+
+            var resonse = groupedCars.Select(g => new ProviderWithCarBrandings(g)).ToList();
 
             return resonse;
         }

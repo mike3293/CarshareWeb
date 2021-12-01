@@ -1,13 +1,14 @@
 import { Unmutable } from "src/types/Unmutable";
 
 const constants = {
-  vectorMapStyleUrl: process.env.NEXT_PUBLIC_MAP_STYLE_URL!,
-  vectorMapAttribution:
+  VECTOR_MAP_STYLE_URL: process.env.NEXT_PUBLIC_MAP_STYLE_URL!,
+  VECTOR_MAP_ATTRIBUTION:
     "\u003ca href='https://www.maptiler.com/copyright/' target='_blank' \u003e\u0026copy; MapTiler\u003c/a\u003e \u003ca href='https://www.openstreetmap.org/copyright' target='_blank'\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-  fallbackMapLayerUrl: process.env.NEXT_PUBLIC_FALLBACK_MAP_URL!,
-  fallbackMapAttribution:
+  FALLBACK_MAP_LAYER_URL: process.env.NEXT_PUBLIC_FALLBACK_MAP_URL!,
+  FALLBACK_MAP_ATTRIBUTION:
     "\u003ca href='https://www.openstreetmap.org/copyright' target='_blank'\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
-  BASE_API_URL: process.env.NEXT_PUBLIC_BASE_API_URL!,
+  CARS_API_URL: process.env.NEXT_PUBLIC_CARS_API_URL!,
+  CALCULATOR_API_URL: process.env.NEXT_PUBLIC_CALCULATOR_API_URL!,
   CONFIG_API_URL: process.env.NEXT_PUBLIC_CONFIG_API_URL!,
   GEOCODER_API_URL: process.env.NEXT_PUBLIC_GEOCODER_API_URL!,
   IS_URL: process.env.NEXT_PUBLIC_IS_URL!,

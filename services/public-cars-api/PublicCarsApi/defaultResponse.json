@@ -394,7 +394,7 @@
     "latPrecise": 53.85309,
     "lon": 27.54904,
     "provider": {
-      "name": "Везуха",
+      "name": "Vezuha",
       "androidUrlScheme": "vezuha://car",
       "id": "Vezuha",
       "parkingCost": 0.15,
@@ -413,7 +413,7 @@
   },
   {
     "provider": {
-      "name": "Везуха",
+      "name": "Vezuha",
       "apiId": "vezuha",
       "urlScheme": "vezuha://car?id=",
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e",
@@ -449,7 +449,7 @@
       "apiId": "vezuha",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
       "parkingCost": 0.15,
-      "name": "Везуха",
+      "name": "Vezuha",
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
       "id": "Vezuha",
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
@@ -472,7 +472,7 @@
     "lat": 53.87474,
     "provider": {
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
-      "name": "Везуха",
+      "name": "Vezuha",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
       "apiId": "vezuha",
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e",
@@ -517,7 +517,7 @@
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
       "androidUrlScheme": "vezuha://car",
       "id": "Vezuha",
-      "name": "Везуха",
+      "name": "Vezuha",
       "urlScheme": "vezuha://car?id=",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
       "drivingCost": 0.15
@@ -538,7 +538,7 @@
     "latPrecise": 53.93093,
     "reg": "8035 НВ-5",
     "provider": {
-      "name": "Везуха",
+      "name": "Vezuha",
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
       "parkingCost": 0.15,
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
@@ -573,7 +573,7 @@
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e",
-      "name": "Везуха",
+      "name": "Vezuha",
       "androidUrlScheme": "vezuha://car",
       "drivingCost": 0.15,
       "urlScheme": "vezuha://car?id="
@@ -597,7 +597,7 @@
       "androidUrlScheme": "vezuha://car",
       "parkingCost": 0.15,
       "apiId": "vezuha",
-      "name": "Везуха",
+      "name": "Vezuha",
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
       "urlScheme": "vezuha://car?id=",
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e",
@@ -617,7 +617,7 @@
     "lon": 27.60702,
     "canStartEngine": false,
     "provider": {
-      "name": "Везуха",
+      "name": "Vezuha",
       "id": "Vezuha",
       "parkingCost": 0.15,
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e",
@@ -653,7 +653,7 @@
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e",
       "id": "Vezuha",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
-      "name": "Везуха",
+      "name": "Vezuha",
       "parkingCost": 0.15,
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
       "drivingCost": 0.15,
@@ -672,7 +672,7 @@
       "urlScheme": "vezuha://car?id=",
       "apiId": "vezuha",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
-      "name": "Везуха",
+      "name": "Vezuha",
       "parkingCost": 0.15,
       "androidUrlScheme": "vezuha://car",
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e"
@@ -701,7 +701,7 @@
     "reg": "0798  MX-5",
     "canStartEngine": false,
     "provider": {
-      "name": "Везуха",
+      "name": "Vezuha",
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e",
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
@@ -723,7 +723,7 @@
     "provider": {
       "parkingCost": 0.15,
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
-      "name": "Везуха",
+      "name": "Vezuha",
       "urlScheme": "vezuha://car?id=",
       "apiId": "vezuha",
       "id": "Vezuha",
@@ -761,7 +761,7 @@
       "androidUrlScheme": "vezuha://car",
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
       "drivingCost": 0.15,
-      "name": "Везуха",
+      "name": "Vezuha",
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
       "urlScheme": "vezuha://car?id=",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
@@ -782,7 +782,7 @@
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e",
       "urlScheme": "vezuha://car?id=",
-      "name": "Везуха",
+      "name": "Vezuha",
       "parkingCost": 0.15,
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
       "drivingCost": 0.15,
@@ -821,7 +821,7 @@
       "apiId": "vezuha",
       "drivingCost": 0.15,
       "urlScheme": "vezuha://car?id=",
-      "name": "Везуха",
+      "name": "Vezuha",
       "parkingCost": 0.15,
       "id": "Vezuha"
     },
@@ -848,7 +848,7 @@
       "id": "Vezuha",
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
       "androidUrlScheme": "vezuha://car",
-      "name": "Везуха",
+      "name": "Vezuha",
       "urlScheme": "vezuha://car?id="
     },
     "licensePlateFormat": "by",
@@ -862,7 +862,7 @@
   {
     "provider": {
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
-      "name": "Везуха",
+      "name": "Vezuha",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
       "apiId": "vezuha",
       "urlScheme": "vezuha://car?id=",
@@ -902,7 +902,7 @@
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
       "id": "Vezuha",
       "urlScheme": "vezuha://car?id=",
-      "name": "Везуха",
+      "name": "Vezuha",
       "androidUrlScheme": "vezuha://car",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
       "apiId": "vezuha",
@@ -930,7 +930,7 @@
       "apiId": "vezuha",
       "parkingCost": 0.15,
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
-      "name": "Везуха",
+      "name": "Vezuha",
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
       "drivingCost": 0.15,
@@ -951,7 +951,7 @@
       "androidUrlScheme": "vezuha://car",
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
-      "name": "Везуха",
+      "name": "Vezuha",
       "parkingCost": 0.15,
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e",
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
@@ -974,7 +974,7 @@
   {
     "fuel": 42,
     "provider": {
-      "name": "Везуха",
+      "name": "Vezuha",
       "parkingCost": 0.15,
       "pinUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/Vezuha%2Fpicker_vezuha.png?alt=media&token=74f164c4-7333-4f58-af95-65652644e6eb",
       "androidUrlScheme": "vezuha://car",
@@ -1011,7 +1011,7 @@
       "apiId": "vezuha",
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
       "logoUrl": "https://firebasestorage.googleapis.com/v0/b/carsharinghub.appspot.com/o/vezuha.png?alt=media&token=31f04cc2-9cd0-456c-9280-f17d37b0570e",
-      "name": "Везуха",
+      "name": "Vezuha",
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",
       "urlScheme": "vezuha://car?id="
     },
@@ -1030,7 +1030,7 @@
     "lonPrecise": 27.54405,
     "provider": {
       "iosStoreLink": "https://itunes.apple.com/app/id1396472699",
-      "name": "Везуха",
+      "name": "Vezuha",
       "id": "Vezuha",
       "androidUrlScheme": "vezuha://car",
       "androidStoreLink": "https://play.google.com/store/apps/details?id=club.vezuha.app",

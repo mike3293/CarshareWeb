@@ -29,7 +29,7 @@ namespace RouteCalculatorApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors();
             services
                 .AddControllers()
                 .AddJsonOptions(opts =>
@@ -56,6 +56,11 @@ namespace RouteCalculatorApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RouteCalculatorApi v1"));
             }
+
+            // "https://carshare-web.vercel.app"
+            app.UseCors(
+                options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
+            );
 
             app.UseHttpsRedirection();
 

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace RouteCalculatorApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class RoutePricesController : ControllerBase
     {
         private readonly ConfigurationApiClient _configurationApiClient;
@@ -27,8 +27,8 @@ namespace RouteCalculatorApi.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<ActionResult<PriceResponse>> GetPrice(RouteInfoRequest route)
+        [HttpPost]
+        public async Task<ActionResult<PriceResponse>> CalculatePrices(RouteInfoRequest route)
         {
             var carPrice = await _configurationApiClient.GetCarPriceAsync(route.Car.ProviderId, route.Car.Model);
 

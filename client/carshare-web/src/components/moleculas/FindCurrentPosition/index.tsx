@@ -31,8 +31,6 @@ const FindCurrentPosition = ({
     }
   };
 
-  useEffect(zoomToCurrentPosition, [map]);
-
   return (
     <MapButton
       onClick={zoomToCurrentPosition}

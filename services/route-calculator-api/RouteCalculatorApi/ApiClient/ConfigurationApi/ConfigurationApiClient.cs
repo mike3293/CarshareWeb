@@ -1,5 +1,4 @@
 ﻿using ConfigurationApi.ApiClient.PublicCarsApi;
-using ConfigurationApi.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -31,7 +30,7 @@ namespace RouteCalculatorApi.ApiClient.PublicCarsApi
         {
             using var httpClient = new HttpClient();
 
-            using var response = await httpClient.GetAsync($"{_config.ConfigurationApiUri}/tarrifs/{providerId}/cars/{model}");
+            using var response = await httpClient.GetAsync($"{_config.ConfigurationApiUri}/tarrifs/providers/{providerId}/cars/{model}");
             var contentStream = await response.Content.ReadAsStreamAsync();
             using var streamReader = new StreamReader(contentStream);
 

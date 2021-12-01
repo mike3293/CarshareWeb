@@ -7,6 +7,7 @@ import { useRoutingStore } from "src/context/routingStore";
 
 interface ICarInfoPopupProps {
   car: Car;
+  providerId: string;
   providerLogoUrl: string;
 }
 
@@ -31,8 +32,12 @@ const ProviderImage = styled("img")(({ theme }) => ({
   height: theme.spacing(4),
 }));
 
-const CarInfoPopup = ({ car, providerLogoUrl }: ICarInfoPopupProps) => {
-  const addWaypoint = useRoutingStore((s) => s.addWaypoint);
+const CarInfoPopup = ({
+  car,
+  providerId,
+  providerLogoUrl,
+}: ICarInfoPopupProps) => {
+  const addCarWaypoint = useRoutingStore((s) => s.addCarWaypoint);
 
   return (
     <Popup>
@@ -48,9 +53,7 @@ const CarInfoPopup = ({ car, providerLogoUrl }: ICarInfoPopupProps) => {
         <Typography component="div">Топливо: {car.fuel}%</Typography>
         <Button
           color="secondary"
-          onClick={() => {
-            addWaypoint(L.latLng({ lat: car.lat, lng: car.lon }));
-          }}
+          onClick={() => addCarWaypoint(car, providerId)}
         >
           маршрут
           <DirectionsIcon sx={{ ml: 0.5 }} />

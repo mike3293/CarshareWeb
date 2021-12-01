@@ -17,7 +17,7 @@ import shallow from "zustand/shallow";
 import constants from "src/config/constants";
 import services from "src/config/services";
 import MarkerClusterGroup from "react-leaflet-markercluster";
-import L, { LatLngExpression, LatLng } from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 import CurrentPosition from "src/components/moleculas/CurrentPosition";
 import FindCurrentPosition from "src/components/moleculas/FindCurrentPosition";
 import { useMobile } from "src/hooks/useMedia";
@@ -85,7 +85,7 @@ const CarMap = () => {
   return (
     <MapContainer
       center={[53.893009, 27.567444]}
-      zoom={13}
+      zoom={12}
       minZoom={4}
       maxZoom={18}
       zoomControl={false}
@@ -93,13 +93,13 @@ const CarMap = () => {
     >
       {isMobile ? (
         <TileLayer
-          url={constants.fallbackMapLayerUrl}
-          attribution={constants.fallbackMapAttribution}
+          url={constants.FALLBACK_MAP_LAYER_URL}
+          attribution={constants.FALLBACK_MAP_ATTRIBUTION}
         />
       ) : (
         <VectorTileLayer
-          styleUrl={constants.vectorMapStyleUrl}
-          attribution={constants.vectorMapAttribution}
+          styleUrl={constants.VECTOR_MAP_STYLE_URL}
+          attribution={constants.VECTOR_MAP_ATTRIBUTION}
         />
       )}
       <AttributionControl position="bottomleft" />
