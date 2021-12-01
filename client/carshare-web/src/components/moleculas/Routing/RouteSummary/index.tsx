@@ -4,6 +4,7 @@ import {
   Typography,
   Dialog,
   SwipeableDrawer,
+  CircularProgress,
 } from "@mui/material";
 import L from "leaflet";
 import { reduce } from "lodash";
@@ -45,7 +46,7 @@ const RouteSummary = ({
     [parkingTime, summary]
   );
 
-  const { data: prices } = useQuery(
+  const { data: prices, isLoading } = useQuery(
     ["calculatePrices", car, summary, parkingTime],
     () =>
       services.routeCalculation.calculatePrices({
@@ -64,9 +65,12 @@ const RouteSummary = ({
         {summary ? `${(summary.totalDistance / 1000).toFixed(1)} км` : " - "},
         время в пути: {summary ? durationString : " - "}
       </Typography>
-      <Typography>
-        Стоимость: {prices ? `${prices.price / 100} руб` : " - "}
-      </Typography>
+      <Box sx={{ display: "flex" }}>
+        <Typography>
+          Стоимость: {prices && `${prices.price / 100} руб`}
+        </Typography>
+        {isLoading && <CircularProgress size={20} />}
+      </Box>
     </>
   );
 };
