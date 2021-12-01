@@ -42,12 +42,13 @@ namespace ConfigurationApi
 
             services.Configure<ApisConfig>(Configuration.GetSection(nameof(ApisConfig)));
             services.Configure<MongoDbConfig>(Configuration.GetSection(nameof(MongoDbConfig)));
+            services.Configure<DefaultTarrifsConfig>(Configuration.GetSection(nameof(DefaultTarrifsConfig)));
 
             services.AddSingleton<TarrifsService>();
 
             services.AddScoped<PublicCarsApiClient>();
 
-            //services.AddHostedService<TarrifsDataInitializerService>();
+            services.AddHostedService<TarrifsDataInitializerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

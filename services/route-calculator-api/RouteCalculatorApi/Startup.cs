@@ -7,10 +7,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RouteCalculatorApi.ApiClient.PublicCarsApi;
 using RouteCalculatorApi.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace RouteCalculatorApi
@@ -28,13 +30,21 @@ namespace RouteCalculatorApi
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddJsonOptions(opts =>
+                {
+                    var enumConverter = new JsonStringEnumConverter();
+                    opts.JsonSerializerOptions.Converters.Add(enumConverter);
+                });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RouteCalculatorApi", Version = "v1" });
             });
 
             services.Configure<ApisConfig>(Configuration.GetSection(nameof(ApisConfig)));
+
+            services.AddScoped<ConfigurationApiClient>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -26,12 +26,15 @@ namespace ConfigurationApi.Services
 
         private readonly TarrifsService _tarrifsService;
 
+        private readonly DefaultTarrifsConfig _config;
 
-        public TarrifsDataInitializerService(IOptions<ApisConfig> options, IServiceProvider serviceProvider, ILogger<TarrifsDataInitializerService> logger, TarrifsService tarrifsService)
+
+        public TarrifsDataInitializerService(IOptions<DefaultTarrifsConfig> options, IServiceProvider serviceProvider, ILogger<TarrifsDataInitializerService> logger, TarrifsService tarrifsService)
         {
             _serviceProvider = serviceProvider;
             _logger = logger;
             _tarrifsService = tarrifsService;
+            _config = options.Value;
         }
 
 
@@ -58,7 +61,7 @@ namespace ConfigurationApi.Services
                     {
                         if(!providerTarrif.CarPrices.Any(cp => cp.Model == car.Model))
                         {
-                            providerTarrif.CarPrices.Add(new CarPrice() { Model = car.Model, Brand = car.Brand });
+                            providerTarrif.CarPrices.Add(CreateCarPriceFrom(car));
                         }
                     }
 
@@ -72,7 +75,7 @@ namespace ConfigurationApi.Services
                     var tarrif = new ProviderWithTarrifs()
                     {
                         Provider = new Provider() { Id = branding.Id, Name = branding.Name, LogoUrl = branding.LogoUrl },
-                        CarPrices = branding.Cars.Select(c => new CarPrice() { Model = c.Model, Brand = c.Brand }).ToList()
+                        CarPrices = branding.Cars.Select(c => CreateCarPriceFrom(c)).ToList()
                     };
 
                     await _tarrifsService.Create(tarrif);
@@ -87,6 +90,17 @@ namespace ConfigurationApi.Services
         public Task StopAsync(CancellationToken cancellationToken)
         {
             return Task.CompletedTask;
+        }
+
+        private CarPrice CreateCarPriceFrom(Car car)
+        {
+            return new CarPrice()
+            {
+                Model = car.Model,
+                Brand = car.Brand,
+                PerMinParkingCost = _config.PerMinParkingCost,
+                PerMinCost = _config.PerMinCost
+            };
         }
     }
 }

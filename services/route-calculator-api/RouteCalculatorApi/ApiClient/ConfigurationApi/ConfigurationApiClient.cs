@@ -1,7 +1,9 @@
-﻿using ConfigurationApi.Configuration;
+﻿using ConfigurationApi.ApiClient.PublicCarsApi;
+using ConfigurationApi.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using RouteCalculatorApi.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,20 +27,20 @@ namespace RouteCalculatorApi.ApiClient.PublicCarsApi
         }
 
 
-        public async Task<List<ProviderWithCars>> GetCarBrandingsAsync()
+        public async Task<CarPrice> GetCarPriceAsync(string providerId, string model)
         {
             using var httpClient = new HttpClient();
 
-            using var response = await httpClient.GetAsync($"{_config.PublicCarsApiUri}/publicCars/branding");
+            using var response = await httpClient.GetAsync($"{_config.ConfigurationApiUri}/tarrifs/{providerId}/cars/{model}");
             var contentStream = await response.Content.ReadAsStreamAsync();
             using var streamReader = new StreamReader(contentStream);
 
             using var jsonReader = new JsonTextReader(streamReader);
             var serializer = new JsonSerializer();
 
-            var brandings = serializer.Deserialize<List<ProviderWithCars>>(jsonReader);
+            var carPrice = serializer.Deserialize<CarPrice>(jsonReader);
 
-            return brandings;
+            return carPrice;
         }
     }
 }

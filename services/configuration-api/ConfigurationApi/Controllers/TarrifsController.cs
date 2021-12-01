@@ -38,14 +38,19 @@ namespace ConfigurationApi.Controllers
             return await _tarrifsService.GetAll();
         }
 
-        [HttpGet("{id}/cars/{model}")]
-        public async Task<ActionResult<CarPrice>> GetCarPrice(string id, string model)
+        [HttpGet("providers/{providerId}/cars/{model}")]
+        public async Task<ActionResult<CarPrice>> GetCarPrice(string providerId, string model)
         {
-            var provider = await _tarrifsService.GetById(id);
+            var provider = await _tarrifsService.GetById(providerId);
+
+            if (provider is null)
+            {
+                return NotFound();
+            }
 
             var carPrice = provider.CarPrices.FirstOrDefault(c => c.Model == model);
 
-            if(carPrice is null)
+            if (carPrice is null)
             {
                 return NotFound();
             }
@@ -57,6 +62,11 @@ namespace ConfigurationApi.Controllers
         public async Task<IActionResult> UpdateTarrifs(string id, IList<CarPrice> carPrices)
         {
             var provider = await _tarrifsService.GetById(id);
+
+            if (provider is null)
+            {
+                return NotFound();
+            }
 
             provider.CarPrices = carPrices;
 
