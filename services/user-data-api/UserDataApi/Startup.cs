@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UserDataApi.Configuration;
+using UserDataApi.Services;
 
 namespace UserDataApi
 {
@@ -29,6 +30,8 @@ namespace UserDataApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+
             services.Configure<MongoDbConfig>(Configuration.GetSection(nameof(MongoDbConfig)));
             var apisConfig = Configuration.GetSection(nameof(ApisConfig)).Get<ApisConfig>();
 
@@ -48,6 +51,8 @@ namespace UserDataApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UserDataApi", Version = "v1" });
             });
+
+            services.AddSingleton<RoutesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +64,11 @@ namespace UserDataApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserDataApi v1"));
             }
+
+            // "https://carshare-web.vercel.app"
+            app.UseCors(
+                options => options.WithOrigins("*").AllowAnyMethod().AllowAnyHeader()
+            );
 
             app.UseHttpsRedirection();
 

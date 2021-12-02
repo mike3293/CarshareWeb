@@ -30,22 +30,27 @@ namespace UserDataApi.Services
 
         public async Task<Route> GetById(string id)
         {
-            return await _routes.Find(t => t.Id == id).FirstOrDefaultAsync();
+            return await _routes.Find(t => t.UserId == id).FirstOrDefaultAsync();
         }
 
-        public async Task Create(Route tarrif)
+        public async Task Create(Route route)
         {
-            await _routes.InsertOneAsync(tarrif);
+            await _routes.InsertOneAsync(route);
         }
 
-        public async Task Update(Route tarrif)
+        public async Task Update(Route route)
         {
-            await _routes.ReplaceOneAsync(t => t.Id == tarrif.Id, tarrif);
+            await _routes.ReplaceOneAsync(t => t.UserId == route.UserId, route);
+        }
+
+        public async Task Upsert(Route route)
+        {
+            await _routes.ReplaceOneAsync(t => t.UserId == route.UserId, route, new ReplaceOptions() { IsUpsert = true });
         }
 
         public async Task Remove(string id)
         {
-            await _routes.DeleteOneAsync(t => t.Id == id);
+            await _routes.DeleteOneAsync(t => t.UserId == id);
         }
     }
 }
