@@ -1,6 +1,7 @@
 ﻿using IdentityModel.Client;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -31,6 +32,8 @@ namespace RouteCalculatorApi.Extensions
             {
                 return tokenResponse.Error;
             }
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtSecurityToken = tokenHandler.ReadJwtToken(tokenResponse.AccessToken);
 
             httpClient.SetBearerToken(tokenResponse.AccessToken);
 
