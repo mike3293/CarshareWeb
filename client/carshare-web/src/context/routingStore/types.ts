@@ -14,6 +14,7 @@ export interface CustomWaypoint extends L.LatLng {
 export interface IRoutingStore {
   selectedCar?: CarWithProviderId;
   waypoints: CustomWaypoint[];
+  setWaypoints: (waypoints: CustomWaypoint[]) => void;
   fetchWaypoints: (userId: string) => void;
   saveWaypoints: (userId: string) => void;
   setRawWaypoints: (waypoints: L.Routing.Waypoint[]) => Promise<void>;

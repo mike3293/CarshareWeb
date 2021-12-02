@@ -43,7 +43,6 @@ const RouteActions = ({
       <IconButton color="secondary">
         <SaveIcon onClick={() => saveWaypoints(userId)} />
       </IconButton>
-      {userId}
     </Box>
   );
 };

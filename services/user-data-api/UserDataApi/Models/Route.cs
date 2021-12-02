@@ -10,7 +10,6 @@ namespace UserDataApi.Models
     public class Route
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
         public string UserId { get; set; }
 
         public IList<Waypoint> Waypoints { get; set; }

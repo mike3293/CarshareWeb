@@ -27,7 +27,13 @@ abstract class ServiceBase {
   ): Promise<TResult> {
     const response = await this.fetch(path, "POST", params, body, init);
 
-    return await response.json();
+    try {
+      const result = await response.json();
+
+      return result;
+    } catch {
+      return null as unknown as TResult;
+    }
   }
 
   protected async put<TResult>(
@@ -38,7 +44,13 @@ abstract class ServiceBase {
   ): Promise<TResult> {
     const response = await this.fetch(path, "PUT", params, body, init);
 
-    return await response.json();
+    try {
+      const result = await response.json();
+
+      return result;
+    } catch {
+      return null as unknown as TResult;
+    }
   }
 
   private async fetch(

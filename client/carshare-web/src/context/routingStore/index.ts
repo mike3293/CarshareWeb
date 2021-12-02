@@ -9,21 +9,28 @@ const routingStore = (preloadedState = {}) => {
   return create<IRoutingStore>((set, get) => ({
     waypoints: [],
     selectedCar: undefined,
+    setWaypoints: (waypoints) => set({ waypoints }),
     fetchWaypoints: async (userId) => {
       const route = await services.userData.getRoute(userId);
 
       set({
-        waypoints: route.waypoints.map(
-          (w) =>
-            ({
-              ...w,
-              ...L.latLng(w),
-            } as CustomWaypoint)
-        ),
+        waypoints: [
+          get().waypoints[0],
+          ...route.waypoints.map(
+            (w) =>
+              ({
+                ...w,
+                ...L.latLng(w),
+              } as CustomWaypoint)
+          ),
+        ],
       });
     },
     saveWaypoints: async (userId) => {
-      await services.userData.saveRoute({ waypoints: get().waypoints, userId });
+      await services.userData.saveRoute({
+        waypoints: get().waypoints.slice(1),
+        userId,
+      });
     },
     setRawWaypoints: async (rawWaypoints) => {
       const waypoints = get().waypoints.slice();
