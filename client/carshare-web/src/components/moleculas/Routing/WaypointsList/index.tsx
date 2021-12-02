@@ -47,7 +47,7 @@ const WaypointsList = () => {
 
   return (
     // TODO: adjust height
-    <Box sx={isMobile ? { height: "35vh", overflowY: "scroll" } : undefined}>
+    <Box>
       <Box sx={{ mb: 2 }}>
         <WaypointItem disableActions waypoint={firstWaypoint}>
           <Tooltip title="Закрыть маршрут">
@@ -66,7 +66,11 @@ const WaypointsList = () => {
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided) => (
-            <Box ref={provided.innerRef} {...provided.droppableProps}>
+            <Box
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+              sx={{ height: isMobile ? 120 : 290, overflowY: "auto" }}
+            >
               {draggableWaypoints.map((w, index) => (
                 <Draggable key={w.id} draggableId={w.id} index={index}>
                   {(provided) => (

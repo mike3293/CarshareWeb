@@ -60,7 +60,15 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
   const userId = useUserStore((s) => s.id);
 
   const renderDialogContent = () => (
-    <Box sx={{ px: 2, display: "grid", gridAutoFlow: "row", gap: 1 }}>
+    <Box
+      sx={{
+        px: 2,
+        display: "grid",
+        gridAutoFlow: "row",
+        gap: 1,
+        overflow: "hidden",
+      }}
+    >
       <Box sx={{ display: "flex" }}>
         {selectedCar && <CarSummary car={selectedCar} />}
         {userId && <RouteActions sx={{ ml: "auto" }} userId={userId} />}
@@ -76,7 +84,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
       {isMobile ? (
         <PortalComponent>
           <DrawerWithEdge
-            summary={summary ? `Маршрут из ` : "Постройте ваш маршрут"}
+            summary={summary ? `Детали` : "Постройте ваш маршрут"}
           >
             {renderDialogContent()}
           </DrawerWithEdge>

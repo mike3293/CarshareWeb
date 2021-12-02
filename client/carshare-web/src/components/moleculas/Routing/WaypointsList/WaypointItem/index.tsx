@@ -30,7 +30,7 @@ const WaypointItem = ({
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: "auto 35px",
+        gridTemplateColumns: "auto 40px",
         gap: 1,
         alignItems: "center",
       }}

@@ -80,7 +80,9 @@ const TimeSelect = ({
           variant="outlined"
           type="number"
           value={time}
-          onChange={(e) => setTime(e.target.value)}
+          onChange={(event) =>
+            +event.target.value > 0 ? setTime(event.target.value) : setTime("")
+          }
         />
       </Popover>
     </>
