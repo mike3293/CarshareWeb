@@ -28,7 +28,7 @@ const RouteActions = ({
   userId,
 }: {
   sx: SxProps<Theme>;
-  userId: IUserStore["id"];
+  userId: string;
 }) => {
   const [fetchWaypoints, saveWaypoints] = useRoutingStore(
     (s) => [s.fetchWaypoints, s.saveWaypoints],
