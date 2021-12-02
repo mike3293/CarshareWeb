@@ -9,6 +9,7 @@ const constants = {
     "\u003ca href='https://www.openstreetmap.org/copyright' target='_blank'\u003e\u0026copy; OpenStreetMap contributors\u003c/a\u003e",
   CARS_API_URL: process.env.NEXT_PUBLIC_CARS_API_URL!,
   CALCULATOR_API_URL: process.env.NEXT_PUBLIC_CALCULATOR_API_URL!,
+  USER_DATA_API_URL: process.env.NEXT_PUBLIC_USER_DATA_API_URL!,
   CONFIG_API_URL: process.env.NEXT_PUBLIC_CONFIG_API_URL!,
   GEOCODER_API_URL: process.env.NEXT_PUBLIC_GEOCODER_API_URL!,
   IS_URL: process.env.NEXT_PUBLIC_IS_URL!,

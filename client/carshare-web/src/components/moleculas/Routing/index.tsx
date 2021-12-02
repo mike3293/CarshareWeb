@@ -20,7 +20,7 @@ import shallow from "zustand/shallow";
 import getDurationString from "src/utils/getDurationString";
 import CarSummary from "./CarSummary";
 import RouteSummary from "./RouteSummary";
-import RoutActions from "./RoutActions";
+import RouteActions from "./RouteActions";
 import { useUserStore } from "src/context/userStore";
 
 const Routing = ({ routingMachine }: IRoutingProps) => {
@@ -63,7 +63,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
     <Box sx={{ px: 2, display: "grid", gridAutoFlow: "row", gap: 1 }}>
       <Box sx={{ display: "flex" }}>
         {selectedCar && <CarSummary car={selectedCar} />}
-        {userId && <RoutActions sx={{ ml: "auto" }} userId={userId} />}
+        {userId && <RouteActions sx={{ ml: "auto" }} userId={userId} />}
       </Box>
       <RouteSummary car={selectedCar} summary={summary} waypoints={waypoints} />
       <WaypointsList />

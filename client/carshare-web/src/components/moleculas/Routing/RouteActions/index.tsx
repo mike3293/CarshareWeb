@@ -23,33 +23,29 @@ import DownloadIcon from "@mui/icons-material/Download";
 import SaveIcon from "@mui/icons-material/Save";
 import { IUserStore } from "src/context/userStore/types";
 
-const RoutActions = ({
+const RouteActions = ({
   sx,
   userId,
 }: {
   sx: SxProps<Theme>;
   userId: IUserStore["id"];
 }) => {
-  const [waypoints, setWaypoints] = useRoutingStore(
-    (s) => [s.waypoints, s.setWaypoints],
+  const [fetchWaypoints, saveWaypoints] = useRoutingStore(
+    (s) => [s.fetchWaypoints, s.saveWaypoints],
     shallow
   );
-
-  const fetchSavedRoute = async () => {};
-
-  const uploadRoute = async () => {};
 
   return (
     <Box sx={sx}>
       <IconButton color="secondary">
-        <DownloadIcon onClick={fetchSavedRoute} />
+        <DownloadIcon onClick={() => fetchWaypoints(userId)} />
       </IconButton>
       <IconButton color="secondary">
-        <SaveIcon onClick={uploadRoute} />
+        <SaveIcon onClick={() => saveWaypoints(userId)} />
       </IconButton>
       {userId}
     </Box>
   );
 };
 
-export default RoutActions;
+export default RouteActions;
