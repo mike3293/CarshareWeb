@@ -1,3 +1,4 @@
+import { CustomWaypoint } from "src/context/routingStore/types";
 import { Price } from "src/types/Price";
 import AuthService from "../authService";
 import { UserStoreApi } from "../authService/types";
@@ -9,7 +10,7 @@ class UserDataService extends AuthService {
     this.initialize({ baseURL });
   }
 
-  public async getRoute(userId: string): Promise<RouteWaypoints> {
+  public async getRoute(userId: string): Promise<CustomWaypoint[]> {
     return this.get(`routes/${userId}`);
   }
 

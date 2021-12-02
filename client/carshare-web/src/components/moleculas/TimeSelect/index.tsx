@@ -7,6 +7,7 @@ import {
   Typography,
   TextField,
   Box,
+  Tooltip,
 } from "@mui/material";
 import { useQuery } from "react-query";
 import services from "src/config/services";
@@ -42,18 +43,20 @@ const TimeSelect = ({
 
   return (
     <>
-      <IconButton
-        sx={{
-          p: 0.25,
-          color: residenceTimeMins ? blue[200] : grey[400],
-          "&:hover": {
-            color: residenceTimeMins ? blue[400] : grey[500],
-          },
-        }}
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-      >
-        <TimerOutlinedIcon />
-      </IconButton>
+      <Tooltip title="Изменить время нахождения в точке">
+        <IconButton
+          sx={{
+            p: 0.25,
+            color: residenceTimeMins ? blue[200] : grey[400],
+            "&:hover": {
+              color: residenceTimeMins ? blue[400] : grey[500],
+            },
+          }}
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+        >
+          <TimerOutlinedIcon />
+        </IconButton>
+      </Tooltip>
       <Popover
         open={!!anchorEl}
         anchorEl={anchorEl}

@@ -6,6 +6,8 @@ import {
   SwipeableDrawer,
   Theme,
   IconButton,
+  Tooltip,
+  CircularProgress,
 } from "@mui/material";
 import L from "leaflet";
 import { reduce } from "lodash";
@@ -22,6 +24,12 @@ import { SxProps } from "@mui/system";
 import DownloadIcon from "@mui/icons-material/Download";
 import SaveIcon from "@mui/icons-material/Save";
 import { IUserStore } from "src/context/userStore/types";
+import { useMutation } from "react-query";
+
+const Root = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+}));
 
 const RouteActions = ({
   sx,
@@ -35,15 +43,42 @@ const RouteActions = ({
     shallow
   );
 
+  const { mutate: load, isLoading: isLoading } = useMutation<
+    void,
+    Error,
+    string
+  >((userId) => fetchWaypoints(userId));
+
+  const { mutate: save, isLoading: isSaving } = useMutation<
+    void,
+    Error,
+    string
+  >((userId) => saveWaypoints(userId));
+
+  const inProgress = isSaving || isLoading;
+
   return (
-    <Box sx={sx}>
-      <IconButton color="secondary">
-        <DownloadIcon onClick={() => fetchWaypoints(userId)} />
-      </IconButton>
-      <IconButton color="secondary">
-        <SaveIcon onClick={() => saveWaypoints(userId)} />
-      </IconButton>
-    </Box>
+    <Root sx={sx}>
+      {inProgress && <CircularProgress size={20} />}
+      <Tooltip title="Загрузить сохраненный маршрут">
+        <IconButton
+          onClick={() => load(userId)}
+          disabled={inProgress}
+          color="secondary"
+        >
+          <DownloadIcon />
+        </IconButton>
+      </Tooltip>
+      <Tooltip title="Сохранить текущий маршрут">
+        <IconButton
+          onClick={() => save(userId)}
+          disabled={inProgress}
+          color="secondary"
+        >
+          <SaveIcon />
+        </IconButton>
+      </Tooltip>
+    </Root>
   );
 };
 

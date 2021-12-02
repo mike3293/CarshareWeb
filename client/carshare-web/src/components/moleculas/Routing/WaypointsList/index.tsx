@@ -1,8 +1,6 @@
-import { Box, styled, Typography, IconButton } from "@mui/material";
-import L from "leaflet";
+import { Box, Tooltip, IconButton } from "@mui/material";
 import shallow from "zustand/shallow";
-import { Car } from "src/types/Car";
-import React, { useMemo, useState } from "react";
+import React from "react";
 import { useRoutingStore } from "src/context/routingStore";
 import {
   DragDropContext,
@@ -52,15 +50,17 @@ const WaypointsList = () => {
     <Box sx={isMobile ? { height: "35vh", overflowY: "scroll" } : undefined}>
       <Box sx={{ mb: 2 }}>
         <WaypointItem disableActions waypoint={firstWaypoint}>
-          <IconButton
-            sx={{
-              color: red[400],
-              p: 0.5,
-            }}
-            onClick={resetWaypoints}
-          >
-            <CancelIcon sx={{ fontSize: 27 }} />
-          </IconButton>
+          <Tooltip title="Закрыть маршрут">
+            <IconButton
+              sx={{
+                color: red[400],
+                p: 0.5,
+              }}
+              onClick={resetWaypoints}
+            >
+              <CancelIcon sx={{ fontSize: 27 }} />
+            </IconButton>
+          </Tooltip>
         </WaypointItem>
       </Box>
       <DragDropContext onDragEnd={onDragEnd}>

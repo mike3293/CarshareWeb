@@ -26,11 +26,11 @@ namespace UserDataApi.Controllers
 
 
         [HttpGet("{userId}")]
-        public async Task<Route> GetRoute(string userId)
+        public async Task<IEnumerable<Waypoint>> GetRoute(string userId)
         {
             var route = await _routesService.GetById(userId);
 
-            return route;
+            return route?.Waypoints ?? new List<Waypoint>();
         }
 
         [HttpPost]
