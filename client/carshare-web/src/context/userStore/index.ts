@@ -3,12 +3,14 @@ import { IUserStore } from "./types";
 
 const userStore = (preloadedState = {}) => {
   return create<IUserStore>((set) => ({
+    id: undefined,
     accessToken: undefined,
     email: undefined,
     role: undefined,
     isMainAdmin: undefined,
     setOidcUser: (user) => {
       set({
+        id: user.profile.user_id,
         accessToken: user.access_token,
         email: user.profile.email,
         role: user.profile.role,
@@ -17,6 +19,7 @@ const userStore = (preloadedState = {}) => {
     },
     resetUser: () => {
       set({
+        id: undefined,
         accessToken: undefined,
         email: undefined,
         role: undefined,

@@ -1,6 +1,7 @@
 import { Role } from "src/types/Role";
 
 export interface IUserStore {
+  id?: string;
   accessToken?: string;
   email?: string;
   role?: Role;

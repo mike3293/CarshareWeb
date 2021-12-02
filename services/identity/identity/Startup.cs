@@ -43,6 +43,7 @@ namespace Identity
             var mongoDbSettings = Configuration.GetSection(nameof(MongoDbConfig)).Get<MongoDbConfig>();
 
             services.AddIdentity<ApplicationUser, ApplicationRole>()
+                .AddClaimsPrincipalFactory<AppClaimsPrincipalFactory>()
                 .AddMongoDbStores<ApplicationUser, ApplicationRole, Guid>(mongoDbSettings.ConnectionString, mongoDbSettings.Name);
 
             services.Configure<IdentityOptions>(options =>

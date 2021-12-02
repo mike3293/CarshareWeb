@@ -11,6 +11,7 @@ import {
   AccordionDetails,
   Typography,
   styled,
+  Button,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useQuery } from "react-query";
@@ -61,9 +62,10 @@ const Configuration: NextPage = () => {
     <Container>
       <Link href="/">
         <a>
-          <Typography>{"<"} Вернутся на карту</Typography>
+          <Button>{"<"} Вернутся на карту</Button>
         </a>
       </Link>
+      <Typography variant="h5">Конфигурация тарифов</Typography>
       {data.map((p) => (
         <Accordion key={p.id} sx={{ boxShadow: 2 }}>
           <AccordionSummary

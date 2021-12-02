@@ -12,7 +12,7 @@ namespace Identity.Services
     public class ProfileService : DefaultProfileService
     {
         // TODO: find better way to include them
-        private static string[] _claimsToInclude = { "is_main_admin", "role", "email" };
+        private static string[] _claimsToInclude = { "is_main_admin", "role", "email", "user_id" };
 
 
         public ProfileService(ILogger<ProfileService> logger) : base(logger)
