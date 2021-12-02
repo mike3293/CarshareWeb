@@ -10,6 +10,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
+using System.IO;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Identity
 {
@@ -61,7 +63,7 @@ namespace Identity
 
             var identityServerSettings = Configuration.GetSection(nameof(IdentityServerConfig)).Get<IdentityServerConfig>();
 
-            services.AddIdentityServer(options =>
+            var identityServerBuilder = services.AddIdentityServer(options =>
             {
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseErrorEvents = true;
@@ -74,8 +76,10 @@ namespace Identity
             .AddInMemoryApiScopes(identityServerSettings.ApiScopes)
             .AddInMemoryClients(identityServerSettings.Clients)
             .AddInMemoryIdentityResources(identityServerSettings.IdentityResources)
-            .AddProfileService<ProfileService>()
-            .AddDeveloperSigningCredential();
+            .AddProfileService<ProfileService>();
+
+            var certificate = new X509Certificate2(identityServerSettings.Certificate.Path, identityServerSettings.Certificate.Password);
+            identityServerBuilder.AddSigningCredential(certificate);
 
             services.AddControllers();
 

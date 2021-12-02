@@ -47,3 +47,7 @@ appsettings-local.jsonc
 appsettings.LocalSecrets.json
 
 **/old
+
+# Certificates
+**/old
+**/Cert

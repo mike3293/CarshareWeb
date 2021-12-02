@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace Identity.Configuration
 {
+    public class Certificate
+    {
+        public string Path { get; init; }
+
+        public string Password { get; init; }
+    }
+
     public class IdentityServerConfig
     {
 
@@ -21,5 +28,7 @@ namespace Identity.Configuration
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile()
             };
+
+        public Certificate Certificate { get; init; }
     }
 }
