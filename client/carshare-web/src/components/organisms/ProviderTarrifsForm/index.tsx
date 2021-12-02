@@ -17,11 +17,13 @@ const providerTarrifsSchema: Yup.SchemaOf<ProviderTarrifsFormValues> =
           model: Yup.string().required(),
           brand: Yup.string(),
           perMinCost: Yup.number()
+            .typeError("Значение должно быть числом")
             .nullable()
             .min(0, "Значение должно быть больше нуля")
             .required("Обязательное поле"),
           perMinParkingCost: Yup.number()
             .nullable()
+            .typeError("Значение должно быть числом")
             .min(0, "Значение должно быть больше нуля")
             .required("Обязательное поле"),
         })
@@ -92,15 +94,11 @@ const ProviderTarrifsForm = ({
                   label="В минуту"
                   name={`carsTarrifs.${i}.perMinCost`}
                   variant="filled"
-                  type="tel"
-                  inputProps={{ pattern: "[0-9]*" }}
                 />
                 <FormTextField
                   label="Стоянка в минуту"
                   name={`carsTarrifs.${i}.perMinParkingCost`}
                   variant="filled"
-                  type="tel"
-                  inputProps={{ pattern: "[0-9]*" }}
                 />
               </FormFields>
             </FormItem>

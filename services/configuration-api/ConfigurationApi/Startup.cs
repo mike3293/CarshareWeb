@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,10 @@ namespace ConfigurationApi
                 .AddJwtBearer(options =>
                 {
                     options.Authority = apisConfig.IdentityServerUri;
-                    options.Audience = "configuration-api";
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
                 });
 
             services.AddControllers();

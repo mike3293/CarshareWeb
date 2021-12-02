@@ -29,7 +29,6 @@ import RoutingMachine from "../moleculas/RoutingMachine";
 import CarMarkers from "../moleculas/CarMarkers";
 import Routing from "../moleculas/Routing";
 import { useUserStore } from "src/context/userStore";
-import { Role } from "src/types/Role";
 import { Policy, usePolicy } from "src/hooks/usePolicy";
 import AdminPanelLink from "../moleculas/AdminPanelLink";
 L.Icon.Default.imagePath = "images/leaflet/";
