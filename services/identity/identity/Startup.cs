@@ -70,6 +70,7 @@ namespace Identity
             })
             .AddAspNetIdentity<ApplicationUser>()
             .AddInMemoryApiResources(identityServerSettings.ApiResources)
+            .AddInMemoryApiScopes(identityServerSettings.ApiScopes)
             .AddInMemoryClients(identityServerSettings.Clients)
             .AddInMemoryIdentityResources(identityServerSettings.IdentityResources)
             .AddProfileService<ProfileService>()

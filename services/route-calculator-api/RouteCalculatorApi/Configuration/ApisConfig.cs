@@ -8,5 +8,7 @@ namespace RouteCalculatorApi.Configuration
     public class ApisConfig
     {
         public string ConfigurationApiUri { get; init; }
+
+        public string IdentityServerUri { get; init; }
     }
 }

@@ -17,7 +17,7 @@ namespace ConfigurationApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize]
     public class TarrifsController : ControllerBase
     {
         private readonly ILogger<TarrifsController> _logger;
@@ -33,6 +33,7 @@ namespace ConfigurationApi.Controllers
 
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IEnumerable<ProviderWithTarrifs>> GetTarrifs()
         {
             return await _tarrifsService.GetAll();
@@ -59,6 +60,7 @@ namespace ConfigurationApi.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateTarrifs(string id, IList<CarPrice> carPrices)
         {
             var provider = await _tarrifsService.GetById(id);

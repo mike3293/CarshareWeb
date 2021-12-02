@@ -67,7 +67,7 @@ const RouteSummary = ({
       </Typography>
       <Box sx={{ display: "flex" }}>
         <Typography>
-          Стоимость: {prices && `${prices.price / 100} руб`}
+          Стоимость: {prices ? `${prices.price / 100} руб` : " - "}
         </Typography>
         {isLoading && <CircularProgress size={20} />}
       </Box>
