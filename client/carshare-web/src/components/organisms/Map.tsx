@@ -126,7 +126,9 @@ const CarMap = () => {
       {hasWaypoints && routingMachineRef.current && (
         <Routing routingMachine={routingMachineRef.current} />
       )}
-      {haveAccessToConfiguration && <AdminPanelLink isMobile={isMobile} />}
+      {!hasWaypoints && haveAccessToConfiguration && (
+        <AdminPanelLink isMobile={isMobile} />
+      )}
     </MapContainer>
   );
 };

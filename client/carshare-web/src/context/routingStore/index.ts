@@ -1,8 +1,8 @@
 import create from "zustand";
-import { uniqueId } from "lodash";
 import { CustomWaypoint, IRoutingStore } from "./types";
 import services from "src/config/services";
 import L from "leaflet";
+import { uniqueId } from "src/utils/uniqueId";
 
 const routingStore = (preloadedState = {}) => {
   return create<IRoutingStore>((set, get) => ({

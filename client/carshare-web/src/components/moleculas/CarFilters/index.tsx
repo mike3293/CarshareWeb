@@ -5,7 +5,8 @@ import { useFiltersStore } from "src/context/filtersStore";
 import MapButton from "src/components/atoms/MapButton";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useEffect, useState } from "react";
-
+import FilterActions from "./FilterActions";
+import { useUserStore } from "src/context/userStore";
 interface ICarFiltersProps {
   isMobile: boolean;
 }
@@ -31,6 +32,8 @@ const CarFilters = ({ isMobile }: ICarFiltersProps) => {
       setProviderIds(data.map((p) => p.id));
     }
   }, [data]);
+
+  const userId = useUserStore((s) => s.id);
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -61,6 +64,7 @@ const CarFilters = ({ isMobile }: ICarFiltersProps) => {
         disableScrollLock
       >
         <Root>
+          {userId && <FilterActions userId={userId} sx={{ ml: -1 }} />}
           {data.map((p) => (
             <FormControlLabel
               key={p.id}

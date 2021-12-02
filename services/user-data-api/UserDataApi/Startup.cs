@@ -53,6 +53,7 @@ namespace UserDataApi
             });
 
             services.AddSingleton<RoutesService>();
+            services.AddSingleton<FiltersService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +75,7 @@ namespace UserDataApi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

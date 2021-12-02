@@ -5,3 +5,9 @@ export interface RouteWaypoints {
 
   waypoints: CustomWaypoint[];
 }
+
+export interface Filters {
+  userId: string;
+
+  providerIds: string[];
+}

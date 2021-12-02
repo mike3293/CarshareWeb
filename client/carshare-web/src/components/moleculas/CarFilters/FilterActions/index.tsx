@@ -25,21 +25,22 @@ import DownloadIcon from "@mui/icons-material/Download";
 import SaveIcon from "@mui/icons-material/Save";
 import { IUserStore } from "src/context/userStore/types";
 import { useMutation } from "react-query";
+import { useFiltersStore } from "src/context/filtersStore";
 
 const Root = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
 }));
 
-const RouteActions = ({
+const FilterActions = ({
   sx,
   userId,
 }: {
-  sx: SxProps<Theme>;
+  sx?: SxProps<Theme>;
   userId: string;
 }) => {
-  const [fetchWaypoints, saveWaypoints] = useRoutingStore(
-    (s) => [s.fetchWaypoints, s.saveWaypoints],
+  const [fetchProviderIds, saveProviderIds] = useFiltersStore(
+    (s) => [s.fetchFilters, s.saveFilters],
     shallow
   );
 
@@ -47,20 +48,19 @@ const RouteActions = ({
     void,
     Error,
     string
-  >((userId) => fetchWaypoints(userId));
+  >((userId) => fetchProviderIds(userId));
 
   const { mutate: save, isLoading: isSaving } = useMutation<
     void,
     Error,
     string
-  >((userId) => saveWaypoints(userId));
+  >((userId) => saveProviderIds(userId));
 
   const inProgress = isSaving || isLoading;
 
   return (
     <Root sx={sx}>
-      {inProgress && <CircularProgress size={20} />}
-      <Tooltip title="Сохранить текущий маршрут">
+      <Tooltip title="Сохранить текущие фильтры">
         <IconButton
           onClick={() => save(userId)}
           disabled={inProgress}
@@ -69,7 +69,7 @@ const RouteActions = ({
           <SaveIcon />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Загрузить сохраненный маршрут">
+      <Tooltip title="Загрузить сохраненные фильтры">
         <IconButton
           onClick={() => load(userId)}
           disabled={inProgress}
@@ -78,8 +78,9 @@ const RouteActions = ({
           <DownloadIcon />
         </IconButton>
       </Tooltip>
+      {inProgress && <CircularProgress size={20} />}
     </Root>
   );
 };
 
-export default RouteActions;
+export default FilterActions;

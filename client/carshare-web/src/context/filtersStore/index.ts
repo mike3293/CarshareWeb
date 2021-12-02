@@ -1,3 +1,4 @@
+import services from "src/config/services";
 import create, { GetState, SetState } from "zustand";
 import { persist, StoreApiWithPersist } from "zustand/middleware";
 import { IFiltersStore } from "./types";
@@ -10,9 +11,20 @@ const filtersStore = (preloadedState = {}) => {
       GetState<IFiltersStore>,
       StoreApiWithPersist<IFiltersStore>
     >(
-      (set) => ({
+      (set, get) => ({
         selectedProviderIds: [],
         setProviderIds: (providers) => set({ selectedProviderIds: providers }),
+        fetchFilters: async (userId) => {
+          const fetchedFilters = await services.userData.getFilters(userId);
+
+          set({ selectedProviderIds: fetchedFilters.providerIds });
+        },
+        saveFilters: async (userId) => {
+          await services.userData.saveFilters({
+            providerIds: get().selectedProviderIds,
+            userId,
+          });
+        },
         selectedFuelLevel: null,
         setFuelLevel: (fuelLevel) => set({ selectedFuelLevel: fuelLevel }),
         ...preloadedState,

@@ -2,7 +2,7 @@ import { CustomWaypoint } from "src/context/routingStore/types";
 import { Price } from "src/types/Price";
 import AuthService from "../authService";
 import { UserStoreApi } from "../authService/types";
-import { RouteWaypoints } from "./types";
+import { Filters, RouteWaypoints } from "./types";
 
 class UserDataService extends AuthService {
   constructor(baseURL: string, store: UserStoreApi) {
@@ -16,6 +16,14 @@ class UserDataService extends AuthService {
 
   public async saveRoute(route: RouteWaypoints): Promise<void> {
     return this.post("routes", route);
+  }
+
+  public async getFilters(userId: string): Promise<Filters> {
+    return this.get(`filters/${userId}`);
+  }
+
+  public async saveFilters(filters: Filters): Promise<void> {
+    return this.post("filters", filters);
   }
 }
 

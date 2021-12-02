@@ -15,8 +15,8 @@ export interface IRoutingStore {
   selectedCar?: CarWithProviderId;
   waypoints: CustomWaypoint[];
   setWaypoints: (waypoints: CustomWaypoint[]) => void;
-  fetchWaypoints: (userId: string) => void;
-  saveWaypoints: (userId: string) => void;
+  fetchWaypoints: (userId: string) => Promise<void>;
+  saveWaypoints: (userId: string) => Promise<void>;
   setRawWaypoints: (waypoints: L.Routing.Waypoint[]) => Promise<void>;
   addCarWaypoint: (car: Car, providerId: string) => Promise<void>;
   addWaypoint: (waypoint: L.LatLng) => Promise<void>;

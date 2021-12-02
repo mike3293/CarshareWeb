@@ -12,5 +12,7 @@ namespace UserDataApi.Configuration
         public string DbName { get; init; }
 
         public string RoutesCollection { get; init; }
+
+        public string FiltersCollection { get; init; }
     }
 }
