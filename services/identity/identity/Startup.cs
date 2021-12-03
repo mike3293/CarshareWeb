@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Identity
@@ -24,6 +25,18 @@ namespace Identity
         {
             Environment = environment;
             Configuration = configuration;
+        }
+
+        private static byte[] UnPem(string pem)
+        {
+            // This is a shortcut that assumes valid PEM
+            // -----BEGIN words-----\nbase64\n-----END words-----
+            const string Dashes = "-----";
+            int index0 = pem.IndexOf(Dashes);
+            int index1 = pem.IndexOf('\n', index0 + Dashes.Length);
+            int index2 = pem.IndexOf(Dashes, index1 + 1);
+
+            return Convert.FromBase64String(pem.Substring(index1, index2 - index1));
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -78,8 +91,10 @@ namespace Identity
             .AddInMemoryIdentityResources(identityServerSettings.IdentityResources)
             .AddProfileService<ProfileService>();
 
-            var certificate = new X509Certificate2(identityServerSettings.Certificate.Path, identityServerSettings.Certificate.Password);
+            var certificate = X509Certificate2.CreateFromEncryptedPemFile("Cert/cert.pem", identityServerSettings.Certificate.Password, "Cert/cert-key.pem");
+
             identityServerBuilder.AddSigningCredential(certificate);
+
 
             services.AddControllers();
 
