@@ -4,6 +4,8 @@ using Identity.Services;
 using IdentityServer4.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,23 +23,13 @@ namespace Identity
         public IWebHostEnvironment Environment { get; }
         public IConfiguration Configuration { get; }
 
+
         public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
             Environment = environment;
             Configuration = configuration;
         }
 
-        private static byte[] UnPem(string pem)
-        {
-            // This is a shortcut that assumes valid PEM
-            // -----BEGIN words-----\nbase64\n-----END words-----
-            const string Dashes = "-----";
-            int index0 = pem.IndexOf(Dashes);
-            int index1 = pem.IndexOf('\n', index0 + Dashes.Length);
-            int index2 = pem.IndexOf(Dashes, index1 + 1);
-
-            return Convert.FromBase64String(pem.Substring(index1, index2 - index1));
-        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
@@ -95,7 +87,6 @@ namespace Identity
 
             identityServerBuilder.AddSigningCredential(certificate);
 
-
             services.AddControllers();
 
             services.Configure<IdentityDataInitializerConfig>(Configuration.GetSection(nameof(IdentityDataInitializerConfig)));
@@ -106,6 +97,16 @@ namespace Identity
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            if (!env.IsDevelopment())
+            {
+                app.Use(async (ctx, next) =>
+                {
+                    ctx.Request.Scheme = "https";
+
+                    await next();
+                });
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
