@@ -11,6 +11,6 @@ namespace ConfigurationApi.Configuration
 
         public string ConfigurationDbName { get; init; }
 
-        public string TarrifsCollection { get; init; }
+        public string TariffsCollection { get; init; }
     }
 }
