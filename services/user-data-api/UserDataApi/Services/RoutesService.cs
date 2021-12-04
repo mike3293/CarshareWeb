@@ -17,7 +17,7 @@ namespace UserDataApi.Services
         public RoutesService(IOptions<MongoDbConfig> config)
         {
             var client = new MongoClient(config.Value.ConnectionString);
-            var database = client.GetDatabase(config.Value.DbName);
+            var database = client.GetDatabase(config.Value.UserDataDbName);
 
             _routes = database.GetCollection<Route>(config.Value.RoutesCollection);
         }

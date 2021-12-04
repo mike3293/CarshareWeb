@@ -9,7 +9,7 @@ namespace UserDataApi.Configuration
     {
         public string ConnectionString { get; init; }
 
-        public string DbName { get; init; }
+        public string UserDataDbName { get; init; }
 
         public string RoutesCollection { get; init; }
 

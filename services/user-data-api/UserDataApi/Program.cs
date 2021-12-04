@@ -20,7 +20,15 @@ namespace UserDataApi
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
+                    {
+                        if (!hostingContext.HostingEnvironment.IsDevelopment())
+                        {
+                            var settings = config.Build();
+                            var connection = settings.GetConnectionString("AppConfig");
+                            config.AddAzureAppConfiguration(connection);
+                        }
+                    }).UseStartup<Startup>();
                 });
     }
 }
