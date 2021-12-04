@@ -20,6 +20,9 @@ const createRoutineMachineLayer = ({
     showAlternatives: false,
     fitSelectedRoutes: false,
     geocoder: () => null,
+    router: L.Routing.osrmv1({
+      serviceUrl: "https://routing.openstreetmap.de/routed-car/route/v1",
+    }),
     plan: L.Routing.plan(waypoints ?? [], {
       createMarker: function (i, wp) {
         return L.marker(wp.latLng, { draggable: i !== 0 }).on(
