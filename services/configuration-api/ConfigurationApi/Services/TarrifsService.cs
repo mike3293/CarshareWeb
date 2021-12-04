@@ -17,7 +17,7 @@ namespace ConfigurationApi.Services
         public TarrifsService(IOptions<MongoDbConfig> config)
         {
             var client = new MongoClient(config.Value.ConnectionString);
-            var database = client.GetDatabase(config.Value.DbName);
+            var database = client.GetDatabase(config.Value.ConfigurationDbName);
 
             _tarrifs = database.GetCollection<ProviderWithTarrifs>(config.Value.TarrifsCollection);
         }

@@ -9,7 +9,7 @@ namespace ConfigurationApi.Configuration
     {
         public string ConnectionString { get; init; }
 
-        public string DbName { get; init; }
+        public string ConfigurationDbName { get; init; }
 
         public string TarrifsCollection { get; init; }
     }
