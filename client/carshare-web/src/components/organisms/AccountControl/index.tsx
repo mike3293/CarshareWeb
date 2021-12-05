@@ -37,7 +37,7 @@ const AccountControl = () => {
   };
 
   return (
-    <Box sx={{ position: "absolute", zIndex: 3000, right: 10, top: 10 }}>
+    <Box sx={{ position: "absolute", zIndex: 900, right: 10, top: 10 }}>
       {email && (
         <Button color="primary" onClick={signOut}>
           {email} <LogoutIcon sx={{ ml: 1 }} />

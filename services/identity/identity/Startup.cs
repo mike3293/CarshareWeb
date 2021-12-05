@@ -72,6 +72,7 @@ namespace Identity
             {
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseErrorEvents = true;
+                options.Authentication.CookieSlidingExpiration = true;
                 options.UserInteraction.LoginUrl = "/index.html";
                 options.UserInteraction.LogoutUrl = "/logout.html";
                 options.UserInteraction.ErrorUrl = "/error.html";

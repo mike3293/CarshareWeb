@@ -31,6 +31,8 @@ import Routing from "../moleculas/Routing";
 import { useUserStore } from "src/context/userStore";
 import { Policy, usePolicy } from "src/hooks/usePolicy";
 import AdminPanelLink from "../moleculas/AdminPanelLink";
+import { LinearProgress } from "@mui/material";
+
 L.Icon.Default.imagePath = "images/leaflet/";
 
 const CarMap = () => {
@@ -82,54 +84,63 @@ const CarMap = () => {
   });
 
   return (
-    <MapContainer
-      center={[53.893009, 27.567444]}
-      zoom={12}
-      minZoom={4}
-      maxZoom={18}
-      zoomControl={false}
-      attributionControl={false}
-    >
-      {isMobile ? (
-        <TileLayer
-          url={constants.FALLBACK_MAP_LAYER_URL}
-          attribution={constants.FALLBACK_MAP_ATTRIBUTION}
-        />
-      ) : (
-        <VectorTileLayer
-          styleUrl={constants.VECTOR_MAP_STYLE_URL}
-          attribution={constants.VECTOR_MAP_ATTRIBUTION}
+    <>
+      {isLoading && (
+        <LinearProgress
+          sx={{ position: "absolute", zIndex: 900, top: 0, left: 0, right: 0 }}
         />
       )}
-      <AttributionControl position="bottomleft" />
-      {!isMobile && <ZoomControl position="bottomright" />}
-      {currentPosition && <CurrentPosition currentPosition={currentPosition} />}
-      <FindCurrentPosition
-        onPositionChange={setCurrentPosition}
-        isMobile={isMobile}
-      />
-      {!hasWaypoints && routingMachineRef.current && (
-        <MarkerClusterGroup
-          showCoverageOnHover={false}
-          maxClusterRadius={50}
-          disableClusteringAtZoom={15}
-          spiderfyOnMaxZoom={false}
-        >
-          <CarMarkers providers={data} />
-        </MarkerClusterGroup>
-      )}
-      {!hasWaypoints && <CarFilters isMobile={isMobile} />}
-      <RoutingMachine
-        ref={routingMachineRef}
-        refreshWaypoints={refreshWaypoints}
-      />
-      {hasWaypoints && routingMachineRef.current && (
-        <Routing routingMachine={routingMachineRef.current} />
-      )}
-      {!hasWaypoints && haveAccessToConfiguration && (
-        <AdminPanelLink isMobile={isMobile} />
-      )}
-    </MapContainer>
+      <MapContainer
+        center={[53.893009, 27.567444]}
+        zoom={12}
+        minZoom={4}
+        maxZoom={18}
+        zoomControl={false}
+        attributionControl={false}
+      >
+        {isMobile ? (
+          <TileLayer
+            url={constants.FALLBACK_MAP_LAYER_URL}
+            attribution={constants.FALLBACK_MAP_ATTRIBUTION}
+          />
+        ) : (
+          <VectorTileLayer
+            styleUrl={constants.VECTOR_MAP_STYLE_URL}
+            attribution={constants.VECTOR_MAP_ATTRIBUTION}
+          />
+        )}
+        <AttributionControl position="bottomleft" />
+        {!isMobile && <ZoomControl position="bottomright" />}
+        {currentPosition && (
+          <CurrentPosition currentPosition={currentPosition} />
+        )}
+        <FindCurrentPosition
+          onPositionChange={setCurrentPosition}
+          isMobile={isMobile}
+        />
+        {!hasWaypoints && routingMachineRef.current && (
+          <MarkerClusterGroup
+            showCoverageOnHover={false}
+            maxClusterRadius={50}
+            disableClusteringAtZoom={15}
+            spiderfyOnMaxZoom={false}
+          >
+            <CarMarkers providers={data} />
+          </MarkerClusterGroup>
+        )}
+        {!hasWaypoints && <CarFilters isMobile={isMobile} />}
+        <RoutingMachine
+          ref={routingMachineRef}
+          refreshWaypoints={refreshWaypoints}
+        />
+        {hasWaypoints && routingMachineRef.current && (
+          <Routing routingMachine={routingMachineRef.current} />
+        )}
+        {!hasWaypoints && haveAccessToConfiguration && (
+          <AdminPanelLink isMobile={isMobile} />
+        )}
+      </MapContainer>
+    </>
   );
 };
 
