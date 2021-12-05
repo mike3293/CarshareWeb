@@ -35,7 +35,7 @@ namespace PublicCarsApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PublicCarsApi", Version = "v1" });
             });
 
-            services.Configure<ApisConfig>(Configuration.GetSection(nameof(ApisConfig)));
+            services.Configure<ExternalCarsConfig>(Configuration.GetSection(nameof(ExternalCarsConfig)));
 
             services.AddScoped<ExternalPublicCarsApiClient>();
         }

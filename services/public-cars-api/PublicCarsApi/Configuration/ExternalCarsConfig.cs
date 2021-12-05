@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace PublicCarsApi.Configuration
 {
-    public class ApisConfig
+    public class ExternalCarsConfig
     {
+        public bool Enabled { get; init; }
+
         public string ExternalPublicCarsApiUri { get; init; }
     }
 }
