@@ -39,11 +39,11 @@ namespace IdentityServer.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var context = await _interaction.GetAuthorizationContextAsync(request.ReturnUrl);
-            var user = await _userManager.FindByEmailAsync(request.Email);
+            var user = await _userManager.FindByEmailAsync(request.Email);  
 
             if (user is not null && context is not null)
             {
-                await _userSignInManager.SignInAsync(user, true);
+                await _userSignInManager.PasswordSignInAsync(request.Email, request.Password, true, false);
 
                 return Ok(new { RedirectUrl = request.ReturnUrl, IsOk = true });
             }

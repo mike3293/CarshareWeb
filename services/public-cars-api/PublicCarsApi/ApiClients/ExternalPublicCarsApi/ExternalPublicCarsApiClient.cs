@@ -15,17 +15,14 @@ namespace PublicCarsApi.ApiClients.PublicCarsApi
     {
         private readonly ExternalCarsConfig _config;
 
-        private readonly ILogger<ExternalPublicCarsApiClient> _logger;
 
-
-        public ExternalPublicCarsApiClient(IOptions<ExternalCarsConfig> options, ILogger<ExternalPublicCarsApiClient> logger)
+        public ExternalPublicCarsApiClient(IOptions<ExternalCarsConfig> options)
         {
             _config = options.Value;
-            _logger = logger;
         }
 
 
-        public async Task<List<ExternalCar>> GetExternalCarsAsync()
+        virtual public async Task<List<ExternalCar>> GetExternalCarsAsync()
         {
             if (_config.Enabled)
             {

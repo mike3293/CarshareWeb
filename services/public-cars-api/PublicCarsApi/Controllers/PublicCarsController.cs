@@ -66,7 +66,7 @@ namespace PublicCarsApi.Controllers
 
         [HttpGet("branding")]
         [ResponseCache(Duration = 86400, Location = ResponseCacheLocation.Any, NoStore = false)]
-        public async Task<IEnumerable<Provider>> GetProvidersCarTypes()
+        public async Task<IEnumerable<ProviderWithCarBrandings>> GetProvidersCarTypes()
         {
             var cars = await _externalPublicCarsApiClient.GetExternalCarsAsync();
 
