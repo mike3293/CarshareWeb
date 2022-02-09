@@ -1,17 +1,16 @@
-﻿using ConfigurationApi.Configuration;
-using Microsoft.Extensions.Options;
+﻿using Newtonsoft.Json;
 
 namespace ConfigurationApi.Services
 {
     public class WarmUpService : IHostedService, IDisposable
     {
         private readonly ILogger<WarmUpService> _logger;
-        private readonly ApisConfig _config;
+        private readonly IConfiguration _config;
         private Timer _timer = null!;
 
-        public WarmUpService(IOptions<ApisConfig> options, ILogger<WarmUpService> logger)
+        public WarmUpService(IConfiguration configuration, ILogger<WarmUpService> logger)
         {
-            _config = options.Value;
+            _config = configuration;
             _logger = logger;
         }
 
@@ -28,16 +27,10 @@ namespace ConfigurationApi.Services
         {
             using var httpClient = new HttpClient();
 
-            var uris = new string[]
-            {
-                _config.IdentityServerUri + "/api",
-                _config.PublicCarsApiUri,
-                _config.ConfigurationApiUri,
-                _config.RouteCalculatorApiUri,
-                _config.UserDataApiUri
-            };
+            var jsonArray = _config["WarmUpEndpoints"];
+            var endpoints = JsonConvert.DeserializeObject<string[]>(jsonArray) ?? Array.Empty<string>();
 
-            var requests = uris.Select(uri => httpClient.GetAsync($"{uri}/healthz")).ToList();
+            var requests = endpoints.Select(uri => httpClient.GetAsync(uri)).ToList();
 
             await Task.WhenAll(requests);
 
