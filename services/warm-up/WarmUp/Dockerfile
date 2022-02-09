@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["ConfigurationApi/ConfigurationApi.csproj", "ConfigurationApi/"]
-RUN dotnet restore "ConfigurationApi/ConfigurationApi.csproj"
+COPY ["WarmUp/WarmUp.csproj", "WarmUp/"]
+RUN dotnet restore "WarmUp/WarmUp.csproj"
 COPY . .
-WORKDIR "/src/ConfigurationApi"
-RUN dotnet build "ConfigurationApi.csproj" -c Release -o /app/build
+WORKDIR "/src/WarmUp"
+RUN dotnet build "WarmUp.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ConfigurationApi.csproj" -c Release -o /app/publish
+RUN dotnet publish "WarmUp.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ConfigurationApi.dll"]
+ENTRYPOINT ["dotnet", "WarmUp.dll"]
