@@ -1,9 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace ConfigurationApi.Configuration
+﻿namespace ConfigurationApi.Configuration
 {
-    public record class ApisConfig(string IdentityServerUri, string PublicCarsApiUri, string ConfigurationApiUri, string RouteCalculatorApiUri, string UserDataApiUri);
+    public class ApisConfig
+    {
+        public string IdentityServerUri { get; init; } = default!;
+
+        public string PublicCarsApiUri { get; init; } = default!;
+
+        public string ConfigurationApiUri { get; init; } = default!;
+
+        public string RouteCalculatorApiUri { get; init; } = default!;
+
+        public string UserDataApiUri { get; init; } = default!;
+    }
 }

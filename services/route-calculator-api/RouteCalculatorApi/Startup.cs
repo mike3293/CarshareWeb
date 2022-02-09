@@ -45,6 +45,8 @@ namespace RouteCalculatorApi
             services.Configure<ApisConfig>(Configuration.GetSection(nameof(ApisConfig)));
 
             services.AddScoped<ConfigurationApiClient>();
+
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,6 +74,8 @@ namespace RouteCalculatorApi
             {
                 endpoints.MapControllers();
             });
+
+            app.UseHealthChecks("/api/healthz");
         }
     }
 }

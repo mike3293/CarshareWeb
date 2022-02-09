@@ -1,4 +1,6 @@
 using ConfigurationApi.Configuration;
+using ConfigurationApi.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +13,14 @@ if (!builder.Environment.IsDevelopment())
     });
 }
 
+builder.Services.Configure<ApisConfig>(builder.Configuration.GetSection(nameof(ApisConfig)));
+
+builder.Services.AddHostedService<WarmUpService>();
+
+builder.Services.AddHealthChecks();
+
+builder.Services.AddCors();
+
 var app = builder.Build();
 
 // "https://carshare-web.vercel.app"
@@ -20,13 +30,6 @@ app.UseCors(
 
 app.UseHttpsRedirection();
 
-var apisConfig = app.Configuration.GetSection(nameof(ApisConfig)).Get<ApisConfig>();
-
-app.MapGet("/warm-up", async () =>
-{
-    using var httpClient = new HttpClient();
-
-    await httpClient.GetAsync($"{apisConfig.ConfigurationApiUri}/healthz");
-});
+app.MapHealthChecks("/api/healthz");
 
 app.Run();

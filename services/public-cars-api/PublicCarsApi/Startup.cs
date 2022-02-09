@@ -38,6 +38,8 @@ namespace PublicCarsApi
             services.Configure<ExternalCarsConfig>(Configuration.GetSection(nameof(ExternalCarsConfig)));
 
             services.AddScoped<ExternalPublicCarsApiClient>();
+
+            services.AddHealthChecks();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +67,8 @@ namespace PublicCarsApi
             {
                 endpoints.MapControllers();
             });
+
+            app.UseHealthChecks("/api/healthz");
         }
     }
 }

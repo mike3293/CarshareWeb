@@ -84,7 +84,7 @@ namespace ConfigurationApi
                 endpoints.MapControllers();
             });
 
-            app.UseHealthChecks("/healthz");
+            app.UseHealthChecks("/api/healthz");
         }
     }
 }
