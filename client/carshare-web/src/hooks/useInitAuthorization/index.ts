@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useUserStore } from "src/context/userStore";
 import shallow from "zustand/shallow";
 import { authManager } from "src/utils/authManager";
 
 export const useInitAuthorization = () => {
-  const [initFinished, setInitFinished] = useState(false);
-
   const [email, setOidcUser] = useUserStore(
     (s) => [s.email, s.setOidcUser],
     shallow
@@ -13,19 +11,29 @@ export const useInitAuthorization = () => {
 
   useEffect(() => {
     const initUser = async () => {
-      const user = await authManager.getUser();
+      if (!email) {
+        const user = await authManager.getUser();
+        console.log("user retrived from getUser()", user);
 
-      if (!email && user) {
-        setOidcUser(user);
+        if (user) {
+          setOidcUser(user);
+        } else {
+          try {
+            const fetchedUser = await authManager.signinSilent();
+            console.log("user retrived from signinSilent()", fetchedUser);
+
+            if (fetchedUser) {
+              setOidcUser(fetchedUser);
+            }
+          } catch {
+            console.log("signinSilent() failed");
+          }
+        }
       }
-      console.log("manager", authManager);
-
-      setInitFinished(true);
     };
 
+    console.log("initUser() called");
     initUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  return initFinished;
 };

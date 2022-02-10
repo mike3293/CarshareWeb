@@ -12,7 +12,7 @@ import FullPageProgressBar from "src/components/atoms/FullPageProgressBar";
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const initFinished = useInitAuthorization();
+  useInitAuthorization();
 
   return (
     <>
@@ -25,11 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
-          {initFinished ? (
-            <Component {...pageProps} />
-          ) : (
-            <FullPageProgressBar />
-          )}
+          <Component {...pageProps} />
         </QueryClientProvider>
       </ThemeProvider>
     </>
