@@ -32,6 +32,7 @@ import { useUserStore } from "src/context/userStore";
 import { Policy, usePolicy } from "src/hooks/usePolicy";
 import AdminPanelLink from "../../moleculas/AdminPanelLink";
 import { LinearProgress } from "@mui/material";
+import RefreshCars from "src/components/moleculas/RefreshCars";
 
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -42,7 +43,11 @@ const CarMap = () => {
   const { selectedProviderIds, selectedFuelLevel } = useFiltersStore();
   const debouncedSelectedProviderIds = useDebounce(selectedProviderIds, 1000);
 
-  const { data = [], isLoading } = useQuery(
+  const {
+    data = [],
+    refetch,
+    isFetching,
+  } = useQuery(
     [
       "getPublicCars",
       debouncedSelectedProviderIds.join(","),
@@ -85,7 +90,7 @@ const CarMap = () => {
 
   return (
     <>
-      {isLoading && (
+      {isFetching && (
         <LinearProgress
           sx={{ position: "absolute", zIndex: 900, top: 0, left: 0, right: 0 }}
         />
@@ -128,6 +133,7 @@ const CarMap = () => {
             <CarMarkers providers={data} />
           </MarkerClusterGroup>
         )}
+        {!hasWaypoints && <RefreshCars isMobile={isMobile} refresh={refetch} />}
         {!hasWaypoints && <CarFilters isMobile={isMobile} />}
         <RoutingMachine
           ref={routingMachineRef}

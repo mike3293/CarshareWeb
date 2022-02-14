@@ -16,7 +16,7 @@ const AdminPanelLink = ({ isMobile }: IAdminPanelLinkProps) => {
       color="secondary"
       sx={{
         right: isMobile ? 8 : 11,
-        bottom: isMobile ? 155 : 200,
+        top: isMobile ? 50 : 100,
       }}
     >
       <SettingsIcon />
