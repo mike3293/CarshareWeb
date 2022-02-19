@@ -1,19 +1,13 @@
-﻿using ConfigurationApi.ApiClient.PublicCarsApi;
-using IdentityModel.Client;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RouteCalculatorApi.Configuration;
 using RouteCalculatorApi.Extensions;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RouteCalculatorApi.ApiClient.PublicCarsApi
+namespace RouteCalculatorApi.ApiClient.ConfigurationApi
 {
     public class ConfigurationApiClient
     {

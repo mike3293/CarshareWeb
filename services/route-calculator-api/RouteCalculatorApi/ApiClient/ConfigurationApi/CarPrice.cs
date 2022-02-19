@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace ConfigurationApi.ApiClient.PublicCarsApi
+namespace RouteCalculatorApi.ApiClient.ConfigurationApi
 {
     public class CarPrice
     {
@@ -11,8 +8,6 @@ namespace ConfigurationApi.ApiClient.PublicCarsApi
 
         public string Brand { get; set; }
 
-        public int PerMinCost { get; set; }
-
-        public int PerMinParkingCost { get; set; }
+        public IList<PackageTariff> PackageTariffs { get; set; }
     }
 }

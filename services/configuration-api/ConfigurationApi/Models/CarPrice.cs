@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ConfigurationApi.Models
 {
@@ -11,8 +8,6 @@ namespace ConfigurationApi.Models
 
         public string Brand { get; set; }
 
-        public int PerMinCost { get; set; }
-
-        public int PerMinParkingCost { get; set; }
+        public IList<PackageTariff> PackageTariffs { get; set; }
     }
 }

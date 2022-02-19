@@ -56,10 +56,10 @@ namespace ConfigurationApi.Services
                 if (providerTarrif is not null)
                 {
                     providerTarrif.CarPrices = providerTarrif.CarPrices.Where(cp => branding.Cars.Any(c => c.Model == cp.Model)).ToList();
-                    
+
                     foreach (var car in branding.Cars)
                     {
-                        if(!providerTarrif.CarPrices.Any(cp => cp.Model == car.Model))
+                        if (!providerTarrif.CarPrices.Any(cp => cp.Model == car.Model))
                         {
                             providerTarrif.CarPrices.Add(CreateCarPriceFrom(car));
                         }
@@ -98,8 +98,10 @@ namespace ConfigurationApi.Services
             {
                 Model = car.Model,
                 Brand = car.Brand,
-                PerMinParkingCost = _config.PerMinParkingCost,
-                PerMinCost = _config.PerMinCost
+                PackageTariffs = new List<PackageTariff>()
+                {
+                    new() { KopecksPerMinute = _config.PerMinCost, KopecksPerMinuteParking = _config.PerMinParkingCost }
+                },
             };
         }
     }
