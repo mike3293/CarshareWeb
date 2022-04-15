@@ -88,7 +88,6 @@ const RouteSummary = ({
           {bestPrice && `${bestPrice.name} - ${bestPrice.kopecks / 100} руб`}
           {sortedPrices && sortedPrices.length > 1 && (
             <Tooltip
-              placement="right-start"
               title={sortedPrices
                 .map((p) => `${p.name} - ${p.kopecks / 100} руб`)
                 .join(", ")}
