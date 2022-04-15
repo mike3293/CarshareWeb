@@ -1,37 +1,22 @@
-import {
-  IconButtonProps,
-  LinearProgress,
-  styled,
-  Typography,
-} from "@mui/material";
-import { Button, Box } from "@mui/material";
+import { LinearProgress } from "@mui/material";
+import { Button } from "@mui/material";
 import {
   DataGrid,
   GridActionsCellItem,
-  GridCellEditStopParams,
   GridColumns,
   GridPreProcessEditCellProps,
   GridRowId,
-  GridRowsProp,
   GridValueFormatterParams,
-  MuiEvent,
 } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Formik, Form } from "formik";
-import {
-  CarPrice,
-  PackageTariff,
-  ProviderWithTarrifs,
-} from "src/types/ProviderWithTarrifs";
-import * as Yup from "yup";
+import { CarPrice, ProviderWithTarrifs } from "src/types/ProviderWithTarrifs";
 import { useCallback, useMemo, useState } from "react";
-import { orderBy } from "lodash";
 import services from "src/config/services";
 import { uniqueId } from "src/utils/uniqueId";
 import { UniqueTariff } from "./types";
 
 const validateNumber = (params: GridPreProcessEditCellProps) => {
-  const error = !Number.isInteger(params.props.value) || params.props.value < 0;
+  const error = Number.isInteger(params.props.value) && params.props.value < 0;
 
   return { ...params.props, error };
 };

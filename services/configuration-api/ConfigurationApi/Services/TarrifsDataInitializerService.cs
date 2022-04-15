@@ -100,7 +100,7 @@ namespace ConfigurationApi.Services
                 Brand = car.Brand,
                 PackageTariffs = new List<PackageTariff>()
                 {
-                    new() { Name = "Стандартный", KopecksPerMinute = _config.PerMinCost, KopecksPerMinuteParking = _config.PerMinParkingCost, IsBase = true }
+                    new() { Name = "стандартный", KopecksPerMinute = _config.PerMinCost, KopecksPerMinuteParking = _config.PerMinParkingCost, IsBase = true }
                 },
             };
         }
