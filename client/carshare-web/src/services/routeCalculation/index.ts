@@ -8,7 +8,7 @@ class RouteCalculationService extends ServiceBase {
     this.initialize({ baseURL });
   }
 
-  public async calculatePrices(route: IRouteInfoRequest): Promise<Price> {
+  public async calculatePrices(route: IRouteInfoRequest): Promise<Price[]> {
     return this.post("routePrices", route);
   }
 }

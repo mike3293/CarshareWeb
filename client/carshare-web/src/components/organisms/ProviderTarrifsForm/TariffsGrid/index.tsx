@@ -122,10 +122,10 @@ const getColumns = (deleteRow: (id: GridRowId) => void): GridColumns => [
     width: 50,
     getActions: (params) => [
       <GridActionsCellItem
+        key="delete"
         icon={<DeleteIcon />}
         label="Delete"
         onClick={() => {
-          console.log("Delete");
           deleteRow(params.id);
         }}
       />,
@@ -136,14 +136,7 @@ const getColumns = (deleteRow: (id: GridRowId) => void): GridColumns => [
 const createEmptyRow = (rowsCount: number) => ({
   id: uniqueId(),
   isBase: rowsCount === 0,
-  name: "Новый тариф",
-  kopecksCost: 0,
-  kopecksPerMinute: 0,
-  kopecksPerMinuteParking: 0,
-  kopecksPerKilometer: 0,
-  minutesIncluded: 0,
-  parkingMinutesIncluded: 0,
-  kilometersIncluded: 0,
+  name: "новый тариф",
 });
 
 interface ITariffsGridProps {

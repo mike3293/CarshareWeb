@@ -2,11 +2,11 @@ import {
   CarPrice,
   PackageTariff,
   ProviderWithTarrifs,
-} from 'src/types/ProviderWithTarrifs';
-import { ProviderWithCars } from 'src/types/ProviderWithCars';
-import AuthService from './authService';
-import { useUserStore } from 'src/context/userStore';
-import { UserStoreApi } from './authService/types';
+} from "src/types/ProviderWithTarrifs";
+import { ProviderWithCars } from "src/types/ProviderWithCars";
+import AuthService from "./authService";
+import { useUserStore } from "src/context/userStore";
+import { UserStoreApi } from "./authService/types";
 
 class ConfigurationService extends AuthService {
   constructor(baseURL: string, store: UserStoreApi) {
@@ -15,7 +15,7 @@ class ConfigurationService extends AuthService {
   }
 
   public getTarrifs(): Promise<ProviderWithTarrifs[]> {
-    return this.get('tarrifs');
+    return this.get("tarrifs");
   }
 
   public updateTarrifsOld(id: string, carPrices: CarPrice[]): Promise<void> {
@@ -24,10 +24,13 @@ class ConfigurationService extends AuthService {
 
   public updateTarrifs(
     providerId: string,
-    carModel: CarPrice['model'],
+    carModel: CarPrice["model"],
     packageTariffs: PackageTariff[]
   ): Promise<void> {
-    return this.put(`tarrifs/providers/${providerId}/models/${carModel}`, packageTariffs);
+    return this.put(
+      `tarrifs/providers/${providerId}/cars/${carModel}`,
+      packageTariffs
+    );
   }
 }
 

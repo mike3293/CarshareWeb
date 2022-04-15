@@ -5,7 +5,7 @@ interface CarSummary {
 
 export interface IRouteInfoRequest {
   car: CarSummary;
-  distance: number;
-  travelTime: number;
-  parkingTime: number;
+  meters: number;
+  minutesDriving: number;
+  minutesParking: number;
 }

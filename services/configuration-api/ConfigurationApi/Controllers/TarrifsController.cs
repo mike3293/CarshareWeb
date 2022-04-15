@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ConfigurationApi.Controllers
 {
@@ -75,7 +76,8 @@ namespace ConfigurationApi.Controllers
                 return NotFound("Provider not found.");
             }
 
-            var priceToUpdate = provider.CarPrices.FirstOrDefault(c => c.Model == model);
+            var escapedModel = HttpUtility.UrlDecode(model);
+            var priceToUpdate = provider.CarPrices.FirstOrDefault(c => c.Model == escapedModel);
 
             if (priceToUpdate is null)
             {

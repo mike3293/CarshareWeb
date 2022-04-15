@@ -5,9 +5,10 @@ import {
   Dialog,
   SwipeableDrawer,
   CircularProgress,
+  Tooltip,
 } from "@mui/material";
 import L from "leaflet";
-import { reduce } from "lodash";
+import { reduce, orderBy } from "lodash";
 import { Popup, useMapEvents } from "react-leaflet";
 import DrawerWithEdge from "src/components/atoms/DrawerWithEdge";
 import PortalComponent from "src/components/atoms/PortalComponent";
@@ -23,6 +24,12 @@ import {
 } from "src/context/routingStore/types";
 import { useQuery } from "react-query";
 import services from "src/config/services";
+
+const AllTariffs = styled(Typography)(({ theme }) => ({
+  color: theme.palette.grey[400],
+  marginLeft: theme.spacing(1),
+  cursor: "pointer",
+}));
 
 const RouteSummary = ({
   car,
@@ -51,12 +58,19 @@ const RouteSummary = ({
     () =>
       services.routeCalculation.calculatePrices({
         car: { model: car!.model, providerId: car!.providerId },
-        distance: Math.round(summary!.totalDistance),
-        travelTime: Math.round(summary!.totalTime / 60),
-        parkingTime: parkingTime ?? 0,
+        meters: Math.round(summary!.totalDistance),
+        minutesDriving: Math.round(summary!.totalTime / 60),
+        minutesParking: parkingTime ?? 0,
       }),
     { enabled: Boolean(car && summary), refetchOnWindowFocus: false }
   );
+
+  const sortedPrices = useMemo(
+    () => prices && orderBy(prices, (p) => p.kopecks),
+    [prices]
+  );
+
+  const bestPrice = sortedPrices && sortedPrices[0];
 
   return (
     <>
@@ -66,8 +80,22 @@ const RouteSummary = ({
         время в пути: {summary ? durationString : " - "}
       </Typography>
       <Box sx={{ display: "flex" }}>
-        <Typography>
-          Стоимость: {prices ? `${prices.price / 100} руб` : " - "}
+        <Typography
+          component="div"
+          sx={{ display: "flex", alignItems: "center" }}
+        >
+          Тариф:{" "}
+          {bestPrice && `${bestPrice.name} - ${bestPrice.kopecks / 100} руб`}
+          {sortedPrices && sortedPrices.length > 1 && (
+            <Tooltip
+              placement="right-start"
+              title={sortedPrices
+                .map((p) => `${p.name} - ${p.kopecks / 100} руб`)
+                .join(", ")}
+            >
+              <AllTariffs variant="body2">все тарифы</AllTariffs>
+            </Tooltip>
+          )}
         </Typography>
         {isLoading && <CircularProgress size={20} />}
       </Box>
