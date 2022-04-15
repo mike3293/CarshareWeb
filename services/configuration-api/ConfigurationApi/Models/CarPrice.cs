@@ -9,5 +9,11 @@ namespace ConfigurationApi.Models
         public string Brand { get; set; }
 
         public IList<PackageTariff> PackageTariffs { get; set; }
+
+
+        public CarPrice()
+        {
+            PackageTariffs = new List<PackageTariff>();
+        }
     }
 }

@@ -59,18 +59,30 @@ namespace ConfigurationApi.Controllers
             return carPrice;
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("providers/{providerId}/cars/{model}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> UpdateTarrifs(string id, IList<CarPrice> carPrices)
+        public async Task<IActionResult> UpdateTarrifs(string providerId, string model, IList<PackageTariff> packageTariffs)
         {
-            var provider = await _tarrifsService.GetById(id);
+            if (packageTariffs.Where(t => t.IsBase).Count() > 1)
+            {
+                return BadRequest("There can be only one base tariff.");
+            }
+
+            var provider = await _tarrifsService.GetById(providerId);
 
             if (provider is null)
             {
-                return NotFound();
+                return NotFound("Provider not found.");
             }
 
-            provider.CarPrices = carPrices;
+            var priceToUpdate = provider.CarPrices.FirstOrDefault(c => c.Model == model);
+
+            if (priceToUpdate is null)
+            {
+                return NotFound("Model not found.");
+            }
+
+            priceToUpdate.PackageTariffs = packageTariffs;
 
             await _tarrifsService.Update(provider);
 

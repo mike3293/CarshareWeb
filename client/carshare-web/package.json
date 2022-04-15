@@ -12,6 +12,7 @@
     "@emotion/styled": "^11.3.0",
     "@mui/icons-material": "^5.1.0",
     "@mui/material": "^5.1.0",
+    "@mui/x-data-grid": "^5.8.0",
     "formik": "^2.2.9",
     "leaflet": "^1.7.1",
     "leaflet-routing-machine": "^3.2.12",

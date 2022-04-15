@@ -4,6 +4,8 @@
     {
         public string Name { get; set; }
 
+        public bool IsBase { get; set; }
+
         public int? KopecksCost { get; set; }
 
         public int? KopecksPerMinute { get; set; }
