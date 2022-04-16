@@ -1,4 +1,7 @@
 import { BodyInitOrObject, StatusCode, URLSearchParamsInit } from "./types";
+import { toast } from "react-toastify";
+
+const notify = (error: string) => toast(error, { type: "error" });
 
 abstract class ServiceBase {
   baseUrl!: string;
@@ -48,7 +51,7 @@ abstract class ServiceBase {
       const result = await response.json();
 
       return result;
-    } catch {
+    } catch (err) {
       return null as unknown as TResult;
     }
   }
@@ -91,6 +94,10 @@ abstract class ServiceBase {
       await this.refreshSession();
 
       return await this.fetch(path, method, params, body, options, false);
+    }
+
+    if (response.status !== StatusCode.Ok) {
+      notify(`Request to '${path}' failed`);
     }
 
     return response;

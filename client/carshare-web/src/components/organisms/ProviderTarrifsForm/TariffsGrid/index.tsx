@@ -141,9 +141,7 @@ const TariffsGrid = ({
   const handleRowsUpdate = useCallback(async (tariffs: UniqueTariff[]) => {
     console.log(tariffs);
     setLoadCounter((ps) => ps + 1);
-    await new Promise((resolve) => setTimeout(resolve, 5000));
     await services.configuration.updateTarrifs(providerId, model, tariffs);
-    // TODO: push errror messages
     setLoadCounter((ps) => ps - 1);
   }, []);
 

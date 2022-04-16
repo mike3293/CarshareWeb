@@ -7,7 +7,8 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "src/config/theme/theme";
 import dynamic from "next/dynamic";
 import { useInitAuthorization } from "src/hooks/useInitAuthorization";
-import FullPageProgressBar from "src/components/atoms/FullPageProgressBar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         />
         <title>Carshare Web</title>
       </Head>
+      <ToastContainer />
       <ThemeProvider theme={theme}>
         <QueryClientProvider client={queryClient}>
           <Component {...pageProps} />
