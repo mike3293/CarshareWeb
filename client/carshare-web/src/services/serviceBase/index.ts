@@ -78,29 +78,39 @@ abstract class ServiceBase {
       }
     }
 
-    const response = await fetch(
-      `${this.baseUrl}${path}${params ? `?${this.buildParams(params)}` : ""}`,
-      {
-        method,
-        ...options,
+    try {
+      const response = await fetch(
+        `${this.baseUrl}${path}${params ? `?${this.buildParams(params)}` : ""}`,
+        {
+          method,
+          ...options,
+        }
+      );
+
+      if (
+        response.status === StatusCode.Unauthorized &&
+        shouldRefreshSession &&
+        this.refreshSession
+      ) {
+        await this.refreshSession();
+
+        return await this.fetch(path, method, params, body, options, false);
       }
-    );
 
-    if (
-      response.status === StatusCode.Unauthorized &&
-      shouldRefreshSession &&
-      this.refreshSession
-    ) {
-      await this.refreshSession();
+      if (response.status !== StatusCode.Ok) {
+        notify(`Request to '${path}' failed. Code: ${response.status}`);
+      }
 
-      return await this.fetch(path, method, params, body, options, false);
+      return response;
+    } catch (err) {
+      if (err instanceof Error) {
+        notify(`Request to '${path}' failed. ${err.message}`);
+      } else {
+        notify(`Request to '${path}' failed.`);
+      }
+
+      return null as unknown as Response;
     }
-
-    if (response.status !== StatusCode.Ok) {
-      notify(`Request to '${path}' failed`);
-    }
-
-    return response;
   }
 
   private buildParams(search: URLSearchParamsInit) {

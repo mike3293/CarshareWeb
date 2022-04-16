@@ -1,5 +1,6 @@
 # docker build --progress=plain -t carshare-web .
 # docker tag carshare-web mikhailgorodilov/carshare-web:latest
+# docker push mikhailgorodilov/carshare-web:latest
 FROM node:16.13-alpine as dependencies
 WORKDIR /my-project
 COPY package.json yarn.lock ./
