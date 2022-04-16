@@ -17,6 +17,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { useQuery } from "react-query";
 import services from "src/config/services";
 import { grey } from "@mui/material/colors";
+import { useInitAuthorization } from "src/hooks/useInitAuthorization";
 
 const Container = styled("div")(({ theme }) => ({
   display: "grid",
@@ -38,20 +39,22 @@ const ProviderTitle = styled("div")(({ theme }) => ({
 const Configuration: NextPage = () => {
   const router = useRouter();
 
+  const authInProgress = useInitAuthorization();
+
   const role = useUserStore((s) => s.role);
   const haveAccessToConfiguration = usePolicy(Policy.CanManageConfiguration, {
     role,
   });
 
   useEffect(() => {
-    if (!haveAccessToConfiguration) {
+    if (!authInProgress && !haveAccessToConfiguration) {
       router.replace("/");
     }
-  }, [haveAccessToConfiguration, router]);
+  }, [authInProgress, haveAccessToConfiguration, router]);
 
   const { data = [] } = useQuery(
     "getTariffs",
-    () => services.configuration.getTarrifs(),
+    () => services.configuration.getTariffs(),
     {
       refetchOnWindowFocus: true,
       enabled: haveAccessToConfiguration,

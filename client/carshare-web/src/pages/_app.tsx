@@ -6,15 +6,12 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "src/config/theme/theme";
 import dynamic from "next/dynamic";
-import { useInitAuthorization } from "src/hooks/useInitAuthorization";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
-  useInitAuthorization();
-
   return (
     <>
       <Head>

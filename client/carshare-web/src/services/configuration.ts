@@ -14,15 +14,11 @@ class ConfigurationService extends AuthService {
     this.initialize({ baseURL });
   }
 
-  public getTarrifs(): Promise<ProviderWithTarrifs[]> {
+  public getTariffs(): Promise<ProviderWithTarrifs[]> {
     return this.get("tarrifs");
   }
 
-  public updateTarrifsOld(id: string, carPrices: CarPrice[]): Promise<void> {
-    return this.put(`tarrifs/${id}`, carPrices);
-  }
-
-  public updateTarrifs(
+  public updateTariffs(
     providerId: string,
     carModel: CarPrice["model"],
     packageTariffs: PackageTariff[]

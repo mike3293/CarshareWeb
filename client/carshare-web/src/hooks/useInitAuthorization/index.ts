@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUserStore } from "src/context/userStore";
 import shallow from "zustand/shallow";
 import { authManager } from "src/utils/authManager";
 
 export const useInitAuthorization = () => {
+  const [inProgress, setInProgress] = useState(true);
   const [email, setOidcUser] = useUserStore(
     (s) => [s.email, s.setOidcUser],
     shallow
@@ -30,10 +31,13 @@ export const useInitAuthorization = () => {
           }
         }
       }
+      setInProgress(false);
     };
 
     console.log("initUser() called");
     initUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  return inProgress;
 };
