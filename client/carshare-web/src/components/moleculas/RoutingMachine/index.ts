@@ -15,10 +15,10 @@ const createRoutineMachineLayer = ({
     },
     show: false,
     autoRoute: true,
-    addWaypoints: true,
     routeWhileDragging: true,
     showAlternatives: false,
     fitSelectedRoutes: false,
+    addWaypoints: false,
     geocoder: () => null,
     router: L.Routing.osrmv1({
       serviceUrl: "https://routing.openstreetmap.de/routed-car/route/v1",
