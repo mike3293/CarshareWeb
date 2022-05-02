@@ -8,7 +8,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import L from "leaflet";
-import { reduce, orderBy } from "lodash";
+import { reduce, orderBy, last } from "lodash";
 import { Popup, useMapEvents } from "react-leaflet";
 import DrawerWithEdge from "src/components/atoms/DrawerWithEdge";
 import PortalComponent from "src/components/atoms/PortalComponent";
@@ -24,6 +24,7 @@ import {
 } from "src/context/routingStore/types";
 import { useQuery } from "react-query";
 import services from "src/config/services";
+import { Section } from "src/services/routeCalculation/types";
 
 const AllTariffs = styled(Typography)(({ theme }) => ({
   color: theme.palette.grey[400],
@@ -33,13 +34,15 @@ const AllTariffs = styled(Typography)(({ theme }) => ({
 
 const RouteSummary = ({
   car,
-  summary,
   waypoints,
+  route,
 }: {
   car?: CarWithProviderId;
-  summary: L.Routing.IRouteSummary | null;
+  route: L.Routing.IRoute | null;
   waypoints: CustomWaypoint[];
 }) => {
+  const { summary, instructions } = route || {};
+
   const parkingTime = useMemo(
     () =>
       summary &&
@@ -53,16 +56,69 @@ const RouteSummary = ({
     [parkingTime, summary]
   );
 
+  // TODO: move sections to own useMemo
   const { data: prices, isLoading } = useQuery(
-    ["calculatePrices", car, summary, parkingTime],
-    () =>
-      services.routeCalculation.calculatePrices({
+    ["calculatePrices", car, instructions, waypoints],
+    () => {
+      const residenceTimeInWaypoints = waypoints
+        .map((w) => w.residenceTimeMins)
+        .reverse();
+      const routeSections: Section[] = instructions!.reduce(
+        (acc, i) => {
+          if (i.type === "DestinationReached") {
+            acc.push({
+              meters: 0,
+              seconds: 0,
+              parkingMinutes: residenceTimeInWaypoints.pop() ?? 0,
+            });
+
+            return acc;
+          }
+
+          if (i.type === "WaypointReached") {
+            acc.push(
+              {
+                meters: 0,
+                seconds: 0,
+                parkingMinutes: residenceTimeInWaypoints.pop() ?? 0,
+              },
+              {
+                meters: 0,
+                seconds: 0,
+                parkingMinutes: 0,
+              }
+            );
+
+            return acc;
+          }
+
+          const lastInstruction = last(acc);
+
+          if (lastInstruction) {
+            lastInstruction.meters += i.distance;
+            lastInstruction.seconds += i.time;
+          }
+
+          return acc;
+        },
+        [
+          {
+            meters: 0,
+            seconds: 0,
+            parkingMinutes: residenceTimeInWaypoints.pop() ?? 0,
+          },
+        ]
+      );
+
+      console.log(routeSections);
+
+      return services.routeCalculation.calculatePrices({
         car: { model: car!.model, providerId: car!.providerId },
-        meters: Math.round(summary!.totalDistance),
-        minutesDriving: Math.round(summary!.totalTime / 60),
-        minutesParking: parkingTime ?? 0,
-      }),
-    { enabled: Boolean(car && summary), refetchOnWindowFocus: false }
+        routeSections,
+        waypoints,
+      });
+    },
+    { enabled: Boolean(car && instructions), refetchOnWindowFocus: false }
   );
 
   const sortedPrices = useMemo(

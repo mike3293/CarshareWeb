@@ -25,7 +25,7 @@ import { useUserStore } from "src/context/userStore";
 
 const Routing = ({ routingMachine }: IRoutingProps) => {
   const isMobile = useMobile();
-  const [summary, setSummary] = useState<L.Routing.IRouteSummary | null>(null);
+  const [route, setRoute] = useState<L.Routing.IRoute | null>(null);
   const [selectedCar, addWaypoint, waypoints] = useRoutingStore(
     (s) => [s.selectedCar, s.addWaypoint, s.waypoints],
     shallow
@@ -41,8 +41,8 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
     routingMachine.on("routesfound", (e: L.Routing.RoutingResultEvent) => {
       const routes = e.routes;
       if (routes[0].summary) {
-        console.log(routes[0].summary);
-        setSummary(routes[0].summary);
+        // console.log("route", routes[0]);
+        setRoute(routes[0]);
       }
     });
 
@@ -52,10 +52,10 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
   }, [routingMachine]);
 
   useEffect(() => {
-    if (waypoints.length === 1 && summary) {
-      setSummary(null);
+    if (waypoints.length === 1 && route?.summary) {
+      setRoute(null);
     }
-  }, [waypoints, summary]);
+  }, [waypoints, route]);
 
   const userId = useUserStore((s) => s.id);
 
@@ -73,7 +73,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
         {selectedCar && <CarSummary car={selectedCar} />}
         {userId && <RouteActions sx={{ ml: "auto" }} userId={userId} />}
       </Box>
-      <RouteSummary car={selectedCar} summary={summary} waypoints={waypoints} />
+      <RouteSummary car={selectedCar} route={route} waypoints={waypoints} />
       <WaypointsList />
     </Box>
   );
@@ -83,9 +83,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
       <InfoSnackbar />
       {isMobile ? (
         <PortalComponent>
-          <DrawerWithEdge
-            summary={summary ? `Детали` : "Постройте ваш маршрут"}
-          >
+          <DrawerWithEdge summary={route ? `Детали` : "Постройте ваш маршрут"}>
             {renderDialogContent()}
           </DrawerWithEdge>
         </PortalComponent>
