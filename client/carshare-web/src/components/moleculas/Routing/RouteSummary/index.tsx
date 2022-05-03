@@ -115,7 +115,6 @@ const RouteSummary = ({
       return services.routeCalculation.calculatePrices({
         car: { model: car!.model, providerId: car!.providerId },
         routeSections,
-        waypoints,
       });
     },
     { enabled: Boolean(car && instructions), refetchOnWindowFocus: false }
