@@ -64,31 +64,46 @@ namespace RouteCalculatorApi.Controllers
                 {
                     var exceededMinutes = minutesDriving + minutesParking - (t.MinutesIncluded ?? 0);
 
-                    if (exceededMinutes > 0)
-                    {
-                        cost += exceededMinutes * (t.KopecksPerMinute ?? baseTariff.KopecksPerMinute ?? 0);
-                    }
-
                     var exceeded = route.RouteSections.Reverse().AggregateWhile(
                         new ExceededAccumulator(),
                         (acc, s) =>
                         {
                             acc.Meters += s.Meters;
-                            acc.Minutes += s.ParkingMinutes + s.Seconds / 60;
+                            acc.DrivingMinutes += s.Seconds / 60;
+                            acc.ParkingMinutes += s.ParkingMinutes;
 
                             return acc;
                         },
-                        acc => acc.Minutes <= exceededMinutes,
+                        acc => acc.SummaryMinutes <= exceededMinutes,
                         (acc, s) =>
                         {
-                            var minutesLeft = exceededMinutes - acc.Minutes;
-                            var metersLeft = s.Seconds > 0 ? minutesLeft * s.Meters / (s.Seconds / 60) : 0;
+                            var minutesLeft = exceededMinutes - acc.SummaryMinutes;
+                            var hasDrivingSeconds = s.Seconds > 0;
+                            var metersLeft = hasDrivingSeconds ? minutesLeft * s.Meters / (s.Seconds / 60) : 0;
 
                             acc.Meters += metersLeft;
-                            acc.Minutes += minutesLeft;
+
+                            if(hasDrivingSeconds)
+                            {
+                                acc.DrivingMinutes += minutesLeft;
+                            }
+                            else
+                            {
+                                acc.ParkingMinutes += minutesLeft;
+                            }
 
                             return acc;
                         });
+
+                    if (exceeded.ParkingMinutes > 0)
+                    {
+                        cost += (int)Math.Ceiling(exceeded.ParkingMinutes) * (baseTariff.KopecksPerMinuteParking ?? 0);
+                    }
+
+                    if (exceeded.DrivingMinutes > 0)
+                    {
+                        cost += (int)Math.Ceiling(exceeded.DrivingMinutes) * (baseTariff.KopecksPerMinute ?? 0);
+                    }
 
                     var kilometersOutOfTariff = DivideWithRoundUp(exceeded.Meters, 1000);
                     var kilometersInTariff = kilometers - kilometersOutOfTariff;
@@ -117,12 +132,17 @@ namespace RouteCalculatorApi.Controllers
         {
             public decimal Meters { get; set; }
 
-            public decimal Minutes { get; set; }
+            public decimal DrivingMinutes { get; set; }
+
+            public decimal ParkingMinutes { get; set; }
+
+            public decimal SummaryMinutes { get => ParkingMinutes + DrivingMinutes; }
 
             public ExceededAccumulator()
             {
                 Meters = 0;
-                Minutes = 0;
+                DrivingMinutes = 0;
+                ParkingMinutes = 0;
             }
         }
     }
