@@ -17,8 +17,8 @@ const CarSummary = ({ car }: { car: Car }) => (
   <Root>
     <CarImage src={car.imageUrl} />
     <div>
-      <Typography>{car.model}</Typography>
       <Typography>{car.reg}</Typography>
+      <Typography>{car.fuel}%</Typography>
     </div>
   </Root>
 );

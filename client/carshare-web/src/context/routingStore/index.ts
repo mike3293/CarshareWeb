@@ -7,6 +7,7 @@ import { uniqueId } from "src/utils/uniqueId";
 const routingStore = (preloadedState = {}) => {
   return create<IRoutingStore>((set, get) => ({
     waypoints: [],
+    carsToCompare: [],
     selectedCar: undefined,
     setWaypoints: (waypoints) => set({ waypoints }),
     fetchWaypoints: async (userId) => {
@@ -74,18 +75,35 @@ const routingStore = (preloadedState = {}) => {
         ],
       });
     },
-    addCarWaypoint: async (car, providerId) => {
+    addCarToComparison: (car, providerId, providerName) => {
+      const carsToCompare = get().carsToCompare;
+      if (!carsToCompare.some((c) => c.id === car.id)) {
+        set({
+          carsToCompare: [
+            ...carsToCompare,
+            { ...car, providerId, providerName },
+          ],
+        });
+      }
+    },
+    removeCarFromComparison: (carId) => {
+      const carsToCompare = get().carsToCompare.filter((c) => c.id !== carId);
+
+      set({ carsToCompare });
+    },
+    startRouteWithCar: async (carId) => {
+      const car = get().carsToCompare.find((c) => c.id === carId)!;
       const address = await services.geocoding.getAddress(car.lat, car.lon);
 
       set({
-        selectedCar: { ...car, providerId },
+        selectedCar: car,
         waypoints: [
-          ...get().waypoints,
           {
             ...L.latLng({ lat: car.lat, lng: car.lon }),
             id: uniqueId(),
             address,
           } as CustomWaypoint,
+          ...get().waypoints.slice(1),
         ],
       });
     },
@@ -96,7 +114,6 @@ const routingStore = (preloadedState = {}) => {
     },
     setResidenceTimeMins: (waypointId, residenceTime) => {
       const waypoints = get().waypoints.slice();
-      console.log(residenceTime);
       // TODO: check
       waypoints[
         waypoints.findIndex((w) => w.id === waypointId)
@@ -137,6 +154,9 @@ export const useRoutingStore = routingStore();
 
 export const getHasWaypoints = (state: IRoutingStore) =>
   state.waypoints.length != 0;
+
+export const getHasCarsToCompare = (state: IRoutingStore) =>
+  state.carsToCompare.length != 0;
 
 export const getWaypointsResidenceTime = (
   state: IRoutingStore,

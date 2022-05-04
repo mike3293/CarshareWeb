@@ -1,24 +1,17 @@
-import {
-  Box,
-  styled,
-  Typography,
-  Dialog,
-  SwipeableDrawer,
-} from "@mui/material";
+import { Box, Dialog } from "@mui/material";
 import L from "leaflet";
-import { isNumber, reduce } from "lodash";
-import { Popup, useMapEvents } from "react-leaflet";
+import { useMapEvents } from "react-leaflet";
 import DrawerWithEdge from "src/components/atoms/DrawerWithEdge";
 import PortalComponent from "src/components/atoms/PortalComponent";
 import { IRoutingProps } from "./types";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import InfoSnackbar from "./InfoSnackbar";
 import WaypointsList from "./WaypointsList";
 import { useRoutingStore } from "src/context/routingStore";
 import { useMobile } from "src/hooks/useMedia";
 import shallow from "zustand/shallow";
-import getDurationString from "src/utils/getDurationString";
 import CarSummary from "./CarSummary";
+import CarSelect from "./CarSelect";
 import RouteSummary from "./RouteSummary";
 import RouteActions from "./RouteActions";
 import { useUserStore } from "src/context/userStore";
@@ -41,7 +34,6 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
     routingMachine.on("routesfound", (e: L.Routing.RoutingResultEvent) => {
       const routes = e.routes;
       if (routes[0].summary) {
-        // console.log("route", routes[0]);
         setRoute(routes[0]);
       }
     });
@@ -69,6 +61,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
         overflow: "hidden",
       }}
     >
+      <CarSelect />
       <Box sx={{ display: "flex" }}>
         {selectedCar && <CarSummary car={selectedCar} />}
         {userId && <RouteActions sx={{ ml: "auto" }} userId={userId} />}
@@ -102,7 +95,7 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
               borderRadius: 2,
               // tmp
               width: 400,
-              height: 500,
+              height: 520,
             },
           }}
           hideBackdrop

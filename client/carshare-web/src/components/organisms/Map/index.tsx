@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   AttributionControl,
   MapContainer,
@@ -23,7 +17,11 @@ import FindCurrentPosition from "src/components/moleculas/FindCurrentPosition";
 import { useMobile } from "src/hooks/useMedia";
 import CarFilters from "../../moleculas/CarFilters";
 import { useFiltersStore } from "src/context/filtersStore";
-import { getHasWaypoints, useRoutingStore } from "src/context/routingStore";
+import {
+  getHasCarsToCompare,
+  getHasWaypoints,
+  useRoutingStore,
+} from "src/context/routingStore";
 import { useDebounce } from "src/hooks/useDebounce";
 import RoutingMachine from "../../moleculas/RoutingMachine";
 import CarMarkers from "../../moleculas/CarMarkers";
@@ -33,6 +31,7 @@ import { Policy, usePolicy } from "src/hooks/usePolicy";
 import AdminPanelLink from "../../moleculas/AdminPanelLink";
 import { LinearProgress } from "@mui/material";
 import RefreshCars from "src/components/moleculas/RefreshCars";
+import CarsToCompare from "src/components/moleculas/CarsToCompare";
 
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -63,10 +62,16 @@ const CarMap = () => {
 
   const routingMachineRef = useRef<L.Routing.Control>(null);
 
-  const [waypoints, hasWaypoints, setRawWaypoints] = useRoutingStore(
-    (s) => [s.waypoints, getHasWaypoints(s), s.setRawWaypoints],
-    shallow
-  );
+  const [waypoints, hasWaypoints, setRawWaypoints, hasCarsToCompare] =
+    useRoutingStore(
+      (s) => [
+        s.waypoints,
+        getHasWaypoints(s),
+        s.setRawWaypoints,
+        getHasCarsToCompare(s),
+      ],
+      shallow
+    );
 
   const refreshWaypoints = useCallback(() => {
     if (routingMachineRef.current) {
@@ -123,6 +128,10 @@ const CarMap = () => {
           onPositionChange={setCurrentPosition}
           isMobile={isMobile}
         />
+        <RoutingMachine
+          ref={routingMachineRef}
+          refreshWaypoints={refreshWaypoints}
+        />
         {!hasWaypoints && routingMachineRef.current && (
           <MarkerClusterGroup
             showCoverageOnHover={false}
@@ -135,15 +144,12 @@ const CarMap = () => {
         )}
         {!hasWaypoints && <RefreshCars isMobile={isMobile} refresh={refetch} />}
         {!hasWaypoints && <CarFilters isMobile={isMobile} />}
-        <RoutingMachine
-          ref={routingMachineRef}
-          refreshWaypoints={refreshWaypoints}
-        />
-        {hasWaypoints && routingMachineRef.current && (
-          <Routing routingMachine={routingMachineRef.current} />
-        )}
         {!hasWaypoints && haveAccessToConfiguration && (
           <AdminPanelLink isMobile={isMobile} />
+        )}
+        {!hasWaypoints && hasCarsToCompare && <CarsToCompare />}
+        {hasWaypoints && routingMachineRef.current && (
+          <Routing routingMachine={routingMachineRef.current} />
         )}
       </MapContainer>
     </>

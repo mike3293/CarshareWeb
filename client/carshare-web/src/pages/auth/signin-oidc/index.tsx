@@ -9,14 +9,7 @@ const SignInOidc: NextPage = () => {
       response_mode: "query",
     });
 
-    manager
-      .signinPopupCallback()
-      .then(function (user) {
-        console.log(user);
-      })
-      .catch(function (e) {
-        console.error(e);
-      });
+    manager.signinPopupCallback();
   }, []);
 
   return <FullPageProgressBar />;

@@ -1,13 +1,15 @@
-import { Button, styled, Typography } from "@mui/material";
-import L from "leaflet";
+import { Button, styled, Tooltip, Typography } from "@mui/material";
 import { Popup } from "react-leaflet";
 import DirectionsIcon from "@mui/icons-material/Directions";
+import CompareIcon from "@mui/icons-material/Compare";
 import { Car } from "src/types/Car";
 import { useRoutingStore } from "src/context/routingStore";
+import shallow from "zustand/shallow";
 
 interface ICarInfoPopupProps {
   car: Car;
   providerId: string;
+  providerName: string;
   providerLogoUrl: string;
 }
 
@@ -32,12 +34,21 @@ const ProviderImage = styled("img")(({ theme }) => ({
   height: theme.spacing(4),
 }));
 
+const Actions = styled("div")(({ theme }) => ({
+  display: "flex",
+  justifyContent: "space-around",
+}));
+
 const CarInfoPopup = ({
   car,
   providerId,
+  providerName,
   providerLogoUrl,
 }: ICarInfoPopupProps) => {
-  const addCarWaypoint = useRoutingStore((s) => s.addCarWaypoint);
+  const [startRouteWithCar, addToCarsToCompare] = useRoutingStore(
+    (s) => [s.startRouteWithCar, s.addCarToComparison],
+    shallow
+  );
 
   return (
     <Popup>
@@ -51,13 +62,27 @@ const CarInfoPopup = ({
         </Typography>
         <Typography variant="h6">{car.model}</Typography>
         <Typography component="div">Топливо: {car.fuel}%</Typography>
-        <Button
-          color="secondary"
-          onClick={() => addCarWaypoint(car, providerId)}
-        >
-          маршрут
-          <DirectionsIcon sx={{ ml: 0.5 }} />
-        </Button>
+        <Actions>
+          <Tooltip title="Построить маршрут" placement="top">
+            <Button
+              color="secondary"
+              onClick={() => {
+                addToCarsToCompare(car, providerId, providerName);
+                startRouteWithCar(car.id);
+              }}
+            >
+              <DirectionsIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Выбрать для сравнения" placement="top">
+            <Button
+              color="primary"
+              onClick={() => addToCarsToCompare(car, providerId, providerName)}
+            >
+              <CompareIcon />
+            </Button>
+          </Tooltip>
+        </Actions>
       </Root>
     </Popup>
   );

@@ -9,14 +9,7 @@ const LogOutOidc: NextPage = () => {
       response_mode: "query",
     });
 
-    manager
-      .signoutPopupCallback()
-      .then(function (user) {
-        console.log(user);
-      })
-      .catch(function (e) {
-        console.error(e);
-      });
+    manager.signoutPopupCallback();
   }, []);
 
   return <FullPageProgressBar />;

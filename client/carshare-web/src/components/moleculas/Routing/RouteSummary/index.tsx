@@ -2,24 +2,15 @@ import {
   Box,
   styled,
   Typography,
-  Dialog,
-  SwipeableDrawer,
   CircularProgress,
   Tooltip,
 } from "@mui/material";
 import L from "leaflet";
 import { reduce, orderBy, last } from "lodash";
-import { Popup, useMapEvents } from "react-leaflet";
-import DrawerWithEdge from "src/components/atoms/DrawerWithEdge";
-import PortalComponent from "src/components/atoms/PortalComponent";
-import React, { useEffect, useMemo, useState } from "react";
-import { useRoutingStore } from "src/context/routingStore";
-import { useMobile } from "src/hooks/useMedia";
-import shallow from "zustand/shallow";
+import React, { useMemo } from "react";
 import getDurationString from "src/utils/getDurationString";
-import { Car } from "src/types/Car";
 import {
-  CarWithProviderId,
+  CarWithProvider,
   CustomWaypoint,
 } from "src/context/routingStore/types";
 import { useQuery } from "react-query";
@@ -37,7 +28,7 @@ const RouteSummary = ({
   waypoints,
   route,
 }: {
-  car?: CarWithProviderId;
+  car?: CarWithProvider;
   route: L.Routing.IRoute | null;
   waypoints: CustomWaypoint[];
 }) => {
@@ -56,13 +47,19 @@ const RouteSummary = ({
     [parkingTime, summary]
   );
 
+  const residenceTimeInWaypoints = waypoints
+    .map((w) => w.residenceTimeMins)
+    .reverse();
+
   // TODO: move sections to own useMemo
   const { data: prices, isLoading } = useQuery(
-    ["calculatePrices", car, instructions, waypoints],
+    [
+      "calculatePrices",
+      car?.id,
+      instructions,
+      residenceTimeInWaypoints.reduce((acc: number, t) => (acc += t ?? 0), 0),
+    ],
     () => {
-      const residenceTimeInWaypoints = waypoints
-        .map((w) => w.residenceTimeMins)
-        .reverse();
       const routeSections: Section[] = instructions!.reduce(
         (acc, i) => {
           if (i.type === "DestinationReached") {
@@ -109,8 +106,6 @@ const RouteSummary = ({
           },
         ]
       );
-
-      console.log(routeSections);
 
       return services.routeCalculation.calculatePrices({
         car: { model: car!.model, providerId: car!.providerId },

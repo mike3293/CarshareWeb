@@ -14,27 +14,22 @@ export const useInitAuthorization = () => {
     const initUser = async () => {
       if (!email) {
         const user = await authManager.getUser();
-        console.log("user retrived from getUser()", user);
 
         if (user) {
           setOidcUser(user);
         } else {
           try {
             const fetchedUser = await authManager.signinSilent();
-            console.log("user retrived from signinSilent()", fetchedUser);
 
             if (fetchedUser) {
               setOidcUser(fetchedUser);
             }
-          } catch {
-            console.log("signinSilent() failed");
-          }
+          } catch {}
         }
       }
       setInProgress(false);
     };
 
-    console.log("initUser() called");
     initUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

@@ -9,14 +9,7 @@ const SignInOidcSilent: NextPage = () => {
       response_mode: "query",
     });
 
-    manager
-      .signinSilentCallback()
-      .then(function (user) {
-        console.log(user);
-      })
-      .catch(function (e) {
-        console.error(e);
-      });
+    manager.signinSilentCallback();
   }, []);
 
   return <FullPageProgressBar />;
