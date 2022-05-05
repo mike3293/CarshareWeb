@@ -32,6 +32,8 @@ import AdminPanelLink from "../../moleculas/AdminPanelLink";
 import { LinearProgress } from "@mui/material";
 import RefreshCars from "src/components/moleculas/RefreshCars";
 import CarsToCompare from "src/components/moleculas/CarsToCompare";
+import MapToolbar from "src/components/moleculas/MapToolbar";
+import UserConfigurationPanelLink from "src/components/moleculas/UserConfigurationPanelLink";
 
 L.Icon.Default.imagePath = "images/leaflet/";
 
@@ -120,14 +122,19 @@ const CarMap = () => {
           />
         )}
         <AttributionControl position="bottomleft" />
-        {!isMobile && <ZoomControl position="bottomright" />}
         {currentPosition && (
           <CurrentPosition currentPosition={currentPosition} />
         )}
-        <FindCurrentPosition
-          onPositionChange={setCurrentPosition}
-          isMobile={isMobile}
-        />
+        <MapToolbar position="top" isMobile={isMobile}>
+          {!hasWaypoints && haveAccessToConfiguration && <AdminPanelLink />}
+          {!hasWaypoints && role && <UserConfigurationPanelLink />}
+        </MapToolbar>
+        <MapToolbar position="bottom" isMobile={isMobile}>
+          {!hasWaypoints && <RefreshCars refresh={refetch} />}
+          {!hasWaypoints && <CarFilters />}
+          <FindCurrentPosition onPositionChange={setCurrentPosition} />
+        </MapToolbar>
+        {!isMobile && <ZoomControl position="bottomright" />}
         <RoutingMachine
           ref={routingMachineRef}
           refreshWaypoints={refreshWaypoints}
@@ -141,11 +148,6 @@ const CarMap = () => {
           >
             <CarMarkers providers={data} />
           </MarkerClusterGroup>
-        )}
-        {!hasWaypoints && <RefreshCars isMobile={isMobile} refresh={refetch} />}
-        {!hasWaypoints && <CarFilters isMobile={isMobile} />}
-        {!hasWaypoints && haveAccessToConfiguration && (
-          <AdminPanelLink isMobile={isMobile} />
         )}
         {!hasWaypoints && hasCarsToCompare && <CarsToCompare />}
         {hasWaypoints && routingMachineRef.current && (

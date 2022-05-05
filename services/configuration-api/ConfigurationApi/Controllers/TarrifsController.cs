@@ -34,7 +34,7 @@ namespace ConfigurationApi.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<IEnumerable<ProviderWithTarrifs>> GetTarrifs()
         {
             return await _tarrifsService.GetAll();

@@ -1,25 +1,16 @@
-import SettingsIcon from "@mui/icons-material/Settings";
+import SettingsApplicationsIcon from "@mui/icons-material/SettingsApplications";
 import MapButton from "src/components/atoms/MapButton";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
 import { useRouter } from "next/dist/client/router";
 
-interface IAdminPanelLinkProps {
-  isMobile: boolean;
-}
-
-const AdminPanelLink = ({ isMobile }: IAdminPanelLinkProps) => {
+const AdminPanelLink = () => {
   const router = useRouter();
 
   return (
     <MapButton
-      onClick={() => router.push("/configuration")}
+      onClick={() => router.push("/configuration/global")}
       color="secondary"
-      sx={{
-        right: isMobile ? 8 : 11,
-        top: isMobile ? 50 : 100,
-      }}
     >
-      <SettingsIcon />
+      <SettingsApplicationsIcon />
     </MapButton>
   );
 };

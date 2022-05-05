@@ -29,15 +29,18 @@ const formatNumber = (params: GridValueFormatterParams<number>) => {
   return params.value;
 };
 
-const getColumns = (deleteRow: (id: GridRowId) => void): GridColumns => [
-  { field: "name", headerName: "Тариф", editable: true, flex: 1 },
+const getColumns = (
+  deleteRow: (id: GridRowId) => void,
+  editable = true
+): GridColumns => [
+  { field: "name", headerName: "Тариф", editable, flex: 1 },
   {
     field: "kopecksCost",
     headerName: "Цена пакета",
     type: "number",
     preProcessEditCellProps: validateNumber,
     valueFormatter: formatNumber,
-    editable: true,
+    editable,
     flex: 1,
   },
   {
@@ -46,7 +49,7 @@ const getColumns = (deleteRow: (id: GridRowId) => void): GridColumns => [
     type: "number",
     preProcessEditCellProps: validateNumber,
     valueFormatter: formatNumber,
-    editable: true,
+    editable,
     flex: 1,
   },
   {
@@ -55,7 +58,7 @@ const getColumns = (deleteRow: (id: GridRowId) => void): GridColumns => [
     type: "number",
     preProcessEditCellProps: validateNumber,
     valueFormatter: formatNumber,
-    editable: true,
+    editable,
     flex: 1,
   },
   {
@@ -64,7 +67,7 @@ const getColumns = (deleteRow: (id: GridRowId) => void): GridColumns => [
     type: "number",
     preProcessEditCellProps: validateNumber,
     valueFormatter: formatNumber,
-    editable: true,
+    editable,
     flex: 1,
   },
   {
@@ -73,7 +76,7 @@ const getColumns = (deleteRow: (id: GridRowId) => void): GridColumns => [
     type: "number",
     preProcessEditCellProps: validateNumber,
     valueFormatter: formatNumber,
-    editable: true,
+    editable,
     flex: 1,
   },
   {
@@ -82,7 +85,7 @@ const getColumns = (deleteRow: (id: GridRowId) => void): GridColumns => [
     type: "number",
     preProcessEditCellProps: validateNumber,
     valueFormatter: formatNumber,
-    editable: true,
+    editable,
     flex: 1,
   },
   {
@@ -91,30 +94,33 @@ const getColumns = (deleteRow: (id: GridRowId) => void): GridColumns => [
     type: "number",
     preProcessEditCellProps: validateNumber,
     valueFormatter: formatNumber,
-    editable: true,
+    editable,
     flex: 1,
   },
   {
     field: "isBase",
     headerName: "Базовый",
     type: "boolean",
-    editable: true,
+    editable,
     flex: 1,
   },
   {
     field: "actions",
     type: "actions",
     width: 50,
-    getActions: (params) => [
-      <GridActionsCellItem
-        key="delete"
-        icon={<DeleteIcon />}
-        label="Delete"
-        onClick={() => {
-          deleteRow(params.id);
-        }}
-      />,
-    ],
+    getActions: (params) =>
+      editable
+        ? [
+            <GridActionsCellItem
+              key="delete"
+              icon={<DeleteIcon />}
+              label="Delete"
+              onClick={() => {
+                deleteRow(params.id);
+              }}
+            />,
+          ]
+        : [],
   },
 ];
 
@@ -127,11 +133,13 @@ const createEmptyRow = (rowsCount: number) => ({
 interface ITariffsGridProps {
   providerId: ProviderWithTarrifs["id"];
   car: CarPrice;
+  disabled?: boolean;
 }
 
 const TariffsGrid = ({
   providerId,
   car: { packageTariffs, model },
+  disabled = false,
 }: ITariffsGridProps) => {
   const [tariffs, setTariffs] = useState(
     (packageTariffs ?? []).map((t) => ({ ...t, id: uniqueId() }))
@@ -180,13 +188,18 @@ const TariffsGrid = ({
     setTariffs(newRows);
   }, [tariffs]);
 
-  const columns = useMemo(() => getColumns(handleDeleteRow), [handleDeleteRow]);
+  const columns = useMemo(
+    () => getColumns(handleDeleteRow, !disabled),
+    [handleDeleteRow]
+  );
 
   return (
     <>
-      <Button size="small" onClick={handleAddRow}>
-        Добавить тариф
-      </Button>
+      {!disabled && (
+        <Button size="small" onClick={handleAddRow}>
+          Добавить тариф
+        </Button>
+      )}
       <DataGrid
         hideFooter
         autoHeight

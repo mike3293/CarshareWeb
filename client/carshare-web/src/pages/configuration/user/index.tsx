@@ -36,28 +36,25 @@ const ProviderTitle = styled("div")(({ theme }) => ({
   alignItems: "center",
 }));
 
-const Configuration: NextPage = () => {
+const GlobalConfiguration: NextPage = () => {
   const router = useRouter();
 
   const authInProgress = useInitAuthorization();
 
-  const role = useUserStore((s) => s.role);
-  const haveAccessToConfiguration = usePolicy(Policy.CanManageConfiguration, {
-    role,
-  });
+  const userId = useUserStore((s) => s.id);
 
   useEffect(() => {
-    if (!authInProgress && !haveAccessToConfiguration) {
+    if (!authInProgress && !userId) {
       router.replace("/");
     }
-  }, [authInProgress, haveAccessToConfiguration, router]);
+  }, [authInProgress, userId, router]);
 
   const { data = [] } = useQuery(
     "getTariffs",
     () => services.configuration.getTariffs(),
     {
       refetchOnWindowFocus: true,
-      enabled: haveAccessToConfiguration,
+      enabled: !!userId,
     }
   );
 
@@ -81,7 +78,7 @@ const Configuration: NextPage = () => {
             </ProviderTitle>
           </AccordionSummary>
           <AccordionDetails>
-            <ProviderTarrifsForm provider={p} />
+            <ProviderTarrifsForm provider={p} disabled />
           </AccordionDetails>
         </Accordion>
       ))}
@@ -89,4 +86,4 @@ const Configuration: NextPage = () => {
   );
 };
 
-export default Configuration;
+export default GlobalConfiguration;

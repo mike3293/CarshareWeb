@@ -1,17 +1,13 @@
-import { useEffect, useState } from "react";
-import ReactDOMServer from "react-dom/server";
-import { useMap, Marker } from "react-leaflet";
-import L, { LatLngExpression } from "leaflet";
+import { useMap } from "react-leaflet";
+import { LatLngExpression } from "leaflet";
 import MapButton from "src/components/atoms/MapButton";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 interface IFindCurrentPositionProps {
   onPositionChange: (position: LatLngExpression) => void;
-  isMobile: boolean;
 }
 
 const FindCurrentPosition = ({
   onPositionChange,
-  isMobile,
 }: IFindCurrentPositionProps) => {
   const map = useMap();
 
@@ -32,14 +28,7 @@ const FindCurrentPosition = ({
   };
 
   return (
-    <MapButton
-      onClick={zoomToCurrentPosition}
-      color="primary"
-      sx={{
-        right: isMobile ? 8 : 11,
-        bottom: isMobile ? 55 : 100,
-      }}
-    >
+    <MapButton onClick={zoomToCurrentPosition} color="primary">
       <MyLocationIcon />
     </MapButton>
   );

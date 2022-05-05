@@ -17,7 +17,9 @@ const CarContainer = styled(Paper)(({ theme }) => ({
 
 const ProviderTarrifsForm = ({
   provider: { carPrices, id },
+  disabled = false,
 }: {
+  disabled?: boolean;
   provider: ProviderWithTarrifs;
 }) => {
   const orderedCars = useMemo(
@@ -30,7 +32,7 @@ const ProviderTarrifsForm = ({
       {orderedCars.map((c) => (
         <CarContainer key={c.model} variant="outlined">
           <Typography sx={{ mb: 1 }}>{c.model}</Typography>
-          <TariffsGrid car={c} providerId={id} />
+          <TariffsGrid car={c} providerId={id} disabled={disabled} />
         </CarContainer>
       ))}
     </Root>

@@ -7,16 +7,13 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import { useEffect, useState } from "react";
 import FilterActions from "./FilterActions";
 import { useUserStore } from "src/context/userStore";
-interface ICarFiltersProps {
-  isMobile: boolean;
-}
 
 const Root = styled("div")(({ theme }) => ({
   display: "grid",
   padding: theme.spacing(1, 2),
 }));
 
-const CarFilters = ({ isMobile }: ICarFiltersProps) => {
+const CarFilters = () => {
   const { data = [] } = useQuery(
     "getProvidersSummary",
     () => services.publicCars.getProvidersSummary(),
@@ -39,14 +36,7 @@ const CarFilters = ({ isMobile }: ICarFiltersProps) => {
 
   return (
     <>
-      <MapButton
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-        color="primary"
-        sx={{
-          right: isMobile ? 8 : 11,
-          bottom: isMobile ? 95 : 140,
-        }}
-      >
+      <MapButton onClick={(e) => setAnchorEl(e.currentTarget)} color="primary">
         <FilterAltIcon />
       </MapButton>
       <Popover
