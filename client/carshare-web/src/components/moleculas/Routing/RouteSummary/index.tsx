@@ -141,7 +141,7 @@ const RouteSummary = ({
               title={
                 <div>
                   {sortedPrices.map((p) => (
-                    <Typography>
+                    <Typography key={p.name}>
                       {p.name} - {p.kopecks / 100} руб
                     </Typography>
                   ))}
