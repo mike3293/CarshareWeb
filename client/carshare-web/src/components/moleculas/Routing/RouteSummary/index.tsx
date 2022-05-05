@@ -138,9 +138,15 @@ const RouteSummary = ({
           {bestPrice && `${bestPrice.name} - ${bestPrice.kopecks / 100} руб`}
           {sortedPrices && sortedPrices.length > 1 && (
             <Tooltip
-              title={sortedPrices
-                .map((p) => `${p.name} - ${p.kopecks / 100} руб`)
-                .join(", ")}
+              title={
+                <div>
+                  {sortedPrices.map((p) => (
+                    <Typography>
+                      {p.name} - {p.kopecks / 100} руб
+                    </Typography>
+                  ))}
+                </div>
+              }
             >
               <AllTariffs variant="body2">все тарифы</AllTariffs>
             </Tooltip>

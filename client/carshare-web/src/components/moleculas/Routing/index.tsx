@@ -1,4 +1,4 @@
-import { Box, Dialog } from "@mui/material";
+import { Box, Dialog, IconButton, Tooltip } from "@mui/material";
 import L from "leaflet";
 import { useMapEvents } from "react-leaflet";
 import DrawerWithEdge from "src/components/atoms/DrawerWithEdge";
@@ -15,12 +15,14 @@ import CarSelect from "./CarSelect";
 import RouteSummary from "./RouteSummary";
 import RouteActions from "./RouteActions";
 import { useUserStore } from "src/context/userStore";
+import { red } from "@mui/material/colors";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 const Routing = ({ routingMachine }: IRoutingProps) => {
   const isMobile = useMobile();
   const [route, setRoute] = useState<L.Routing.IRoute | null>(null);
-  const [selectedCar, addWaypoint, waypoints] = useRoutingStore(
-    (s) => [s.selectedCar, s.addWaypoint, s.waypoints],
+  const [selectedCar, addWaypoint, waypoints, resetWaypoints] = useRoutingStore(
+    (s) => [s.selectedCar, s.addWaypoint, s.waypoints, s.resetWaypoints],
     shallow
   );
 
@@ -61,7 +63,20 @@ const Routing = ({ routingMachine }: IRoutingProps) => {
         overflow: "hidden",
       }}
     >
-      <CarSelect />
+      <Box sx={{ display: "grid", gridTemplateColumns: "auto 40px", gap: 1 }}>
+        <CarSelect />
+        <Tooltip title="Закрыть маршрут">
+          <IconButton
+            sx={{
+              color: red[400],
+              p: 0.5,
+            }}
+            onClick={resetWaypoints}
+          >
+            <CancelIcon sx={{ fontSize: 27 }} />
+          </IconButton>
+        </Tooltip>
+      </Box>
       <Box sx={{ display: "flex" }}>
         {selectedCar && <CarSummary car={selectedCar} />}
         {userId && <RouteActions sx={{ ml: "auto" }} userId={userId} />}

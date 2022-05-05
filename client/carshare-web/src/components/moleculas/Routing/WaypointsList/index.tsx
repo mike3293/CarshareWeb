@@ -1,4 +1,4 @@
-import { Box, Tooltip, IconButton } from "@mui/material";
+import { Box } from "@mui/material";
 import shallow from "zustand/shallow";
 import React from "react";
 import { useRoutingStore } from "src/context/routingStore";
@@ -11,11 +11,9 @@ import {
 } from "react-beautiful-dnd";
 import moveArrayItem from "src/utils/moveArrayItem";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
-import { grey, red } from "@mui/material/colors";
-import { getAddressString } from "src/utils/getAddressString";
+import { grey } from "@mui/material/colors";
 import WaypointItem from "./WaypointItem";
 import { useMobile } from "src/hooks/useMedia";
-import CancelIcon from "@mui/icons-material/Cancel";
 
 // TODO: remove and check
 resetServerContext();
@@ -23,8 +21,8 @@ resetServerContext();
 const WaypointsList = () => {
   const isMobile = useMobile();
 
-  const [waypoints, setWaypoints, resetWaypoints] = useRoutingStore(
-    (s) => [s.waypoints, s.setWaypoints, s.resetWaypoints],
+  const [waypoints, setWaypoints] = useRoutingStore(
+    (s) => [s.waypoints, s.setWaypoints],
     shallow
   );
 
@@ -48,20 +46,8 @@ const WaypointsList = () => {
   return (
     // TODO: adjust height
     <Box>
-      <Box sx={{ mb: 2 }}>
-        <WaypointItem disableActions waypoint={firstWaypoint}>
-          <Tooltip title="Закрыть маршрут">
-            <IconButton
-              sx={{
-                color: red[400],
-                p: 0.5,
-              }}
-              onClick={resetWaypoints}
-            >
-              <CancelIcon sx={{ fontSize: 27 }} />
-            </IconButton>
-          </Tooltip>
-        </WaypointItem>
+      <Box sx={{ mb: 1 }}>
+        <WaypointItem disableActions waypoint={firstWaypoint} />
       </Box>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
