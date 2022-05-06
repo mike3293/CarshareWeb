@@ -33,7 +33,7 @@ public class TariffOverridesController : ControllerBase
             return Unauthorized();
         }
 
-        return await _overridesService.GetByUserId(userId);
+        return await _overridesService.GetByUserId(userId) ?? new TariffOverride(userId);
     }
 
     [HttpPost("providers/{providerId}/cars/{model}")]
@@ -46,9 +46,9 @@ public class TariffOverridesController : ControllerBase
             return Unauthorized();
         }
 
-        if (packageTariffs.Where(t => t.IsBase).Count() > 1)
+        if (packageTariffs.Where(t => t.IsBase).Count() != 1)
         {
-            return BadRequest("There can be only one base tariff.");
+            return BadRequest("There should be one base tariff.");
         }
 
         var tariffOverride = await _overridesService.GetByUserId(userId);
@@ -79,9 +79,9 @@ public class TariffOverridesController : ControllerBase
             return Unauthorized();
         }
 
-        if (packageTariffs.Where(t => t.IsBase).Count() > 1)
+        if (packageTariffs.Where(t => t.IsBase).Count() != 1)
         {
-            return BadRequest("There can be only one base tariff.");
+            return BadRequest("There should be one base tariff.");
         }
 
         var tariffOverride = await _overridesService.GetByUserId(userId);

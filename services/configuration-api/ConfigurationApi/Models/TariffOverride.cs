@@ -16,6 +16,12 @@ public class TariffOverride
         CarPrices = new List<CarPriceWithProviderId>();
     }
 
+    public TariffOverride(string userId)
+    {
+        UserId = userId;
+        CarPrices = new List<CarPriceWithProviderId>();
+    }
+
     public TariffOverride(string userId, IList<CarPriceWithProviderId> carPrices)
     {
         UserId = userId;
