@@ -1,4 +1,4 @@
-import { Provider } from './Provider';
+import { Provider } from "src/types/Provider";
 
 export interface PackageTariff {
   name: string;
@@ -18,8 +18,17 @@ export interface CarPrice {
   packageTariffs: PackageTariff[];
 }
 
-export interface ProviderWithTarrifs {
-  id: string;
-  provider: Provider;
+export interface ProviderWithTarrifs extends Provider {
   carPrices: CarPrice[];
+}
+
+export interface CarPriceWithProviderId {
+  model: string;
+  providerId: string;
+  packageTariffs: PackageTariff[];
+}
+
+export interface TariffOverride {
+  userId: string;
+  carPrices: CarPriceWithProviderId[];
 }

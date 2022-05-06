@@ -64,16 +64,22 @@ const CarMap = () => {
 
   const routingMachineRef = useRef<L.Routing.Control>(null);
 
-  const [waypoints, hasWaypoints, setRawWaypoints, hasCarsToCompare] =
-    useRoutingStore(
-      (s) => [
-        s.waypoints,
-        getHasWaypoints(s),
-        s.setRawWaypoints,
-        getHasCarsToCompare(s),
-      ],
-      shallow
-    );
+  const [
+    waypoints,
+    hasWaypoints,
+    setRawWaypoints,
+    hasCarsToCompare,
+    clearCarsToCompare,
+  ] = useRoutingStore(
+    (s) => [
+      s.waypoints,
+      getHasWaypoints(s),
+      s.setRawWaypoints,
+      getHasCarsToCompare(s),
+      s.clearCarsToCompare,
+    ],
+    shallow
+  );
 
   const refreshWaypoints = useCallback(() => {
     if (routingMachineRef.current) {
@@ -88,6 +94,10 @@ const CarMap = () => {
       routingMachineRef.current.setWaypoints(waypoints);
     }
   }, [waypoints, routingMachineRef]);
+
+  useEffect(() => {
+    clearCarsToCompare();
+  }, []);
 
   const role = useUserStore((s) => s.role);
 

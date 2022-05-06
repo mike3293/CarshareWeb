@@ -91,6 +91,9 @@ const routingStore = (preloadedState = {}) => {
 
       set({ carsToCompare });
     },
+    clearCarsToCompare: () => {
+      set({ carsToCompare: [] });
+    },
     startRouteWithCar: async (carId) => {
       const car = get().carsToCompare.find((c) => c.id === carId)!;
       const address = await services.geocoding.getAddress(car.lat, car.lon);

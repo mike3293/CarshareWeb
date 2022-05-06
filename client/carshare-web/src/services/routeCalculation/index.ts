@@ -1,10 +1,11 @@
 import { Price } from "src/types/Price";
-import ServiceBase from "../serviceBase";
+import NotStrictAuthService from "../notStrictAuthService";
+import { UserStoreApi } from "../notStrictAuthService/types";
 import { IRouteInfoRequest } from "./types";
 
-class RouteCalculationService extends ServiceBase {
-  constructor(baseURL: string) {
-    super();
+class RouteCalculationService extends NotStrictAuthService {
+  constructor(baseURL: string, store: UserStoreApi) {
+    super(store);
     this.initialize({ baseURL });
   }
 

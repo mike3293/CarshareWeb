@@ -9,11 +9,11 @@ import {
   GridValueFormatterParams,
 } from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { CarPrice, ProviderWithTarrifs } from "src/types/ProviderWithTarrifs";
+import { PackageTariff } from "src/services/configuration/types";
 import { useCallback, useMemo, useState } from "react";
-import services from "src/config/services";
 import { uniqueId } from "src/utils/uniqueId";
 import { UniqueTariff } from "./types";
+import { grey } from "@mui/material/colors";
 
 const validateNumber = (params: GridPreProcessEditCellProps) => {
   const error = Number.isInteger(params.props.value) && params.props.value < 0;
@@ -32,97 +32,101 @@ const formatNumber = (params: GridValueFormatterParams<number>) => {
 const getColumns = (
   deleteRow: (id: GridRowId) => void,
   editable = true
-): GridColumns => [
-  { field: "name", headerName: "Тариф", editable, flex: 1 },
-  {
-    field: "kopecksCost",
-    headerName: "Цена пакета",
-    type: "number",
-    preProcessEditCellProps: validateNumber,
-    valueFormatter: formatNumber,
-    editable,
-    flex: 1,
-  },
-  {
-    field: "kopecksPerMinute",
-    headerName: "Цена минуты",
-    type: "number",
-    preProcessEditCellProps: validateNumber,
-    valueFormatter: formatNumber,
-    editable,
-    flex: 1,
-  },
-  {
-    field: "kopecksPerMinuteParking",
-    headerName: "Цена мин. парковки",
-    type: "number",
-    preProcessEditCellProps: validateNumber,
-    valueFormatter: formatNumber,
-    editable,
-    flex: 1,
-  },
-  {
-    field: "kopecksPerKilometer",
-    headerName: "Цена за км",
-    type: "number",
-    preProcessEditCellProps: validateNumber,
-    valueFormatter: formatNumber,
-    editable,
-    flex: 1,
-  },
-  {
-    field: "minutesIncluded",
-    headerName: "Включено минут",
-    type: "number",
-    preProcessEditCellProps: validateNumber,
-    valueFormatter: formatNumber,
-    editable,
-    flex: 1,
-  },
-  {
-    field: "parkingMinutesIncluded",
-    headerName: "Включено минут парковки",
-    type: "number",
-    preProcessEditCellProps: validateNumber,
-    valueFormatter: formatNumber,
-    editable,
-    flex: 1,
-  },
-  {
-    field: "kilometersIncluded",
-    headerName: "Включено км",
-    type: "number",
-    preProcessEditCellProps: validateNumber,
-    valueFormatter: formatNumber,
-    editable,
-    flex: 1,
-  },
-  {
-    field: "isBase",
-    headerName: "Базовый",
-    type: "boolean",
-    editable,
-    flex: 1,
-  },
-  {
-    field: "actions",
-    type: "actions",
-    width: 50,
-    getActions: (params) =>
-      editable
-        ? [
-            <GridActionsCellItem
-              key="delete"
-              icon={<DeleteIcon />}
-              label="Delete"
-              onClick={() => {
-                deleteRow(params.id);
-              }}
-            />,
-          ]
-        : [],
-  },
-];
+): GridColumns => {
+  const columns: GridColumns = [
+    { field: "name", headerName: "Тариф", editable, flex: 1 },
+    {
+      field: "kopecksCost",
+      headerName: "Цена пакета",
+      type: "number",
+      preProcessEditCellProps: validateNumber,
+      valueFormatter: formatNumber,
+      editable,
+      flex: 1,
+    },
+    {
+      field: "kopecksPerMinute",
+      headerName: "Цена минуты",
+      type: "number",
+      preProcessEditCellProps: validateNumber,
+      valueFormatter: formatNumber,
+      editable,
+      flex: 1,
+    },
+    {
+      field: "kopecksPerMinuteParking",
+      headerName: "Цена мин. парковки",
+      type: "number",
+      preProcessEditCellProps: validateNumber,
+      valueFormatter: formatNumber,
+      editable,
+      flex: 1,
+    },
+    {
+      field: "kopecksPerKilometer",
+      headerName: "Цена за км",
+      type: "number",
+      preProcessEditCellProps: validateNumber,
+      valueFormatter: formatNumber,
+      editable,
+      flex: 1,
+    },
+    {
+      field: "minutesIncluded",
+      headerName: "Включено минут",
+      type: "number",
+      preProcessEditCellProps: validateNumber,
+      valueFormatter: formatNumber,
+      editable,
+      flex: 1,
+    },
+    {
+      field: "parkingMinutesIncluded",
+      headerName: "Включено минут парковки",
+      type: "number",
+      preProcessEditCellProps: validateNumber,
+      valueFormatter: formatNumber,
+      editable,
+      flex: 1,
+    },
+    {
+      field: "kilometersIncluded",
+      headerName: "Включено км",
+      type: "number",
+      preProcessEditCellProps: validateNumber,
+      valueFormatter: formatNumber,
+      editable,
+      flex: 1,
+    },
+    {
+      field: "isBase",
+      headerName: "Базовый",
+      type: "boolean",
+      editable,
+      flex: 1,
+    },
+  ];
+
+  if (editable) {
+    columns.push({
+      field: "actions",
+      type: "actions",
+      width: 50,
+      getActions: (params: { id: GridRowId }) => [
+        <GridActionsCellItem
+          key="delete"
+          icon={<DeleteIcon />}
+          label="Delete"
+          onClick={() => {
+            deleteRow(params.id);
+          }}
+        />,
+      ],
+    });
+  }
+
+  return columns;
+};
 
 const createEmptyRow = (rowsCount: number) => ({
   id: uniqueId(),
@@ -131,16 +135,13 @@ const createEmptyRow = (rowsCount: number) => ({
 });
 
 interface ITariffsGridProps {
-  providerId: ProviderWithTarrifs["id"];
-  car: CarPrice;
-  disabled?: boolean;
+  packageTariffs: PackageTariff[];
+  updateTariffs?: (packageTariffs: PackageTariff[]) => Promise<void>;
 }
 
-const TariffsGrid = ({
-  providerId,
-  car: { packageTariffs, model },
-  disabled = false,
-}: ITariffsGridProps) => {
+const TariffsGrid = ({ packageTariffs, updateTariffs }: ITariffsGridProps) => {
+  const disabled = !updateTariffs;
+
   const [tariffs, setTariffs] = useState(
     (packageTariffs ?? []).map((t) => ({ ...t, id: uniqueId() }))
   );
@@ -148,7 +149,7 @@ const TariffsGrid = ({
 
   const handleRowsUpdate = useCallback(async (tariffs: UniqueTariff[]) => {
     setLoadCounter((ps) => ps + 1);
-    await services.configuration.updateTariffs(providerId, model, tariffs);
+    updateTariffs && (await updateTariffs(tariffs));
     setLoadCounter((ps) => ps - 1);
   }, []);
 
@@ -175,7 +176,18 @@ const TariffsGrid = ({
 
   const handleDeleteRow = useCallback(
     async (id: GridRowId) => {
+      const isBaseRow = tariffs.find((t) => t.id === id)?.isBase;
+
       const newRows = tariffs.filter((t) => t.id !== id);
+
+      if (isBaseRow) {
+        const firstRow = newRows.find(() => true);
+
+        if (firstRow) {
+          firstRow.isBase = true;
+        }
+      }
+
       setTariffs(newRows);
       handleRowsUpdate(newRows);
     },
@@ -220,6 +232,7 @@ const TariffsGrid = ({
         }}
         columns={columns}
         experimentalFeatures={{ newEditingApi: true }}
+        sx={{ backgroundColor: disabled ? grey[200] : undefined }}
       />
     </>
   );

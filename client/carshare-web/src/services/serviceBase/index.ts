@@ -51,7 +51,23 @@ abstract class ServiceBase {
       const result = await response.json();
 
       return result;
-    } catch (err) {
+    } catch {
+      return null as unknown as TResult;
+    }
+  }
+
+  protected async delete<TResult>(
+    path: string,
+    params?: URLSearchParamsInit,
+    init?: RequestInit
+  ): Promise<TResult> {
+    const response = await this.fetch(path, "DELETE", params, undefined, init);
+
+    try {
+      const result = await response.json();
+
+      return result;
+    } catch {
       return null as unknown as TResult;
     }
   }

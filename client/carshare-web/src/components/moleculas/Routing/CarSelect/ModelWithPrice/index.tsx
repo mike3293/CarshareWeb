@@ -1,7 +1,7 @@
 import { CarWithProvider } from "src/context/routingStore/types";
 import { CircularProgress, Box } from "@mui/material";
 import { useQuery } from "react-query";
-import { last } from "lodash";
+import { last, minBy } from "lodash";
 import { Section } from "src/services/routeCalculation/types";
 import { useRoutingStore } from "src/context/routingStore";
 import L from "leaflet";
@@ -27,7 +27,7 @@ const ModelWithPrice = ({ car }: IModelWithPriceProps) => {
     [waypoints, car]
   );
 
-  const { data: prices = [{ kopecks: 0 }], isLoading } = useQuery(
+  const { data: price = { kopecks: 0 }, isLoading } = useQuery(
     ["calculateBestPrice", car.id, waypointsWithProvidedCar],
     async () => {
       const instructions = await new Promise<
@@ -92,10 +92,12 @@ const ModelWithPrice = ({ car }: IModelWithPriceProps) => {
         ]
       );
 
-      return await services.routeCalculation.calculatePrices({
+      const prices = await services.routeCalculation.calculatePrices({
         car: { model: car!.model, providerId: car!.providerId },
         routeSections,
       });
+
+      return minBy(prices, (p) => p.kopecks);
     },
     {
       enabled: Boolean(waypoints.length > 1),
@@ -110,7 +112,7 @@ const ModelWithPrice = ({ car }: IModelWithPriceProps) => {
       {isLoading ? (
         <CircularProgress size={16} sx={{ ml: 1 }} />
       ) : (
-        ` - ${prices![0].kopecks / 100} руб`
+        ` - ${price.kopecks / 100} руб`
       )}
     </Box>
   );

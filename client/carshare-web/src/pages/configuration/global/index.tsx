@@ -76,8 +76,8 @@ const GlobalConfiguration: NextPage = () => {
             sx={{ backgroundColor: grey[50] }}
           >
             <ProviderTitle>
-              <ProviderImage src={p.provider.logoUrl} alt="logo" />
-              <Typography>{p.provider.name}</Typography>
+              <ProviderImage src={p.logoUrl} alt="logo" />
+              <Typography>{p.name}</Typography>
             </ProviderTitle>
           </AccordionSummary>
           <AccordionDetails>

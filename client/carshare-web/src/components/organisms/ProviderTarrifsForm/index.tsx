@@ -1,8 +1,10 @@
-import { ProviderWithTarrifs } from "src/types/ProviderWithTarrifs";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { orderBy } from "lodash";
-import TariffsGrid from "./TariffsGrid";
-import { Paper, styled, Typography } from "@mui/material";
+import TariffsGrid from "../../moleculas/TariffsGrid";
+import { Paper, styled, TextField, Typography } from "@mui/material";
+import { useDebounce } from "src/hooks/useDebounce";
+import { ProviderWithTarrifs } from "src/services/configuration/types";
+import services from "src/config/services";
 
 const Root = styled("div")(({ theme }) => ({
   display: "grid",
@@ -15,24 +17,46 @@ const CarContainer = styled(Paper)(({ theme }) => ({
   borderWidth: "3px",
 }));
 
-const ProviderTarrifsForm = ({
-  provider: { carPrices, id },
-  disabled = false,
-}: {
-  disabled?: boolean;
+interface IProviderTarrifsFormProps {
   provider: ProviderWithTarrifs;
-}) => {
-  const orderedCars = useMemo(
-    () => orderBy(carPrices, (c) => c.brand),
-    [carPrices]
+}
+
+const ProviderTarrifsForm = ({
+  provider: { id, carPrices },
+}: IProviderTarrifsFormProps) => {
+  const [search, setSearch] = useState("");
+
+  const debouncedSearh = useDebounce(search, 500);
+
+  const filteredCars = useMemo(
+    () =>
+      orderBy(
+        carPrices.filter((c) =>
+          c.model.toLowerCase().includes(debouncedSearh.toLowerCase())
+        ),
+        ["brand", "model"]
+      ),
+    [carPrices, debouncedSearh]
   );
 
   return (
     <Root>
-      {orderedCars.map((c) => (
+      <TextField
+        sx={{ maxWidth: 300 }}
+        label="Поиск"
+        variant="standard"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      {filteredCars.map((c) => (
         <CarContainer key={c.model} variant="outlined">
           <Typography sx={{ mb: 1 }}>{c.model}</Typography>
-          <TariffsGrid car={c} providerId={id} disabled={disabled} />
+          <TariffsGrid
+            packageTariffs={c.packageTariffs}
+            updateTariffs={(tariffs) =>
+              services.configuration.updateTariffs(id, c.model, tariffs)
+            }
+          />
         </CarContainer>
       ))}
     </Root>

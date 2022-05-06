@@ -21,6 +21,7 @@ export interface IRoutingStore {
   saveWaypoints: (userId: string) => Promise<void>;
   setRawWaypoints: (waypoints: L.Routing.Waypoint[]) => Promise<void>;
   startRouteWithCar: (carId: Car["id"]) => Promise<void>;
+  clearCarsToCompare: () => void;
   removeCarFromComparison: (carId: Car["id"]) => void;
   addCarToComparison: (
     car: Car,
