@@ -35,7 +35,7 @@ public class TarrifsController : ControllerBase
     [HttpGet("providers/{providerId}/cars/{model}")]
     public async Task<ActionResult<CarPrice>> GetCarPrice(string providerId, string model, string? userId)
     {
-        var provider = await _tarrifsService.GetByProviderId(providerId);
+        var provider = await _tarrifsService.GetById(providerId);
 
         if (provider is null)
         {

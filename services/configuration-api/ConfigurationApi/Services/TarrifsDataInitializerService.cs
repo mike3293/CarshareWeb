@@ -51,7 +51,7 @@ namespace ConfigurationApi.Services
 
             foreach (var branding in brandings)
             {
-                var providerTarrif = existingTarrifs.FirstOrDefault(t => t.Provider.Id == branding.Id);
+                var providerTarrif = existingTarrifs.FirstOrDefault(t => t.Id == branding.Id);
 
                 if (providerTarrif is not null)
                 {
@@ -67,20 +67,21 @@ namespace ConfigurationApi.Services
 
                     await _tarrifsService.Update(providerTarrif);
 
-                    _logger.LogInformation("Tarrifs for {providerId} updated.", providerTarrif.Provider.Id);
+                    _logger.LogInformation("Tarrifs for {providerId} updated.", providerTarrif.Id);
                 }
                 else
                 {
-                    // TODO add mapper
                     var tarrif = new ProviderWithTarrifs()
                     {
-                        Provider = new Provider() { Id = branding.Id, Name = branding.Name, LogoUrl = branding.LogoUrl },
+                        Id = branding.Id,
+                        Name = branding.Name,
+                        LogoUrl = branding.LogoUrl,
                         CarPrices = branding.Cars.Select(c => CreateCarPriceFrom(c)).ToList()
                     };
 
                     await _tarrifsService.Create(tarrif);
 
-                    _logger.LogInformation("Tarrifs for {providerId} created.", tarrif.Provider.Id);
+                    _logger.LogInformation("Tarrifs for {providerId} created.", tarrif.Id);
                 }
             }
 

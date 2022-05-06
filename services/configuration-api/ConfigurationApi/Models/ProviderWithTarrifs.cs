@@ -7,10 +7,11 @@ namespace ConfigurationApi.Models
     public class ProviderWithTarrifs
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        new public string Id { get; set; }
 
-        public Provider Provider { get; set; }
+        public string Name { get; set; }
+
+        public string LogoUrl { get; set; }
 
         public IList<CarPrice> CarPrices { get; set; }
     }

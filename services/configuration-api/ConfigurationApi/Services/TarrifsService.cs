@@ -33,11 +33,6 @@ namespace ConfigurationApi.Services
             return await _tariffs.Find(t => t.Id == id).FirstOrDefaultAsync();
         }
 
-        public async Task<ProviderWithTarrifs> GetByProviderId(string providerId)
-        {
-            return await _tariffs.Find(t => t.Provider.Id == providerId).FirstOrDefaultAsync();
-        }
-
         public async Task Create(ProviderWithTarrifs tarrif)
         {
             await _tariffs.InsertOneAsync(tarrif);
