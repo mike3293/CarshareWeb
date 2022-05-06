@@ -7,44 +7,44 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace RouteCalculatorApi.ApiClient.ConfigurationApi
+namespace RouteCalculatorApi.ApiClient.ConfigurationApi;
+
+public class ConfigurationApiClient
 {
-    public class ConfigurationApiClient
+    private readonly ApisConfig _config;
+
+    private readonly ILogger<ConfigurationApiClient> _logger;
+
+
+    public ConfigurationApiClient(IOptions<ApisConfig> options, ILogger<ConfigurationApiClient> logger)
     {
-        private readonly ApisConfig _config;
+        _config = options.Value;
+        _logger = logger;
+    }
 
-        private readonly ILogger<ConfigurationApiClient> _logger;
 
+    public async Task<CarPrice> GetCarPriceAsync(string providerId, string model, string? userId)
+    {
+        using var httpClient = new HttpClient();
 
-        public ConfigurationApiClient(IOptions<ApisConfig> options, ILogger<ConfigurationApiClient> logger)
+        var errorMessage = await httpClient.ApplyAuthAsync(_config.IdentityServerUri);
+
+        if(errorMessage is not null)
         {
-            _config = options.Value;
-            _logger = logger;
+            _logger.LogError("'{error}' error appears on auth.", errorMessage);
         }
 
+        using var response = await httpClient.GetAsync(
+            $"{_config.ConfigurationApiUri}/tarrifs/providers/{providerId}/cars/{model}{(userId is not null ? $"?userId={userId}" : "")}");
 
-        public async Task<CarPrice> GetCarPriceAsync(string providerId, string model)
-        {
-            using var httpClient = new HttpClient();
+        var contentStream = await response.Content.ReadAsStreamAsync();
+        using var streamReader = new StreamReader(contentStream);
 
-            var errorMessage = await httpClient.ApplyAuthAsync(_config.IdentityServerUri);
+        using var jsonReader = new JsonTextReader(streamReader);
+        var serializer = new JsonSerializer();
 
-            if(errorMessage is not null)
-            {
-                _logger.LogError("'{error}' error appears on auth.", errorMessage);
-            }
+        var carPrice = serializer.Deserialize<CarPrice>(jsonReader);
 
-            using var response = await httpClient.GetAsync($"{_config.ConfigurationApiUri}/tarrifs/providers/{providerId}/cars/{model}");
-
-            var contentStream = await response.Content.ReadAsStreamAsync();
-            using var streamReader = new StreamReader(contentStream);
-
-            using var jsonReader = new JsonTextReader(streamReader);
-            var serializer = new JsonSerializer();
-
-            var carPrice = serializer.Deserialize<CarPrice>(jsonReader);
-
-            return carPrice;
-        }
+        return carPrice!;
     }
 }

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using RouteCalculatorApi.ApiClient.ConfigurationApi;
 using RouteCalculatorApi.Configuration;
@@ -42,6 +44,18 @@ namespace RouteCalculatorApi
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RouteCalculatorApi", Version = "v1" });
             });
 
+            var apisConfig = Configuration.GetSection(nameof(ApisConfig)).Get<ApisConfig>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = apisConfig.IdentityServerUri;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateAudience = false
+                    };
+                });
+
             services.Configure<ApisConfig>(Configuration.GetSection(nameof(ApisConfig)));
 
             services.AddScoped<ConfigurationApiClient>();
@@ -68,6 +82,7 @@ namespace RouteCalculatorApi
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

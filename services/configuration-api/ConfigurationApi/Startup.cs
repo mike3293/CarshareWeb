@@ -44,6 +44,7 @@ namespace ConfigurationApi
             services.Configure<DefaultTarrifsConfig>(Configuration.GetSection(nameof(DefaultTarrifsConfig)));
 
             services.AddSingleton<TarrifsService>();
+            services.AddSingleton<TariffOverridesService>();
 
             services.AddScoped<PublicCarsApiClient>();
 

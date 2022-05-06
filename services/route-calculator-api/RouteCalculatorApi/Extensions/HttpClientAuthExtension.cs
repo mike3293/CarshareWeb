@@ -9,7 +9,7 @@ namespace RouteCalculatorApi.Extensions
 {
     public static class HttpClientAuthExtension
     {
-        public static async Task<string> ApplyAuthAsync(this HttpClient httpClient, string serverUri)
+        public static async Task<string?> ApplyAuthAsync(this HttpClient httpClient, string serverUri)
         {
             var disco = await httpClient.GetDiscoveryDocumentAsync(serverUri);
 

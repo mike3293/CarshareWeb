@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RouteCalculatorApi.ApiClient.ConfigurationApi;
 using RouteCalculatorApi.Extensions;
 using RouteCalculatorApi.Models.Requests;
@@ -6,6 +7,7 @@ using RouteCalculatorApi.Models.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace RouteCalculatorApi.Controllers
@@ -26,7 +28,9 @@ namespace RouteCalculatorApi.Controllers
         [HttpPost]
         public async Task<ActionResult<IEnumerable<PriceResponse>>> CalculatePrices(RouteInfoRequest route)
         {
-            var carPrice = await _configurationApiClient.GetCarPriceAsync(route.Car.ProviderId, route.Car.Model);
+            var userId = User.GetUserId();
+
+            var carPrice = await _configurationApiClient.GetCarPriceAsync(route.Car.ProviderId, route.Car.Model, userId);
 
             if (carPrice is null)
             {
