@@ -66,9 +66,9 @@ public class TarrifsController : ControllerBase
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateTarrifs(string providerId, string model, IList<PackageTariff> packageTariffs)
     {
-        if (packageTariffs.Where(t => t.IsBase).Count() != 1)
+        if (packageTariffs.Where(t => t.IsBase).Count() > 1)
         {
-            return BadRequest("There should be one base tariff.");
+            return BadRequest("There can be only one base tariff.");
         }
 
         var provider = await _tarrifsService.GetById(providerId);

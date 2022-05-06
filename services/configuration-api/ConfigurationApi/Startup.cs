@@ -48,7 +48,7 @@ namespace ConfigurationApi
 
             services.AddScoped<PublicCarsApiClient>();
 
-            //services.AddHostedService<TarrifsDataInitializerService>();
+            services.AddHostedService<TarrifsDataInitializerService>();
 
             services.AddHealthChecks();
         }
