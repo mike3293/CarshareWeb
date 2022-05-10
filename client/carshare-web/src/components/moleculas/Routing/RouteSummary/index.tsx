@@ -4,10 +4,11 @@ import {
   Typography,
   CircularProgress,
   Tooltip,
+  ClickAwayListener,
 } from "@mui/material";
 import L from "leaflet";
 import { reduce, orderBy, last } from "lodash";
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import getDurationString from "src/utils/getDurationString";
 import {
   CarWithProvider,
@@ -16,6 +17,7 @@ import {
 import { useQuery } from "react-query";
 import services from "src/config/services";
 import { Section } from "src/services/routeCalculation/types";
+import { useMobile } from "src/hooks/useMedia";
 
 const AllTariffs = styled(Typography)(({ theme }) => ({
   color: theme.palette.grey[400],
@@ -33,6 +35,8 @@ const RouteSummary = ({
   waypoints: CustomWaypoint[];
 }) => {
   const { summary, instructions } = route || {};
+
+  const isMobile = useMobile();
 
   const parkingTime = useMemo(
     () =>
@@ -120,6 +124,8 @@ const RouteSummary = ({
     [prices]
   );
 
+  const [allTariffsOpen, setAllTariffsOpen] = useState(false);
+
   const bestPrice = sortedPrices && sortedPrices[0];
 
   return (
@@ -137,19 +143,31 @@ const RouteSummary = ({
           Тариф:{" "}
           {bestPrice && `${bestPrice.name} - ${bestPrice.kopecks / 100} руб`}
           {sortedPrices && sortedPrices.length > 1 && (
-            <Tooltip
-              title={
-                <div>
-                  {sortedPrices.map((p) => (
-                    <Typography key={p.name}>
-                      {p.name} - {p.kopecks / 100} руб
-                    </Typography>
-                  ))}
-                </div>
-              }
-            >
-              <AllTariffs variant="body2">все тарифы</AllTariffs>
-            </Tooltip>
+            <ClickAwayListener onClickAway={() => setAllTariffsOpen(false)}>
+              <Tooltip
+                open={allTariffsOpen}
+                onClose={() => {
+                  !isMobile && setAllTariffsOpen(false);
+                }}
+                onOpen={() => setAllTariffsOpen(true)}
+                title={
+                  <div>
+                    {sortedPrices.map((p) => (
+                      <Typography key={p.name}>
+                        {p.name} - {p.kopecks / 100} руб
+                      </Typography>
+                    ))}
+                  </div>
+                }
+              >
+                <AllTariffs
+                  variant="body2"
+                  onClick={() => setAllTariffsOpen(true)}
+                >
+                  все тарифы
+                </AllTariffs>
+              </Tooltip>
+            </ClickAwayListener>
           )}
         </Typography>
         {isLoading && <CircularProgress size={20} />}
