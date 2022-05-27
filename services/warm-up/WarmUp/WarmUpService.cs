@@ -30,36 +30,43 @@ namespace ConfigurationApi.Services
             var jsonArray = _config["WarmUpEndpoints"];
             var endpoints = JsonConvert.DeserializeObject<string[]>(jsonArray) ?? Array.Empty<string>();
 
-            var requests = endpoints.Select(uri => httpClient.GetAsync(uri)).ToList();
-
-            await Task.WhenAll(requests);
-
-            var responses = requests.Select(task => task.Result);
-
-            foreach (var response in responses)
+            try
             {
-                if (response.IsSuccessStatusCode)
+                var requests = endpoints.Select(uri => httpClient.GetAsync(uri)).ToList();
+
+                await Task.WhenAll(requests);
+
+                var responses = requests.Select(task => task.Result);
+
+                foreach (var response in responses)
                 {
-                    _logger.LogInformation(
-                        "Response status code of warmup request to '{appUri}' is {status}",
-                        response.RequestMessage?.RequestUri,
-                        response.StatusCode
-                    );
+                    if (response.IsSuccessStatusCode)
+                    {
+                        _logger.LogInformation(
+                            "Response status code of warmup request to '{appUri}' is {status}",
+                            response.RequestMessage?.RequestUri,
+                            response.StatusCode);
+                    }
+                    else
+                    {
+                        _logger.LogError(
+                            "Response status code of warmup request to '{appUri}' is {status}",
+                            response.RequestMessage?.RequestUri,
+                            response.StatusCode);
+                    }
                 }
-                else
-                {
-                    _logger.LogError(
-                        "Response status code of warmup request to '{appUri}' is {status}", 
-                        response.RequestMessage?.RequestUri, 
-                        response.StatusCode
-                    );
-                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(
+                    ex,
+                    ex.Message);
             }
         }
 
         public Task StopAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("Timed Warm Up Service running.");
+            _logger.LogInformation("Timed Warm Up Service stopping.");
 
             _timer?.Change(Timeout.Infinite, 0);
 
